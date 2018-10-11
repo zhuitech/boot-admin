@@ -4,11 +4,10 @@ namespace ZhuiTech\BootAdmin\Providers;
 
 use Encore\Admin\Admin;
 use Illuminate\Support\ServiceProvider;
-use ZhuiTech\ShopBoot\Console\Clear;
-use ZhuiTech\ShopBoot\Console\Devel;
-use ZhuiTech\ShopBoot\Console\Initial;
+use ZhuiTech\BootAdmin\Console\Clear;
+use ZhuiTech\BootAdmin\Console\Devel;
 
-class ShopBootServiceProvider extends ServiceProvider
+class AdminServiceProvider extends ServiceProvider
 {
 
     /**
@@ -32,7 +31,6 @@ class ShopBootServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            Initial::class,
             Clear::class,
             Devel::class
         ]);

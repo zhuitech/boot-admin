@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "ibrand/backend": "~1.0"
     },
     "autoload": {
         "psr-4": {
@@ -18,6 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
+                "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
             ]
         }
     }
