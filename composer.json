@@ -1,0 +1,24 @@
+{
+    "name": "zhuitech/boot-admin",
+    "description": "后台管理功能增强",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Andrew Zhou",
+            "email": "andrew@zhuitech.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "ZhuiTech\\BootAdmin\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ]
+        }
+    }
+}
