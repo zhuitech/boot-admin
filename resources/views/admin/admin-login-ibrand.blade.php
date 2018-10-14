@@ -9,7 +9,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>{{ $dmp_config['page_title'] }}</title>
-    <link rel="shortcut icon" href="{{ asset($dmp_config['backend_logo']) }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ asset($dmp_config['shortcut_icon']) }}" type="image/x-icon" />
 
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/AdminLTE/bootstrap/css/bootstrap.min.css") }}">
@@ -22,8 +22,8 @@
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/toastr/build/toastr.min.css") }}">
     <!-- Login -->
     <link rel="stylesheet" href="{{ admin_asset("/vendor/css/login.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/zhuitech/css/style.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/zhuitech/css/dmaku.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/style.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/dmaku.css") }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,7 +82,7 @@
 <script src="{{ admin_asset("/vendor/laravel-admin/AdminLTE/plugins/iCheck/icheck.min.js")}}"></script>
 <script src="{{ admin_asset("/vendor/laravel-admin/toastr/build/toastr.min.js")}}"></script>
 <!-- 背景特效 -->
-<script src="{{ admin_asset("/vendor/zhuitech/js/dmaku.js")}}"></script>
+<script src="{{ admin_asset("/vendor/boot-admin/js/dmaku.js")}}"></script>
 
 <script>
         function check(form) {

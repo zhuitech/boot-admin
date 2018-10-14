@@ -7,21 +7,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Encore\Admin\Auth\Database\Administrator;
 
-class Devel extends Command
+class DevelCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'zhuitech:devel';
+    protected $signature = 'zhuitech:admin-devel';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '配置开发环境';
+    protected $description = '切换为admin开发模式';
 
     /**
      * Create a new command instance.
@@ -41,6 +41,6 @@ class Devel extends Command
     public function handle()
     {
         // 无需手机验证
-        settings()->setSetting(['admin_sms_login_status' => 0]);
+        settings(['admin_sms_login_status' => 0]);
     }
 }
