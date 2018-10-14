@@ -14,13 +14,23 @@ namespace ZhuiTech\BootAdmin\Seeds;
 use Encore\Admin\Auth\Database\Menu;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Database\Seeder;
+use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Permission;
 
-class SystemMenuSeeder extends Seeder
+class AdminTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run()
+    {
+        $this->permissions();
+        $this->roles();
+        $this->users();
+        $this->menus();
+    }
+
+    private function menus()
     {
         if (Menu::where(['title' => '系统', 'parent_id' => 0])->first()) {
             return;
@@ -153,6 +163,77 @@ class SystemMenuSeeder extends Seeder
             'title' => '计划任务',
             'icon' => 'fa-clock-o',
             'uri' => 'scheduling',
+        ]);
+    }
+
+    private function users()
+    {
+        if (Administrator::where(['username' => 'admin'])->first()) {
+            return;
+        }
+
+        Administrator::create([
+            'username' => 'admin',
+            'password' => bcrypt('admin'),
+            'name'     => 'Administrator',
+            'mobile'   => '18017250227'
+        ]);
+
+        // add role to user.
+        Administrator::first()->roles()->save(Role::first());
+    }
+
+    private function roles()
+    {
+        if (Role::where(['slug' => 'administrator'])->first()) {
+            return;
+        }
+
+        Role::create([
+            'name' => 'Administrator',
+            'slug' => 'administrator',
+        ]);
+
+        Role::first()->permissions()->save(Permission::first());
+    }
+
+    private function permissions()
+    {
+        if (Permission::where(['slug' => '*'])->first()) {
+            return;
+        }
+
+        Permission::insert([
+            [
+                'name'        => 'All permission',
+                'slug'        => '*',
+                'http_method' => '',
+                'http_path'   => '*',
+            ],
+            [
+                'name'        => 'Dashboard',
+                'slug'        => 'dashboard',
+                'http_method' => 'GET',
+                'http_path'   => '/',
+            ],
+            [
+                'name'        => 'Login',
+                'slug'        => 'auth.login',
+                'http_method' => '',
+                'http_path'   => "/auth/login\r\n/auth/logout",
+            ],
+            [
+                'name'        => 'User setting',
+                'slug'        => 'auth.setting',
+                'http_method' => 'GET,PUT',
+                'http_path'   => '/auth/setting',
+            ],
+            [
+                'name'        => 'Auth management',
+                'slug'        => 'auth.management',
+                'http_method' => '',
+                'http_path'   => "/auth/roles\r\n/auth/permissions\r\n/auth/menu\r\n/auth/logs",
+            ],
         ]);
     }
 }

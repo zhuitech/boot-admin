@@ -10,7 +10,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>{{ Admin::title() }}</title>
-    <link rel="shortcut icon" href="{{ asset($dmp_config['backend_logo']) }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ asset($dmp_config['shortcut_icon']) }}" type="image/x-icon" />
 
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/AdminLTE/bootstrap/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
@@ -24,7 +24,7 @@
     {!! Admin::css() !!}
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/laravel-admin/laravel-admin.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/nprogress/nprogress.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/sweetalert/dist/sweetalert.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/sweetalert2/dist/sweetalert2.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/nestable/nestable.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/toastr/build/toastr.min.css") }}">
     <link rel="stylesheet"
@@ -117,22 +117,22 @@
 </script>
 
 <!-- REQUIRED JS SCRIPTS -->
-<script src="{{ admin_asset ("/vendor/laravel-admin/nestable/jquery.nestable.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/laravel-admin/toastr/build/toastr.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/laravel-admin/bootstrap3-editable/js/bootstrap-editable.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/laravel-admin/sweetalert/dist/sweetalert.min.js") }}"></script>
+<script src="{{ admin_asset("/vendor/laravel-admin/nestable/jquery.nestable.js") }}"></script>
+<script src="{{ admin_asset("/vendor/laravel-admin/toastr/build/toastr.min.js") }}"></script>
+<script src="{{ admin_asset("/vendor/laravel-admin/bootstrap3-editable/js/bootstrap-editable.min.js") }}"></script>
+<script src="{{ admin_asset("/vendor/laravel-admin/sweetalert2/dist/sweetalert2.min.js") }}"></script>
 {!! Admin::js() !!}
 {{--<script src="{{ admin_asset ("/vendor/laravel-admin/laravel-admin/laravel-admin.js") }}"></script>--}}
 
 <!-- REQUIRED JS SCRIPTS BY iBrand-->
-<script src="{{ admin_asset ("/vendor/libs/jquery.form.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/webuploader-0.1.5/webuploader.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/jquery.form.min.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/webuploader-0.1.5/webuploader.js") }}"></script>
 <script src="{{ admin_asset("/vendor/inspinia/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
 <script src="{{ admin_asset("/vendor/inspinia/js/inspinia.js") }}"></script>
 <script src="{{ admin_asset("/vendor/inspinia/js/plugins/pace/pace.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/laravel-admin.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/icheck.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/plugins.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/active.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/laravel-admin.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/icheck.min.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/plugins.js") }}"></script>
+<script src="{{ admin_asset("/vendor/libs/active.js") }}"></script>
 </body>
 </html>

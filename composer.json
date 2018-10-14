@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "ibrand/backend": "~1.0"
+        "ibrand/backend": "dev-master"
     },
     "autoload": {
         "psr-4": {
