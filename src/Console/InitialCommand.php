@@ -20,7 +20,7 @@ class InitialCommand extends Command
      *
      * @var string
      */
-    protected $description = '初始化admin数据';
+    protected $description = '初始化Admin数据';
 
     /**
      * Create a new command instance.

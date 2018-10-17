@@ -21,7 +21,7 @@ class DevelCommand extends Command
      *
      * @var string
      */
-    protected $description = '切换为admin开发模式';
+    protected $description = '切换开发模式';
 
     /**
      * Create a new command instance.

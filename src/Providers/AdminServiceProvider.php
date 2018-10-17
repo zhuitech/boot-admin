@@ -43,7 +43,6 @@ class AdminServiceProvider extends ServiceProvider
         $this->commands([
             DevelCommand::class,
             InitialCommand::class,
-            ClearCommand::class,
         ]);
     }
 }
