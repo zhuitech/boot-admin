@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use ZhuiTech\BootAdmin\Console\ClearCommand;
 use ZhuiTech\BootAdmin\Console\DevelCommand;
 use ZhuiTech\BootAdmin\Console\InitialCommand;
+use ZhuiTech\BootAdmin\Console\MenuRebuildCommand;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->commands([
             DevelCommand::class,
             InitialCommand::class,
+            MenuRebuildCommand::class,
         ]);
     }
 }

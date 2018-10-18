@@ -14,7 +14,7 @@ class DevelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:admin-devel';
+    protected $signature = 'zhuitech:devel';
 
     /**
      * The console command description.

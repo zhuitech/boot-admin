@@ -357,3 +357,6 @@ body.mini-navbar .nav.nav-second-level li a span {
 .btn-dropbox .icheckbox_square-green {
   display: none !important;
 }
+.table td span.label {
+  display: inline-block;
+}
