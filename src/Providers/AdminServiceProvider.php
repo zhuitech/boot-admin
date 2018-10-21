@@ -8,6 +8,10 @@ use ZhuiTech\BootAdmin\Console\ClearCommand;
 use ZhuiTech\BootAdmin\Console\DevelCommand;
 use ZhuiTech\BootAdmin\Console\InitialCommand;
 use ZhuiTech\BootAdmin\Console\MenuRebuildCommand;
+use iBrand\Component\Setting\Models\SystemSetting;
+use iBrand\Component\Setting\Repositories\CacheDecorator;
+use iBrand\Component\Setting\Repositories\SettingInterface;
+use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -46,5 +50,14 @@ class AdminServiceProvider extends ServiceProvider
             InitialCommand::class,
             MenuRebuildCommand::class,
         ]);
+
+        // 支持无数据库运行
+        $this->app->extend(SettingInterface::class, function ($app) {
+            $repository = new SettingRepository(new SystemSetting());
+            if (!config('ibrand.setting.cache')) {
+                return $repository;
+            }
+            return new CacheDecorator($repository);
+        });
     }
 }
