@@ -14,7 +14,7 @@ class DevelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:devel';
+    protected $signature = 'zhuitech:devel {devel?}';
 
     /**
      * The console command description.
@@ -40,7 +40,14 @@ class DevelCommand extends Command
      */
     public function handle()
     {
-        // 无需手机验证
-        settings(['admin_sms_login_status' => 0]);
+        $devel = $this->argument('devel') ?? true;
+
+        if ($devel) {
+            // 无需手机验证
+            settings(['admin_sms_login_status' => 0]);
+        }
+        else {
+            settings(['admin_sms_login_status' => 1]);
+        }
     }
 }
