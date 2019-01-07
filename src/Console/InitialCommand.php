@@ -5,6 +5,7 @@ namespace ZhuiTech\BootAdmin\Console;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use ZhuiTech\BootAdmin\Seeds\AdminTableSeeder;
+use Encore\Admin\Auth\Database\Administrator;
 
 class InitialCommand extends Command
 {
@@ -20,7 +21,7 @@ class InitialCommand extends Command
      *
      * @var string
      */
-    protected $description = '初始化Admin数据';
+    protected $description = '初始化后台数据';
 
     /**
      * Create a new command instance.
@@ -40,7 +41,7 @@ class InitialCommand extends Command
     public function handle()
     {
         // 菜单
-        $this->call('db:seed', ['--class' => AdminTableSeeder::class]);
+        //$this->call('db:seed', ['--class' => AdminTableSeeder::class]);
 
         // 需要手机验证
         settings(['admin_sms_login_status' => 1]);
@@ -56,5 +57,11 @@ class InitialCommand extends Command
             "shortcut_icon" => "vendor/boot-admin/img/icon.png",
             "setting-cache" => "0"
         ]]);
+
+        // 设置管理员密码
+        $admin = Administrator::where(['username' => 'admin'])->first();
+        $admin->password = bcrypt('admin');
+        $admin->mobile = '18017250227';
+        $admin->save();
     }
 }

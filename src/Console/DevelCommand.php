@@ -14,14 +14,14 @@ class DevelCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:devel {devel?}';
+    protected $signature = 'zhuitech:admin-devel {devel?}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '切换开发模式';
+    protected $description = '切换后台开发模式';
 
     /**
      * Create a new command instance.

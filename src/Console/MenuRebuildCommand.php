@@ -14,14 +14,14 @@ class MenuRebuildCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:menu-rebuild';
+    protected $signature = 'zhuitech:admin-rebuild';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '重建菜单';
+    protected $description = '重建后台菜单';
 
     /**
      * Create a new command instance.
