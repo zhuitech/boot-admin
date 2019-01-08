@@ -329,6 +329,7 @@ fieldset[disabled] .btn-success.active {
   border-color: #1ab394;
 }
 
+/* Custom */
 .nav.metismenu {
   color: #ffffff
 }
@@ -360,3 +361,14 @@ body.mini-navbar .nav.nav-second-level li a span {
 .table td span.label {
   display: inline-block;
 }
+
+.top-navbar .iconfont {
+  font-size: 35px;
+  position: absolute;
+  top: 9px;
+  left: 0;
+}
+.top-navbar .iconfont + span {
+  margin-left: 13px;
+}
+
