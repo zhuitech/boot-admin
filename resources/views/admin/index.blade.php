@@ -10,7 +10,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>{{ Admin::title() }}</title>
-    <link rel="shortcut icon" href="{{ asset($dmp_config['shortcut_icon']) }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ asset($dmp_config['shortcut_icon'] ?? '') }}" type="image/x-icon" />
 
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/AdminLTE/bootstrap/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
