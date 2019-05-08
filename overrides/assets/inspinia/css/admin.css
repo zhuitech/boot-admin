@@ -372,3 +372,6 @@ body.mini-navbar .nav.nav-second-level li a span {
   margin-left: 13px;
 }
 
+.swal2-container {
+  z-index: 2060 !important;
+}
