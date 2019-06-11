@@ -51,7 +51,7 @@
                         <input type="password" placeholder="密码" name="password">
                     </div>
 
-                    @if(settings('admin_sms_login_status'))
+                    @if(config('ibrand.backend.sms_login'))
                         <div class="inptu-box code-box">
                             <input type="text" placeholder="验证码" name="code" value="{{ old('code') }}">
                             <button type="button" id="send-verifi" style="border: none" class="code" data-target="login" data-status=0>发送验证码</button>
@@ -119,7 +119,7 @@
         window._token = "{{ csrf_token() }}";
         var postUrl = '{{env('APP_URL')}}/getMobile';
 
-        @if(settings('admin_sms_login_status'))
+        @if(config('ibrand.backend.sms_login'))
         $(document).ready(function () {
             // 发送验证码
             $('#send-verifi').on('click', function () {
