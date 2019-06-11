@@ -58,7 +58,7 @@ class MenuRebuildCommand extends Command
 
             $menu->roles()->detach();
             foreach ($roles as $rid => $pattern) {
-                if (Str::is($pattern, $menu->uri)) {
+                if (Str::is($pattern, '/' . trim($menu->uri, '/'))) {
                     $menu->roles()->save(Role::find($rid));
                 }
             }
