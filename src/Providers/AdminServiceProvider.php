@@ -2,18 +2,15 @@
 
 namespace ZhuiTech\BootAdmin\Providers;
 
-use Encore\Admin\Admin;
-use Illuminate\Support\ServiceProvider;
-use ZhuiTech\BootAdmin\Console\ClearCommand;
-use ZhuiTech\BootAdmin\Console\DevelCommand;
-use ZhuiTech\BootAdmin\Console\InitialCommand;
-use ZhuiTech\BootAdmin\Console\MenuRebuildCommand;
 use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
+use ZhuiTech\BootAdmin\Console\InitialCommand;
+use ZhuiTech\BootAdmin\Console\MenuRebuildCommand;
 use ZhuiTech\BootAdmin\Repositories\SettingRepository;
+use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
-class AdminServiceProvider extends ServiceProvider
+class AdminServiceProvider extends AbstractServiceProvider
 {
 
     /**
@@ -23,19 +20,15 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views/admin');
-
         $this->loadMigrationsFrom(base_path('vendor/encore/laravel-admin/database/migrations'));
-
-        $this->loadMigrationsFrom(base_path('vendor/ibrand/backend/migrations'));
-        $this->loadMigrationsFrom(__DIR__ . '/../../migrations');
+        $this->loadMigrations();
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([base_path('vendor/ibrand/backend/resources/assets') => public_path('vendor')], 'public');
             $this->publishes([base_path('vendor/encore/laravel-admin/resources/assets') => public_path('vendor/laravel-admin')], 'public');
             $this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
-            $this->publishes([__DIR__ . '/../../overrides/assets' => public_path('vendor')], 'public');
         }
+
+        parent::boot();
     }
 
     /**
@@ -46,7 +39,6 @@ class AdminServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
-            DevelCommand::class,
             InitialCommand::class,
             MenuRebuildCommand::class,
         ]);
@@ -59,5 +51,7 @@ class AdminServiceProvider extends ServiceProvider
             }
             return new CacheDecorator($repository);
         });
+
+        parent::register();
     }
 }

@@ -14,7 +14,7 @@ class InitialCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:admin-initial';
+    protected $signature = 'zhuitech:initial';
 
     /**
      * The console command description.

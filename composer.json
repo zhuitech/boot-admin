@@ -9,17 +9,29 @@
         }
     ],
     "require": {
+        "laravel-admin-ext/helpers": "~1.0",
+        "laravel-admin-ext/scheduling": "~1.0",
+        "laravel-admin-ext/log-viewer": "~1.0",
+        "laravel-admin-ext/redis-manager": "~1.0",
+        "laravel-admin-ext/backup": "~1.0",
+        "ibrand/laravel-sms": "~1.0",
+        "maatwebsite/excel": "~2.1.23"
     },
     "autoload": {
         "psr-4": {
+            "iBrand\\Backend\\": "src-ibrand",
             "ZhuiTech\\BootAdmin\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
+                "iBrand\\Backend\\BackendServiceProvider",
                 "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "BackendMenu": "iBrand\\Backend\\Facades\\Menu"
+            }
         }
     }
 }
