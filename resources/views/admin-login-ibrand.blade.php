@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/AdminLTE/plugins/iCheck/square/blue.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/laravel-admin/toastr/build/toastr.min.css") }}">
     <!-- Login -->
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/css/login.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/login.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/style.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/dmaku.css") }}">
 

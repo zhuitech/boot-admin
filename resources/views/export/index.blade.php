@@ -8,7 +8,7 @@
 @stop
 
 @section('after-styles-end')
-    <link rel="stylesheet" href="{{ admin_asset ("/vendor/libs/ladda/ladda-themeless.min.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda-themeless.min.css") }}">
 @stop
 
 
@@ -24,10 +24,10 @@
 
 @stop
 
-<script src="{{ admin_asset ("/vendor/libs/ladda/spin.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/ladda/ladda.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/ladda/ladda.jquery.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/loader/jquery.loader.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/spin.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda.jquery.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/loader/jquery.loader.min.js") }}"></script>
 
 @section('footer')
 

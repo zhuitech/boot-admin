@@ -18,17 +18,17 @@
     <link rel="stylesheet" href="//at.alicdn.com/t/font_u5095o4vzog8pvi.css">
 
     <!-- REQUIRED CSS BY iBrand-->
-    <link rel="stylesheet" href="{{ admin_asset ("/vendor/libs/webuploader-0.1.5/webuploader.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/inspinia/css/animate.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/inspinia/css/style.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/inspinia/css/main.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/inspinia/css/admin.css") }}">
-    <link rel="stylesheet" href="{{ admin_asset("/vendor/css/plugins/iCheck/custom.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset ("/vendor/boot-admin/libs/webuploader-0.1.5/webuploader.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/animate.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/style.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/main.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/admin.css") }}">
+    <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/plugins/iCheck/custom.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/style.css") }}">
 
     <!-- REQUIRED JS SCRIPTS -->
     <script src="{{ Admin::jQuery() }}"></script>
-    <script src="{{ admin_asset ("/vendor/libs/jquery.form.min.js") }}"></script>
+    <script src="{{ admin_asset ("/vendor/boot-admin/libs/jquery.form.min.js") }}"></script>
 
     {!! \iBrand\Backend\Backend::js() !!}
 
@@ -89,12 +89,12 @@
 {!! Admin::js() !!}
 
 <!-- REQUIRED JS SCRIPTS BY iBrand-->
-<script src="{{ admin_asset ("/vendor/libs/webuploader-0.1.5/webuploader.js") }}"></script>
-<script src="{{ admin_asset("/vendor/inspinia/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
-<script src="{{ admin_asset("/vendor/inspinia/js/inspinia.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/icheck.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/plugins.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/libs/active.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/webuploader-0.1.5/webuploader.js") }}"></script>
+<script src="{{ admin_asset("/vendor/boot-admin/inspinia/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
+<script src="{{ admin_asset("/vendor/boot-admin/inspinia/js/inspinia.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/icheck.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/plugins.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/boot-admin/libs/active.js") }}"></script>
 
 <script type="text/javascript">
     $(function () {
