@@ -14,10 +14,8 @@
 
     {!! Admin::css() !!}
 
-    <!-- iconfont CSS-->
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_u5095o4vzog8pvi.css">
-
     <!-- REQUIRED CSS BY iBrand-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_u5095o4vzog8pvi.css">
     <link rel="stylesheet" href="{{ admin_asset ("/vendor/boot-admin/libs/webuploader-0.1.5/webuploader.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/animate.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/style.css") }}">
@@ -29,8 +27,7 @@
     <!-- REQUIRED JS SCRIPTS -->
     <script src="{{ Admin::jQuery() }}"></script>
     <script src="{{ admin_asset ("/vendor/boot-admin/libs/jquery.form.min.js") }}"></script>
-
-    {!! \iBrand\Backend\Backend::js() !!}
+    {!! Admin::headerJs() !!}
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -45,20 +42,18 @@
 
 <body class="hold-transition {{config('admin.skin')}} {{join(' ', config('admin.layout'))}}">
 
-{{--<body class="hold-transition skin-1">--}}
-
 <div id="wrapper">
     @include('admin::partials.sidebar')
-
     <div id="page-wrapper" class="gray-bg dashbard-1">
-
         @include('admin::partials.header')
-
         <div class="row wrapper wrapper-content animated fadeInRight" style="padding-top: 0;">
             <div class="row">
                 <div class="col-lg-12">
                     <div id="pjax-container">
-                        @yield('content')
+                        {!! Admin::style() !!}
+                        <div id="app">
+                            @yield('content')
+                        </div>
                         {!! Admin::script() !!}
                     </div>
                 </div>
@@ -73,15 +68,13 @@
             </div>
         </div>
     </div>
-
     <div id="modal" class="modal inmodal fade"></div>
 </div>
 
-<!-- ./wrapper -->
-<script>
-    function LA() {
-    }
+{!! Admin::html() !!}
 
+<script>
+    function LA() {}
     LA.token = "{{ csrf_token() }}";
 </script>
 
