@@ -1,7 +1,7 @@
 @extends('admin::index')
 
 @section('content')
-    <div class="row wrapper border-bottom white-bg page-heading">
+    <div class="row border-bottom white-bg page-heading">
         <div class="col-lg-12">
             <h2 id="title_name" data-title="{{ $header  }}">
                 {{ $header  }}

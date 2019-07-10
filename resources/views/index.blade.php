@@ -85,7 +85,6 @@
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/webuploader-0.1.5/webuploader.js") }}"></script>
 <script src="{{ admin_asset("/vendor/boot-admin/inspinia/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
 <script src="{{ admin_asset("/vendor/boot-admin/inspinia/js/inspinia.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/boot-admin/libs/icheck.min.js") }}"></script>
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/plugins.js") }}"></script>
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/active.js") }}"></script>
 

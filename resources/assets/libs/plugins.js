@@ -22,7 +22,7 @@
 }());
 
 // Place any jQuery/helper plugins in here.
-$(function(){
+$(function() {
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -35,21 +35,21 @@ $(function(){
      Injects a form with that's fired on click of the link with a DELETE request.
      Good because you don't have to dirty your HTML with delete forms everywhere.
      */
-    $('[data-method]').append(function(){
-        return "\n"+
-            "<form action='"+$(this).attr('href')+"' method='POST' name='delete_item' style='display:none'>\n"+
-            "   <input type='hidden' name='_method' value='"+$(this).attr('data-method')+"'>\n"+
-            "   <input type='hidden' name='_token' value='"+$('meta[name="_token"]').attr('content')+"'>\n"+
+    $('[data-method]').append(function () {
+        return "\n" +
+            "<form action='" + $(this).attr('href') + "' method='POST' name='delete_item' style='display:none'>\n" +
+            "   <input type='hidden' name='_method' value='" + $(this).attr('data-method') + "'>\n" +
+            "   <input type='hidden' name='_token' value='" + $('meta[name="_token"]').attr('content') + "'>\n" +
             "</form>\n"
     })
         .removeAttr('href')
-        .attr('style','cursor:pointer;')
-        .attr('onclick','$(this).find("form").submit();');
+        .attr('style', 'cursor:pointer;')
+        .attr('onclick', '$(this).find("form").submit();');
 
     /*
      Generic are you sure dialog
      */
-    $('form[name=delete_item]').submit(function(){
+    $('form[name=delete_item]').submit(function () {
         return confirm("确定要删除此项?");
     });
 
@@ -67,29 +67,6 @@ $(function(){
         });
     });
 
-    // 单选框 input checked radio 初始化
-    $('.wrapper-content').find("input").iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-        increaseArea: '20%'
-    });
-    
-	$('.btn-dropbox').find('input').iCheck('destroy');
-
-
-    // input 单选框全选or 全取消
-    $('.wrapper-content .table').find(".check-all").on('ifChecked', function (e)
-    {
-        e.preventDefault();
-        $(this).parents('table').find(".icheckbox_square-green").iCheck('check');
-    });
-
-    $('.wrapper-content .table').find(".check-all").on('ifUnchecked', function (e)
-    {
-        e.preventDefault();
-        $(this).parents('table').find(".icheckbox_square-green").iCheck('uncheck');
-    });
-
     $(document).on('click.modal.data-api', '[data-toggle="modal"]', function (e) {
         var $this = $(this),
             href = $this.attr('href'),
@@ -98,7 +75,7 @@ $(function(){
         if (url) {
             var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, '')));
             console.log($target.html());
-            $target.html('').load(url,function () {
+            $target.html('').load(url, function () {
 
             });
         }
@@ -109,4 +86,26 @@ $(function(){
         $($(this).data('target')).submit();
     });
 
+    // 非laravel-admin页面初始化
+    if ($('.wrapper-content .box').length === 0) {
+        // 单选框 input checked radio 初始化
+        $('.wrapper-content').find("input").iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+            increaseArea: '20%'
+        });
+
+        $('.btn-dropbox').find('input').iCheck('destroy');
+
+        // input 单选框全选or 全取消
+        $('.wrapper-content .table').find(".check-all").on('ifChecked', function (e) {
+            e.preventDefault();
+            $(this).parents('table').find(".icheckbox_square-green").iCheck('check');
+        });
+
+        $('.wrapper-content .table').find(".check-all").on('ifUnchecked', function (e) {
+            e.preventDefault();
+            $(this).parents('table').find(".icheckbox_square-green").iCheck('uncheck');
+        });
+    }
 });
