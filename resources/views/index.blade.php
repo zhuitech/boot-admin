@@ -68,7 +68,6 @@
             </div>
         </div>
     </div>
-    <div id="modal" class="modal inmodal fade"></div>
 </div>
 
 {!! Admin::html() !!}
