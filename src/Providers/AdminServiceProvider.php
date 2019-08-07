@@ -5,8 +5,8 @@ namespace ZhuiTech\BootAdmin\Providers;
 use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
-use ZhuiTech\BootAdmin\Console\InitialCommand;
-use ZhuiTech\BootAdmin\Console\MenuRebuildCommand;
+use ZhuiTech\BootAdmin\Console\AdminCommand;
+use ZhuiTech\BootAdmin\Console\MenuCommand;
 use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
@@ -41,8 +41,8 @@ class AdminServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->commands([
-            InitialCommand::class,
-            MenuRebuildCommand::class,
+            AdminCommand::class,
+            MenuCommand::class,
         ]);
 
         // 支持无数据库运行

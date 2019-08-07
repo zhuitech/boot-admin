@@ -23,8 +23,6 @@ class BackendServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        InstallCommand::class,
-        InstallExtensionsCommand::class,
     ];
 
     protected $namespace = 'iBrand\Backend\Http\Controllers';
@@ -41,9 +39,6 @@ class BackendServiceProvider extends ServiceProvider
             __DIR__ . '/../config/backend.php', 'ibrand.backend'
         );
 
-        //merge filesystem
-        $this->setAdminDisk();
-
         $this->mapWebRoutes();
     }
 
@@ -53,17 +48,6 @@ class BackendServiceProvider extends ServiceProvider
     public function register()
     {
         $this->commands($this->commands);
-    }
-
-    protected function setAdminDisk()
-    {
-        $filesystems = config('filesystems');
-
-        $disks = array_merge($filesystems['disks'], config('ibrand.backend')['disks']);
-
-        $filesystems['disks'] = $disks;
-
-        $this->app['config']->set('filesystems', $filesystems);
     }
 
     protected function mapWebRoutes()

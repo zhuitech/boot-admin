@@ -7,21 +7,21 @@ use Encore\Admin\Auth\Database\Role;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
-class MenuRebuildCommand extends Command
+class MenuCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'zhuitech:menu-rebuild';
+    protected $signature = 'zhuitech:menu';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '重建后台菜单';
+    protected $description = '修复后台菜单';
 
     /**
      * Create a new command instance.

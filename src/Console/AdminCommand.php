@@ -1,29 +1,65 @@
 <?php
 
-/*
- * This file is part of ibrand/backend.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-namespace ZhuiTech\BootAdmin\Seeds;
+namespace ZhuiTech\BootAdmin\Console;
 
 use Encore\Admin\Auth\Database\Menu;
-use Encore\Admin\Auth\Database\Role;
-use Illuminate\Database\Seeder;
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\Role;
+use Illuminate\Console\Command;
+use ZhuiTech\BootAdmin\Seeds\AdminTableSeeder;
+use Encore\Admin\Auth\Database\Administrator;
 
-class AdminTableSeeder extends Seeder
+class AdminCommand extends Command
 {
     /**
-     * Run the database seeds.
+     * The name and signature of the console command.
+     *
+     * @var string
      */
-    public function run()
+    protected $signature = 'zhuitech:admin';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = '安装后台模块';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        // 基础配置
+        if (empty(settings('dmp_config'))) {
+            settings(['dmp_config' => [
+                "page_title" => "欢迎登录后台",
+                "short_title" => "后台",
+                "copyright" => "© 2016-2018",
+                "technical_support" => "上海追数网络科技有限公司",
+                "login_logo" => "/vendor/boot-admin/img/logo.png",
+                "backend_logo" => "/vendor/boot-admin/img/logo-mini.png",
+                "shortcut_icon" => "/vendor/boot-admin/img/icon.png",
+                "setting-cache" => "0"
+            ]]);
+            $this->line("<info>Default system settings set successfully.</info>");
+        } else {
+            $this->line("<error>Default system settings already exists.</error>");
+        }
+
+        // 初始化数据
         $this->menus();
         $this->permissions();
         $this->roles();
@@ -40,62 +76,27 @@ class AdminTableSeeder extends Seeder
                     'http_method' => '',
                     'http_path' => '*',
                 ], [
-                    'name' => '控制台',
+                    'name' => '基础权限',
                     'slug' => 'dashboard',
                     'http_method' => '',
-                    'http_path' => '/',
+                    'http_path' => '/
+/auth/setting
+/login
+/logout',
                 ], [
-                    'name' => '个人设置',
-                    'slug' => 'auth.setting',
+                    'name' => '授权管理',
+                    'slug' => 'auth',
                     'http_method' => '',
-                    'http_path' => '/auth/setting',
-                ], [
-                    'name' => '登录权限',
-                    'slug' => 'auth.login',
-                    'http_method' => '',
-                    'http_path' => "/login\r\n/logout",
-                ], [
-                    'name' => '管理员管理',
-                    'slug' => 'auth.users',
-                    'http_method' => '',
-                    'http_path' => '/auth/users*',
-                ], [
-                    'name' => '角色管理',
-                    'slug' => 'auth.roles',
-                    'http_method' => '',
-                    'http_path' => '/auth/roles*',
-                ], [
-                    'name' => '权限管理',
-                    'slug' => 'auth.permissions',
-                    'http_method' => '',
-                    'http_path' => '/auth/permissions*',
-                ], [
-                    'name' => '菜单管理',
-                    'slug' => 'auth.menu',
-                    'http_method' => '',
-                    'http_path' => '/auth/menu*',
-                ], [
-                    'name' => '操作日志',
-                    'slug' => 'auth.logs',
-                    'http_method' => '',
-                    'http_path' => '/auth/logs*',
+                    'http_path' => '/auth*',
                 ], [
                     'name' => '系统日志',
                     'slug' => 'logs',
                     'http_method' => '',
                     'http_path' => '/logs*',
-                ], [
-                    'name' => '备份管理',
-                    'slug' => 'backup',
-                    'http_method' => '',
-                    'http_path' => '/backup*',
-                ], [
-                    'name' => '计划任务',
-                    'slug' => 'scheduling',
-                    'http_method' => '',
-                    'http_path' => '/scheduling*',
                 ],
             ]);
+
+            $this->line("<info>Permissions insert successfully.</info>");
         }
     }
 
@@ -103,42 +104,29 @@ class AdminTableSeeder extends Seeder
     {
         if (!Role::where(['slug' => 'administrator'])->first()) {
             $role = Role::create([
-                'name' => '超级管理员',
+                'name' => '系统管理员',
                 'slug' => 'administrator',
             ]);
 
             // 权限分配
             $role->permissions()->save(Permission::first());
+
+            $this->line("<info>Role administrator insert successfully.</info>");
         }
 
         if (!Role::where(['slug' => 'manager'])->first()) {
             $role = Role::create([
-                'name' => '管理员',
+                'name' => '普通管理员',
                 'slug' => 'manager',
             ]);
 
             // 权限分配
-            $permissions = ['dashboard', 'auth.setting', 'auth.login',
-                'auth.users', 'auth.roles', 'auth.permissions', 'auth.menu', 'auth.logs',
-                'logs', 'backup', 'scheduling'
-            ];
+            $permissions = ['dashboard', 'logs'];
             foreach ($permissions as $permission) {
                 $role->permissions()->save(Permission::where('slug', $permission)->first());
             }
-        }
 
-        if (!Role::where(['slug' => 'operator'])->first()) {
-            $role = Role::create([
-                'name' => '操作员',
-                'slug' => 'operator',
-            ]);
-
-            // 权限分配
-            $permissions = ['dashboard', 'auth.setting', 'auth.login',
-            ];
-            foreach ($permissions as $permission) {
-                $role->permissions()->save(Permission::where('slug', $permission)->first());
-            }
+            $this->line("<info>Role manager insert successfully.</info>");
         }
     }
 
@@ -147,35 +135,28 @@ class AdminTableSeeder extends Seeder
         if (!Administrator::where(['username' => 'admin'])->first()) {
             $user = Administrator::create([
                 'username' => 'admin',
-                'password' => bcrypt('admin'),
-                'name' => '超级管理员',
+                'password' => bcrypt('letmein2019'),
+                'name' => '系统管理员',
                 'mobile' => '18017250227'
             ]);
 
             // add role to user.
             $user->roles()->save(Role::where(['slug' => 'administrator'])->first());
+
+            $this->line("<info>User admin insert successfully.</info>");
         }
 
         if (!Administrator::where(['username' => 'manager'])->first()) {
             $user = Administrator::create([
                 'username' => 'manager',
                 'password' => bcrypt('manager'),
-                'name' => '管理员',
+                'name' => '普通管理员',
             ]);
 
             // add role to user.
             $user->roles()->save(Role::where(['slug' => 'manager'])->first());
-        }
 
-        if (!Administrator::where(['username' => 'operator'])->first()) {
-            $user = Administrator::create([
-                'username' => 'operator',
-                'password' => bcrypt('operator'),
-                'name' => '操作员',
-            ]);
-
-            // add role to user.
-            $user->roles()->save(Role::where(['slug' => 'operator'])->first());
+            $this->line("<info>User manager insert successfully.</info>");
         }
     }
 
@@ -310,6 +291,16 @@ class AdminTableSeeder extends Seeder
                 'icon' => 'fa-clock-o',
                 'uri' => '/scheduling',
             ]);
+
+            $parent = Menu::create([
+                'parent_id' => $root->id,
+                'order' => $lastOrder++,
+                'title' => '配置管理',
+                'icon' => 'fa-gears',
+                'uri' => '/sysSetting',
+            ]);
+
+            $this->line("<info>Menus insert successfully.</info>");
         }
     }
 }
