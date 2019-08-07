@@ -16,6 +16,7 @@
         "laravel-admin-ext/redis-manager": "~1.1",
         "laravel-admin-ext/backup": "~1.0",
         "laravel-admin-ext/media-manager": "~1.0",
+        "overtrue/laravel-ueditor": "~1.0",
         "ibrand/laravel-sms": "~1.0"
     },
     "autoload": {
