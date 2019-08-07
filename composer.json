@@ -17,6 +17,8 @@
         "laravel-admin-ext/backup": "~1.0",
         "laravel-admin-ext/media-manager": "~1.0",
         "overtrue/laravel-ueditor": "~1.0",
+        "ibrand/setting": "~1.0",
+        "ibrand/setting-backend": "~1.0",
         "ibrand/laravel-sms": "~1.0"
     },
     "autoload": {
