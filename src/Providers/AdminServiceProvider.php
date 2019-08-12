@@ -2,9 +2,11 @@
 
 namespace ZhuiTech\BootAdmin\Providers;
 
+use Encore\Admin\Grid\Column;
 use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\MenuCommand;
 use ZhuiTech\BootAdmin\Repositories\SettingRepository;
@@ -53,6 +55,9 @@ class AdminServiceProvider extends AbstractServiceProvider
             }
             return new CacheDecorator($repository);
         });
+
+        // Admin Grid 扩展
+        Column::extend('json', Json::class);
 
         parent::register();
     }
