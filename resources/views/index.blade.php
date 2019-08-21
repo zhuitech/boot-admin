@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/inspinia/css/admin.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/plugins/iCheck/custom.css") }}">
     <link rel="stylesheet" href="{{ admin_asset("/vendor/boot-admin/css/style.css") }}">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_u5095o4vzog8pvi.css">
 
     <!-- REQUIRED JS SCRIPTS -->
     <script src="{{ Admin::jQuery() }}"></script>
