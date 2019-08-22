@@ -34,12 +34,11 @@ class ServiceController extends AdminController
         }
 
         // 传递用户身份
-        $admin = new User([
-            'id' => Admin::user()->getAuthIdentifier(),
-            'type' => 'admins'
-        ]);
+        $user = new User();
+        $user->id = Admin::user()->getAuthIdentifier();
+        $user->type = 'admins';
 
-        return ProxyClient::server('service')->as($admin)->pass();
+        return ProxyClient::server('service')->as($user)->pass();
     }
 
     /**
