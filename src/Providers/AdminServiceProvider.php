@@ -9,6 +9,7 @@ use iBrand\Component\Setting\Repositories\SettingInterface;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\MenuCommand;
+use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
@@ -24,6 +25,7 @@ class AdminServiceProvider extends AbstractServiceProvider
     {
         $this->loadMigrationsFrom(base_path('vendor/encore/laravel-admin/database/migrations'));
         $this->loadMigrations();
+        $this->loadRoutes();
 
         if ($this->app->runningInConsole()) {
             $this->publishes([base_path('vendor/overtrue/laravel-ueditor/src/assets/ueditor') => public_path('vendor/ueditor')], 'public');
@@ -45,6 +47,7 @@ class AdminServiceProvider extends AbstractServiceProvider
         $this->commands([
             AdminCommand::class,
             MenuCommand::class,
+            ServiceCommand::class,
         ]);
 
         // 支持无数据库运行
