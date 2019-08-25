@@ -52,7 +52,7 @@ class ServiceCommand extends Command
 
         if ($menus['status'] == true) {
             foreach ($menus['data'] as $menu) {
-                if (empty($parent = Menu::where(['title' => $menu['icon'] ?? '', 'parent_id' => $root->id])->first())) {
+                if (empty($parent = Menu::where(['title' => $menu['title'] ?? '', 'parent_id' => $root->id])->first())) {
                     $parent = Menu::create([
                         'parent_id' => $root->id,
                         'order' => $lastOrder++,
@@ -72,6 +72,8 @@ class ServiceCommand extends Command
                             ]);
                         }
                     }
+                    
+                    $this->line("<info>菜单[{$menu['title']}]创建成功</info>");
                 }
             }
         }
