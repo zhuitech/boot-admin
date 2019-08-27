@@ -15,14 +15,14 @@ class ServiceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:service';
+    protected $signature = 'zhuitech:svc-connect';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '安装服务模块';
+    protected $description = '链接服务模块';
 
     /**
      * Execute the console command.

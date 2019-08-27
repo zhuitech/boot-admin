@@ -36,7 +36,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
-	config.filebrowserImageUploadUrl = "/admin/svc/file/upload/editor";
+	config.filebrowserImageUploadUrl = "/api/svc/file/upload/editor";
 
 	config.fileTools_requestHeaders = {
 		'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
