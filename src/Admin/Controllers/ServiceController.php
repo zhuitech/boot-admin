@@ -5,7 +5,7 @@ namespace ZhuiTech\BootAdmin\Admin\Controllers;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
-use ZhuiTech\BootAdmin\Controllers\AdminController;
+use ZhuiTech\BootAdmin\Admin\Controllers\AdminController;
 use ZhuiTech\BootLaravel\Helpers\ProxyClient;
 use ZhuiTech\BootLaravel\Models\User;
 
