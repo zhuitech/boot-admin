@@ -1,9 +1,7 @@
 <?php
 
-
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
-use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
@@ -58,7 +56,6 @@ class PopupAdminController extends AdminController
 
         // 移除pjax
         $form = Str::replaceFirst(' pjax-container>', ' >', $form);
-
         return view('admin::widgets.form-dialog', compact('title', 'form'));
     }
 }

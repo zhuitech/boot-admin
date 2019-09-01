@@ -6,27 +6,12 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
+use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
-    /**
-     * 列表页
-     *
-     * @param Content $content
-     * @return Content
-     */
-    public function index(Content $content)
-    {
-        $breadcrumbs = $this->breadcrumb();
-        $breadcrumbs[] = ['text' => $this->title(), 'left-menu-active' => $this->title()];
-
-        return $content
-            ->title($this->title())
-            ->description($this->description['index'] ?? trans('admin.list'))
-            ->breadcrumb(... $breadcrumbs)
-            ->body($this->grid());
-    }
+    protected $active;
 
     /**
      * 面包屑
@@ -36,6 +21,85 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     protected function breadcrumb()
     {
         return [];
+    }
+
+    /**
+     * 获取资源ID
+     *
+     * @return mixed
+     */
+    protected function getKey()
+    {
+        $parameters = request()->route()->parameters;
+        return Arr::last($parameters);
+    }
+
+    /**
+     * 更新
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id)
+    {
+        $id = $this->getKey();
+        return parent::update($id);
+    }
+
+    /**
+     * 删除
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        $id = $this->getKey();
+        return parent::destroy($id);
+    }
+
+    /**
+     * 列表
+     *
+     * @param Content $content
+     * @return Content
+     */
+    public function index(Content $content)
+    {
+        $breadcrumbs = $this->breadcrumb();
+        $breadcrumbs[] = ['text' => $this->title(), 'left-menu-active' => $this->active ?? $this->title()];
+
+        return $content
+            ->title($this->title())
+            ->description($this->description['index'] ?? trans('admin.list'))
+            ->breadcrumb(... $breadcrumbs)
+            ->body($this->grid());
+    }
+
+    /**
+     * 详情
+     *
+     * @param mixed $id
+     * @param Content $content
+     * @return Content
+     */
+    public function show($id, Content $content)
+    {
+        $id = $this->getKey();
+        return parent::show($id, $content);
+    }
+
+    /**
+     * 编辑
+     *
+     * @param mixed $id
+     * @param Content $content
+     * @return Content
+     */
+    public function edit($id, Content $content)
+    {
+        $id = $this->getKey();
+        return parent::edit($id, $content);
     }
 
     /**
