@@ -16,7 +16,7 @@ class ServiceCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:svc-connect';
+    protected $signature = 'zhuitech:svc-link';
 
     /**
      * The console command description.
@@ -39,13 +39,8 @@ class ServiceCommand extends Command
     {
         $menus = RestClient::server('service')->get('api/svc/system/menus');
         
-        $root = [
-            'title' => '插件',
-            'icon' => 'fa-plug',
-            'uri' => '/svc',
-            'children' => $menus['data'] ?? []
-        ];
-        
-        Extension::createMenuTree($root);
+        foreach ($menus['data'] ?? [] as $root) {
+            Extension::createMenuTree($root);
+        }
     }
 }
