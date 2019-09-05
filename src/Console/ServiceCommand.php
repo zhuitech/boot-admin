@@ -6,6 +6,7 @@ namespace ZhuiTech\BootAdmin\Console;
 
 use Encore\Admin\Auth\Database\Menu;
 use Illuminate\Console\Command;
+use ZhuiTech\BootAdmin\Admin\Extension;
 use ZhuiTech\BootLaravel\Helpers\RestClient;
 
 class ServiceCommand extends Command
@@ -36,46 +37,15 @@ class ServiceCommand extends Command
 
     private function menus()
     {
-        $rootOrder = Menu::where('parent_id', 0)->max('order');
-        if (empty($root = Menu::where(['title' => '插件', 'parent_id' => 0])->first())) {
-            $root = Menu::create([
-                'parent_id' => 0,
-                'order' => ++$rootOrder,
-                'title' => '插件',
-                'icon' => 'fa-plug',
-                'uri' => '/svc',
-            ]);
-        }
-
-        $lastOrder = $rootOrder * 100;
         $menus = RestClient::server('service')->get('api/svc/system/menus');
-
-        if ($menus['status'] == true) {
-            foreach ($menus['data'] as $menu) {
-                if (empty($parent = Menu::where(['title' => $menu['title'] ?? '', 'parent_id' => $root->id])->first())) {
-                    $parent = Menu::create([
-                        'parent_id' => $root->id,
-                        'order' => $lastOrder++,
-                        'title' => $menu['title'] ?? '',
-                        'icon' => $menu['icon'] ?? '',
-                        'uri' => $menu['uri'] ?? '',
-                    ]);
-
-                    if (!empty($menu['children'])) {
-                        foreach ($menu['children'] as $child) {
-                            Menu::create([
-                                'parent_id' => $parent->id,
-                                'order' => $lastOrder++,
-                                'title' => $child['title'] ?? '',
-                                'icon' => $child['icon'] ?? '',
-                                'uri' => $child['uri'] ?? '',
-                            ]);
-                        }
-                    }
-                    
-                    $this->line("<info>菜单[{$menu['title']}]创建成功</info>");
-                }
-            }
-        }
+        
+        $root = [
+            'title' => '插件',
+            'icon' => 'fa-plug',
+            'uri' => '/svc',
+            'children' => $menus['data'] ?? []
+        ];
+        
+        Extension::createMenuTree($root);
     }
 }

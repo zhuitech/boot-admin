@@ -14,14 +14,14 @@ class MenuCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'zhuitech:menu';
+    protected $signature = 'zhuitech:menu-fix';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = '修复后台菜单';
+    protected $description = '修复菜单可见性';
 
     /**
      * Create a new command instance.
