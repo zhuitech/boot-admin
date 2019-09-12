@@ -1,19 +1,10 @@
 <?php
 
-/*
- * This file is part of ibrand/backend.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+namespace ZhuiTech\BootAdmin\Admin\Menu;
 
-namespace iBrand\Backend;
+use ZhuiTech\BootAdmin\Admin\Menu\Menu as DataMenu;
 
-use iBrand\Backend\Models\Menu as DataMenu;
-
-class Menu
+class MenuManager
 {
     private $dataMenu;
     private $allNodes;
@@ -40,7 +31,6 @@ class Menu
         });
 
         $currentTopMenu = $this->currentTopMenu;
-
         $topMenus = $topMenus->map(function ($value, $key) use ($currentTopMenu) {
             if ($currentTopMenu['id'] == $value['id']) {
                 $value['class'] = 'active';
@@ -70,7 +60,6 @@ class Menu
     public function sideMenu()
     {
         $topMenuId = $this->currentTopMenu['id'];
-
         return $this->dataMenu->subTree($this->allNodes, $topMenuId);
     }
 
@@ -80,7 +69,6 @@ class Menu
     protected function getCurrentTopMenu()
     {
         $prefix = trim(config('admin.route.prefix'), '/');
-
         $currentMenuUri = str_replace($prefix, '', request()->path());
 
         $currentMenu = $this->collectNodes->filter(function ($value, $key) use ($currentMenuUri) {
@@ -88,7 +76,6 @@ class Menu
         })->first();
 
         $currentTopMenu = null;
-
         if ($currentMenu) {
             $currentTopMenu = $this->getCurrentTopMenuByNode($currentMenu);
         } else {

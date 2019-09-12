@@ -23,18 +23,16 @@
     },
     "autoload": {
         "psr-4": {
-            "iBrand\\Backend\\": "src-ibrand",
             "ZhuiTech\\BootAdmin\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "iBrand\\Backend\\BackendServiceProvider",
                 "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
             ],
             "aliases": {
-                "BackendMenu": "iBrand\\Backend\\Facades\\Menu"
+                "BackendMenu": "ZhuiTech\\BootAdmin\\Admin\\Menu\\Facade"
             }
         }
     }

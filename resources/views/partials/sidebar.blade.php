@@ -6,12 +6,9 @@
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
-                <div class="dropdown profile-element"> <span>
-                            <img alt="image" style="width: 64px;" class="img-circle"
-                                 src="{{ Admin::user()->avatar }}"/>
-                             </span>
+                <div class="dropdown profile-element">
+                    <span><img alt="image" style="width: 64px;" class="img-circle" src="{{ Admin::user()->avatar }}"/></span>
                 </div>
-
                 <div class="logo-element">
                     <img src="{{ asset($dmp_config['backend_logo']) }}" width="36px">
                 </div>
