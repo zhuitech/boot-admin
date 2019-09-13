@@ -8,6 +8,7 @@ use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
@@ -26,7 +27,7 @@ class AdminServiceProvider extends AbstractServiceProvider
      */
     public function boot()
     {
-        app('view')->prependNamespace('admin', __DIR__ . '/../resources/views');
+        app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views');
         $this->loadMigrationsFrom(base_path('vendor/encore/laravel-admin/database/migrations'));
         $this->loadMigrations();
         $this->loadRoutes();
@@ -66,6 +67,7 @@ class AdminServiceProvider extends AbstractServiceProvider
         // Admin 扩展
         Column::extend('yuan', Yuan::class);
         Column::extend('json', Json::class);
+        Column::extend('image', Image::class);
         Form::extend('editor', CKEditor::class);
 
         parent::register();

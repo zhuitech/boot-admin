@@ -22,12 +22,9 @@
 
                     <li class="divider"></li>
                     <li>
-                        <a href="{{ url('admin/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a href="{{ admin_url('auth/logout') }}">
                             <i class="fa fa-sign-out"></i>退出
                         </a>
-                        <form id="logout-form" action="{{ url('admin/logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
                     </li>
                 </ul>
             </li>

@@ -112,10 +112,10 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     {
         $grid->disableExport()->disableRowSelector()->setActionClass(DropdownActions::class);
 
-        $grid->actions(function (Grid\Displayers\DropdownActions $actions) {
+        $grid->actions(function (Grid\Displayers\Actions $actions) {
             $actions->disableView();
         });
-
+        
         return $grid;
     }
 
