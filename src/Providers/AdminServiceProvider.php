@@ -19,6 +19,11 @@ use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
 {
+    protected $commands = [
+        AdminCommand::class,
+        MenuCommand::class,
+        ServiceCommand::class,
+    ];
 
     /**
      * Bootstrap the application services.
@@ -49,12 +54,6 @@ class AdminServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->commands([
-            AdminCommand::class,
-            MenuCommand::class,
-            ServiceCommand::class,
-        ]);
-
         // 支持无数据库运行
         $this->app->extend(SettingInterface::class, function ($app) {
             $repository = new SettingRepository(new SystemSetting());
