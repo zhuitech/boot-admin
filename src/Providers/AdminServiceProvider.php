@@ -7,6 +7,7 @@ use Encore\Admin\Grid\Column;
 use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
+use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
@@ -14,6 +15,7 @@ use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\MenuCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
+use ZhuiTech\BootAdmin\Models\Staff;
 use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
@@ -68,7 +70,25 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('json', Json::class);
         Column::extend('image', Image::class);
         Form::extend('editor', CKEditor::class);
-
+        
+        // 员工
+        $auth = [
+            'guards' => [
+                'staff' => [
+                    'driver' => 'passport',
+                    'provider' => 'staff',
+                    'hash' => false,
+                ],
+            ],
+            'providers' => [
+                'staff' => [
+                    'driver' => 'eloquent',
+                    'model'  => Staff::class,
+                ],
+            ],
+        ];
+        config(Arr::dot($auth, 'auth.'));
+        
         parent::register();
     }
 }
