@@ -2,12 +2,12 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
 use Illuminate\Support\Arr;
-use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
@@ -152,5 +152,64 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     protected function configFormTools(Form\Tools $tools)
     {
         return $tools->disableView();
+    }
+
+    /**
+     * @param Form $form
+     * @param $selectName
+     * @param $formName
+     * @param $formOptions
+     */
+    protected function selectForm(Form $form, $selectField, $formField, $formOptions)
+    {
+        foreach ($formOptions as $key => $config) {
+            $html = <<<HTML
+<div class="field-$formField field-$formField-$key" style="display: none;">
+HTML;
+            $form->html($html)->plain();
+            $form->embeds("$formField.$key", $config['name'], function (Form\EmbeddedForm $form) use ($config) {
+                foreach ($config['options'] as $field => $value) {
+                    if (is_array($value)) {
+                        switch ($value['type']) {
+                            case 'text':
+                                $form->text($field)->placeholder($value['title']);
+                                break;
+                            case 'textarea':
+                                $form->textarea($field)->placeholder($value['title']);
+                                break;
+                            case 'select':
+                                $form->select($field)->placeholder($value['title'])->options($value['options']);
+                                break;
+                        }
+                    }
+                    else {
+                        $form->text($field)->placeholder($value);
+                    }
+                }
+            });
+            $form->html('</div>')->plain();
+        }
+
+        $form->saving(function (Form $form) use ($selectField, $formField) {
+            $data = request()->all();
+            $form->model()->$formField = [
+                $data[$selectField] => $data["{$formField}_{$data[$selectField]}"]
+            ];
+        });
+
+        Admin::script(<<<SCRIPT
+$(function () {
+    var {$selectField}Changed = function() {
+        var agent = $('select[name="$selectField"]').val();
+        $('.field-$formField').hide();
+        $('.field-$formField-' + agent).show();
+    };
+    {$selectField}Changed();
+    $('select[name="$selectField"]').change(function(){
+        {$selectField}Changed();
+    });
+});
+SCRIPT
+        );
     }
 }
