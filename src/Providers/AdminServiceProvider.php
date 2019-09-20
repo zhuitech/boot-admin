@@ -4,6 +4,7 @@ namespace ZhuiTech\BootAdmin\Providers;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid\Column;
+use Encore\Admin\Show;
 use iBrand\Component\Setting\Models\SystemSetting;
 use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
@@ -70,7 +71,9 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('json', Json::class);
         Column::extend('image', Image::class);
         Form::extend('editor', CKEditor::class);
-        
+        Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
+        Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
+
         // 员工
         $auth = [
             'guards' => [

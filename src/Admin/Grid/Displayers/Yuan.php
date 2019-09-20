@@ -19,6 +19,11 @@ class Yuan extends AbstractDisplayer
      */
     public function display()
     {
-        return yuan($this->value);
+        return self::render($this->value);
+    }
+    
+    public static function render($value)
+    {
+        return '￥' . yuan($value); 
     }
 }
