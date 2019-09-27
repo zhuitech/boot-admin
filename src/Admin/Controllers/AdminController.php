@@ -170,20 +170,21 @@ HTML;
             $form->embeds("$formField.$key", $config['name'], function (Form\EmbeddedForm $form) use ($config) {
                 foreach ($config['options'] as $field => $value) {
                     if (is_array($value)) {
+                        $value += ['title' => '', 'help' => '', 'type' => 'text'];
                         switch ($value['type']) {
-                            case 'text':
-                                $form->text($field)->placeholder($value['title']);
-                                break;
                             case 'textarea':
-                                $form->textarea($field)->placeholder($value['title']);
+                                $form->textarea($field, $value['title'])->placeholder($value['help']);
                                 break;
                             case 'select':
-                                $form->select($field)->placeholder($value['title'])->options($value['options']);
+                                $form->select($field, $value['title'])->placeholder($value['help'])->options($value['options']);
+                                break;
+                            default:
+                                $form->text($field, $value['title'])->placeholder($value['help']);
                                 break;
                         }
                     }
                     else {
-                        $form->text($field)->placeholder($value);
+                        $form->text($field, $value)->placeholder($value);
                     }
                 }
             });

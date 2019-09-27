@@ -55,6 +55,7 @@
                             @yield('content')
                         </div>
                         {!! Admin::script() !!}
+                        {!! Admin::html() !!}
                     </div>
                 </div>
             </div>
@@ -70,10 +71,6 @@
     </div>
 </div>
 
-<div id="modal" class="modal inmodal fade"></div>
-
-{!! Admin::html() !!}
-
 <script>
     function LA() {}
     LA.token = "{{ csrf_token() }}";
@@ -81,7 +78,6 @@
 
 <!-- REQUIRED JS SCRIPTS -->
 {!! Admin::js() !!}
-
 <!-- REQUIRED JS SCRIPTS BY iBrand-->
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/webuploader-0.1.5/webuploader.js") }}"></script>
 <script src="{{ admin_asset("/vendor/boot-admin/inspinia/js/plugins/metisMenu/jquery.metisMenu.js") }}"></script>
@@ -89,5 +85,6 @@
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/plugins.js") }}"></script>
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/active.js") }}"></script>
 
+<div id="modal" class="modal inmodal fade"></div>
 </body>
 </html>
