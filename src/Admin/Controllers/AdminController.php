@@ -7,6 +7,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
+use Encore\Admin\Show;
 use Illuminate\Support\Arr;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
@@ -110,6 +111,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     protected function configGrid(Grid $grid)
     {
+        $grid->model()->orderBy('created_at', 'desc');
         $grid->disableExport()->disableRowSelector()->setActionClass(DropdownActions::class);
 
         $grid->actions(function (Grid\Displayers\Actions $actions) {
@@ -152,6 +154,22 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     protected function configFormTools(Form\Tools $tools)
     {
         return $tools->disableView();
+    }
+
+    /**
+     * 设置详情
+     * 
+     * @param Show $show
+     * @return Show
+     */
+    protected function configShow(Show $show)
+    {
+        $show->panel()->tools(function (Show\Tools $tools) {
+            $tools->disableEdit();
+            $tools->disableList();
+            $tools->disableDelete();
+        });
+        return $show;
     }
 
     /**
