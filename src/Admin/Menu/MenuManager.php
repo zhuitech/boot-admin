@@ -66,7 +66,7 @@ class MenuManager
     /**
      * @return array
      */
-    protected function getCurrentTopMenu()
+    public function getCurrentTopMenu()
     {
         $prefix = trim(config('admin.route.prefix'), '/');
         $currentMenuUri = str_replace($prefix, '', request()->path());

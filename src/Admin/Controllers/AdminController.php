@@ -9,21 +9,10 @@ use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
-    protected $active;
-
-    /**
-     * 面包屑
-     *
-     * @return array
-     */
-    protected function breadcrumb()
-    {
-        return [];
-    }
-
     /**
      * 获取资源ID
      *
@@ -33,6 +22,30 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     {
         $parameters = request()->route()->parameters;
         return Arr::last($parameters);
+    }
+
+    /**
+     * 生成面包屑
+     * 
+     * @param mixed ...$breadcrumbs
+     * @return array
+     */
+    protected function breadcrumb(... $breadcrumbs)
+    {
+        $result = [];
+        
+        $top = \BackendMenu::getCurrentTopMenu();
+        if (!empty($top)) {
+            $result[] = ['text' => $top['title'], 'url' => $top['uri']];
+        }
+        
+        $path = Str::replaceFirst(admin_base_path(), '', request()->getPathInfo());
+        $paths = explode('/', $path);
+        array_pop($paths);
+        $result[] = ['text' => $this->title(), 'url' => implode('/', $paths)];
+
+        $result = array_merge($result, $breadcrumbs);
+        return $result;
     }
 
     /**
@@ -67,14 +80,8 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     public function index(Content $content)
     {
-        $breadcrumbs = $this->breadcrumb();
-        $breadcrumbs[] = ['text' => $this->title(), 'left-menu-active' => $this->active ?? $this->title()];
-
-        return $content
-            ->title($this->title())
-            ->description($this->description['index'] ?? trans('admin.list'))
-            ->breadcrumb(... $breadcrumbs)
-            ->body($this->grid());
+        $content->breadcrumb(... $this->breadcrumb());
+        return parent::index($content);
     }
 
     /**
@@ -87,6 +94,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     public function show($id, Content $content)
     {
         $id = $this->getKey();
+        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.show')]));
         return parent::show($id, $content);
     }
 
@@ -100,7 +108,20 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     public function edit($id, Content $content)
     {
         $id = $this->getKey();
+        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.edit')]));
         return parent::edit($id, $content);
+    }
+
+    /**
+     * 创建
+     * 
+     * @param Content $content
+     * @return Content
+     */
+    public function create(Content $content)
+    {
+        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.create')]));
+        return parent::create($content);
     }
 
     /**
