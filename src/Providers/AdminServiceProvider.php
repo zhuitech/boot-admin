@@ -10,6 +10,7 @@ use iBrand\Component\Setting\Repositories\CacheDecorator;
 use iBrand\Component\Setting\Repositories\SettingInterface;
 use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
@@ -71,6 +72,7 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('yuan', Yuan::class);
         Column::extend('json', Json::class);
         Column::extend('image', Image::class);
+        Column::extend('admin', Admin::class);
         Form::extend('editor', CKEditor::class);
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
