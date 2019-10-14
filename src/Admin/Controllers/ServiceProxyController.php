@@ -33,9 +33,16 @@ class ServiceProxyController extends AdminController
 
         // 不能直接访问内页
         if ($request->method() == 'GET' && !$request->ajax()) {
-            $top = \BackendMenu::getCurrentTopMenu();
-            $url = admin_url($top['uri']) . '?' . Arr::query(['_active' => request()->getPathInfo()]);
-            return redirect($url);
+            $top = admin_url(with(\BackendMenu::getCurrentTopMenu())['uri']);
+            $current = request()->getPathInfo();
+
+            if ($top != $current) {
+                // 通过当前顶级菜单做pjax跳转
+                return redirect($top . '?' . http_build_query(['_active' => $current]));
+            } else {
+                // 回到后台首页，防止循环跳转
+                return redirect(admin_url('/'));
+            }
         }
 
         // 传递用户身份
