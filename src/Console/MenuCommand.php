@@ -45,7 +45,7 @@ class MenuCommand extends Command
         foreach (Role::all() as $role) {
             $roles[$role->id] = [];
             foreach ($role->permissions as $permission) {
-                $roles[$role->id] = array_merge($roles[$role->id], explode("\r\n", $permission->http_path));
+                $roles[$role->id] = array_merge($roles[$role->id], explode("\n", $permission->http_path));
             }
         }
 

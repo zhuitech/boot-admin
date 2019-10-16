@@ -1,3 +1,12 @@
+@php
+$children = [];
+foreach ($item['children']??[] as $child) {
+    if(Admin::user()->visible($child['roles']) && (empty($child['permission']) ?: Admin::user()->can($child['permission']))) {
+        $children[] = $child;
+    }
+}
+@endphp
+
 @if(Admin::user()->visible($item['roles']) && (empty($item['permission']) ?: Admin::user()->can($item['permission'])))
     @if(!isset($item['children']))
         <li>
@@ -21,7 +30,9 @@
                 @endif
             </a>
         </li>
-    @else
+    @endif
+
+    @if(!empty($children))
         <li class="treeview">
             <a href="#">
                 @if(strpos($item['icon'],'fa')==0)

@@ -47,7 +47,7 @@ class AdminCommand extends Command
             settings(['dmp_config' => [
                 "page_title" => "欢迎登录后台",
                 "short_title" => "后台",
-                "copyright" => "© 2016-2018",
+                "copyright" => "© 2016-2019",
                 "technical_support" => "上海追数网络科技有限公司",
                 "login_logo" => "/vendor/boot-admin/img/logo.png",
                 "backend_logo" => "/vendor/boot-admin/img/logo-mini.png",
@@ -77,7 +77,7 @@ class AdminCommand extends Command
                     'http_path' => '*',
                 ], [
                     'name' => '基础权限',
-                    'slug' => 'dashboard',
+                    'slug' => 'admin.dashboard',
                     'http_method' => '',
                     'http_path' => '/
 /auth/setting
@@ -85,12 +85,12 @@ class AdminCommand extends Command
 /logout',
                 ], [
                     'name' => '授权管理',
-                    'slug' => 'auth',
+                    'slug' => 'admin.auth',
                     'http_method' => '',
                     'http_path' => '/auth*',
                 ], [
                     'name' => '系统日志',
-                    'slug' => 'logs',
+                    'slug' => 'admin.logs',
                     'http_method' => '',
                     'http_path' => '/logs*',
                 ],
@@ -149,7 +149,7 @@ class AdminCommand extends Command
         if (!Administrator::where(['username' => 'manager'])->first()) {
             $user = Administrator::create([
                 'username' => 'manager',
-                'password' => bcrypt('manager'),
+                'password' => bcrypt('letmein2019'),
                 'name' => '普通管理员',
             ]);
 
