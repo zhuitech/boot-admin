@@ -25,30 +25,6 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     }
 
     /**
-     * 生成面包屑
-     * 
-     * @param mixed ...$breadcrumbs
-     * @return array
-     */
-    protected function breadcrumb(... $breadcrumbs)
-    {
-        $result = [];
-        
-        $top = \BackendMenu::getCurrentTopMenu();
-        if (!empty($top)) {
-            $result[] = ['text' => $top['title'], 'url' => $top['uri']];
-        }
-        
-        $path = Str::replaceFirst(admin_base_path(), '', request()->getPathInfo());
-        $paths = explode('/', $path);
-        array_pop($paths);
-        $result[] = ['text' => $this->title(), 'url' => implode('/', $paths)];
-
-        $result = array_merge($result, $breadcrumbs);
-        return $result;
-    }
-
-    /**
      * 更新
      *
      * @param int $id
@@ -80,8 +56,8 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     public function index(Content $content)
     {
-        $content->breadcrumb(... $this->breadcrumb());
-        return parent::index($content);
+        parent::index($content);
+        return $this->configContent($content, $this->title(), $this->description['index'] ?? trans('admin.list'));
     }
 
     /**
@@ -94,8 +70,8 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     public function show($id, Content $content)
     {
         $id = $this->getKey();
-        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.show')]));
-        return parent::show($id, $content);
+        parent::show($id, $content);
+        return $this->configContent($content, $this->title(), $this->description['show'] ?? trans('admin.show'), __('admin.show'));
     }
 
     /**
@@ -108,8 +84,8 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     public function edit($id, Content $content)
     {
         $id = $this->getKey();
-        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.edit')]));
-        return parent::edit($id, $content);
+        parent::edit($id, $content);
+        return $this->configContent($content, $this->title(), $this->description['edit'] ?? trans('admin.edit'), __('admin.edit'));
     }
 
     /**
@@ -120,8 +96,37 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     public function create(Content $content)
     {
-        $content->breadcrumb(... $this->breadcrumb(['text' => __('admin.create')]));
-        return parent::create($content);
+        parent::create($content);
+        return $this->configContent($content, $this->title(), $this->description['create'] ?? trans('admin.create'), __('admin.create'));
+    }
+
+    /**
+     * 设置内容
+     * 
+     * @param Content $content
+     * @return Content
+     */
+    protected function configContent(Content $content, $title = null, $description = null, $action = null)
+    {
+        $breadcrumbs = [];
+        
+        // 一级页面
+        $top = \BackendMenu::getCurrentTopMenu();
+        if (!empty($top)) {
+            $breadcrumbs[] = ['text' => $top['title'], 'url' => $top['uri']];
+        }
+        
+        // 二级页面
+        $paths = explode('/', Str::replaceFirst(admin_base_path(), '', request()->getPathInfo()));
+        array_pop($paths);
+        $breadcrumbs[] = ['text' => $title, 'url' => implode('/', $paths)];
+
+        // 三级页面
+        if (!empty($action)) {
+            $breadcrumbs[] = ['text' => $action];
+        }
+        
+        return $content->title($title)->description($description)->breadcrumb(... $breadcrumbs);
     }
 
     /**

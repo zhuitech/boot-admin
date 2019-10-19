@@ -6,6 +6,8 @@ Route::group(['prefix' => 'svc', 'namespace' => 'ZhuiTech\BootAdmin\Admin\Contro
 
 Route::group(['namespace' => 'ZhuiTech\BootAdmin\Admin\Controllers'], function () {
     Route::resource('auth/users', 'UserController');
+
+    Route::post('auth/menu/fix', 'MenuController@fix')->name('admin.auth.menu.fix');
     Route::resource('auth/menu', 'MenuController');
     
     Route::get('auth/login', 'AuthController@getLogin')->name('auth.admin.login');

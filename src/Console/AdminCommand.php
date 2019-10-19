@@ -82,7 +82,8 @@ class AdminCommand extends Command
                     'http_path' => '/
 /auth/setting
 /login
-/logout',
+/logout
+/_handle_action_',
                 ], [
                     'name' => '授权管理',
                     'slug' => 'admin.auth',

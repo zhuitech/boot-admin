@@ -25,7 +25,6 @@ class AdminServiceProvider extends AbstractServiceProvider
 {
     protected $commands = [
         AdminCommand::class,
-        MenuCommand::class,
         ServiceCommand::class,
     ];
 
