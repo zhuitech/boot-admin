@@ -11,17 +11,13 @@
     <link rel="stylesheet" href="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda-themeless.min.css") }}">
 @stop
 
-
 @section('body')
-    <div class="row">
-        <div class="progress progress-striped active">
-            <div style="width: 5%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
-                <span class="sr-only">40% Complete (success)</span>
-            </div>
+    <div class="progress progress-striped active">
+        <div style="width: 5%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="75" role="progressbar" class="progress-bar progress-bar-danger">
+            <span class="sr-only">40% Complete (success)</span>
         </div>
-        <div id="down"></div>
     </div>
-
+    <div id="down"></div>
 @stop
 
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/spin.min.js") }}"></script>
@@ -30,10 +26,8 @@
 <script src="{{ admin_asset ("/vendor/boot-admin/libs/loader/jquery.loader.min.js") }}"></script>
 
 @section('footer')
-
     <button type="button" class="btn btn-link" data-dismiss="modal">关闭</button>
     <script>
-
         var get_data_url=$('#{{$toggle}}').data('link');
 
         if(typeof link_get_data_url!="undefined"){
@@ -42,7 +36,6 @@
         }
 
         console.log(get_data_url);
-
 
         var downUrl='{{route('admin.export.downLoadFile')}}';
 
@@ -77,8 +70,6 @@
         $(function () {
             _get(get_data_url);
         });
-
-
     </script>
 @stop
 
