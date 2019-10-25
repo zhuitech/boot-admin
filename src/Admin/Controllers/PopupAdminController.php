@@ -4,7 +4,9 @@ namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use ZhuiTech\BootAdmin\Admin\Grid\Actions\PopupEdit;
 use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
@@ -24,17 +26,26 @@ class PopupAdminController extends AdminController
         return $this->dialog($form);
     }
 
-    protected function configGrid(Grid $grid)
+    protected function configGrid(Grid $grid, $mode = 'editable')
     {
-        parent::configGrid($grid)->disableCreateButton();
+        /* @var Model $model */
+        $model = $grid->model();
+        $model->orderBy('created_at', 'desc');
 
-        $grid->tools(function (Grid\Tools $tools) use ($grid) {
+        $grid->setActionClass(DropdownActions::class)
+            ->actions(function (Grid\Displayers\DropdownActions $actions) {
+                $actions->disableView()->disableEdit();
+                $actions->add(new PopupEdit());
+            })
+            ->batchActions(function (Grid\Tools\BatchActions $batch) {
+                $batch->disableDelete();
+            })->filter(function(Grid\Filter $filter){
+                $filter->disableIdFilter();
+            });
+
+        $grid->disableCreateButton()
+            ->tools(function (Grid\Tools $tools) use ($grid) {
             $tools->append(new PopupCreate($grid));
-        });
-
-        $grid->actions(function (Grid\Displayers\DropdownActions $actions) {
-            $actions->disableView()->disableEdit();
-            $actions->add(new PopupEdit());
         });
 
         return $grid;
@@ -56,6 +67,6 @@ class PopupAdminController extends AdminController
 
         // 移除pjax
         $form = Str::replaceFirst(' pjax-container>', ' >', $form);
-        return view('admin::widgets.form-dialog', compact('title', 'form'));
+        return view('admin::widgets.modal-form', compact('title', 'form'));
     }
 }

@@ -23,8 +23,13 @@
     color: #ffffff
 }
 
-.tabs-container .tab-pane .box {
+.tab-pane > .box, .tab-pane .box.box-info {
     border-top: 0px;
     border-left: 1px solid #e7eaec;
     border-right: 1px solid #e7eaec;
+}
+
+.select2-container .select2-dropdown {
+    position: relative;
+    z-index: 2050;
 }

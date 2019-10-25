@@ -8,6 +8,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -133,16 +134,41 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      * 设置表格
      *
      * @param Grid $grid
+     * @param string $mode
      * @return Grid
      */
-    protected function configGrid(Grid $grid)
+    protected function configGrid(Grid $grid, $mode = 'editable')
     {
-        $grid->model()->orderBy('created_at', 'desc');
-        $grid->disableExport()->disableRowSelector()->setActionClass(DropdownActions::class);
+        /* @var Model $model */
+        $model = $grid->model();
 
-        $grid->actions(function (Grid\Displayers\Actions $actions) {
-            $actions->disableView();
-        });
+        switch ($mode) {
+            case 'editable':
+                $model->orderBy('created_at', 'desc');
+                $grid->setActionClass(DropdownActions::class)
+                    ->actions(function (Grid\Displayers\Actions $actions) {
+                        $actions->disableView();
+                    })
+                    ->batchActions(function (Grid\Tools\BatchActions $batch) {
+                        $batch->disableDelete();
+                    })->filter(function(Grid\Filter $filter){
+                        $filter->disableIdFilter();
+                    });
+                break;
+
+            case 'readonly':
+                $model->orderBy('created_at', 'desc');
+                $grid->setActionClass(DropdownActions::class)->disableCreateButton()
+                    ->actions(function (Grid\Displayers\Actions $actions) {
+                        $actions->disableDelete()->disableEdit();
+                    })
+                    ->batchActions(function (Grid\Tools\BatchActions $batch) {
+                        $batch->disableDelete();
+                    })->filter(function(Grid\Filter $filter){
+                        $filter->disableIdFilter();
+                    });
+                break;
+        }
         
         return $grid;
     }
@@ -184,17 +210,31 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 
     /**
      * 设置详情
-     * 
+     *
      * @param Show $show
+     * @param string $mode
      * @return Show
      */
-    protected function configShow(Show $show)
+    protected function configShow(Show $show, $mode = 'box')
     {
-        $show->panel()->tools(function (Show\Tools $tools) {
-            $tools->disableEdit();
-            $tools->disableList();
-            $tools->disableDelete();
-        });
+        switch ($mode) {
+            case 'box':
+                $show->panel()->title('');
+                $show->panel()->tools(function (Show\Tools $tools) {
+                    $tools->disableEdit();
+                    $tools->disableList();
+                    $tools->disableDelete();
+                });
+                break;
+
+            case 'readonly':
+                $show->panel()->tools(function (Show\Tools $tools) {
+                    $tools->disableEdit();
+                    $tools->disableDelete();
+                });
+                break;
+        }
+
         return $show;
     }
 
