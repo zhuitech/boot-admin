@@ -3,13 +3,9 @@
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use Encore\Admin\Auth\Database\Administrator;
-use Encore\Admin\Facades\Admin;
-use Encore\Admin\Form;
-use Encore\Admin\Layout\Content;
-use iBrand\Sms\Facade as Sms;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use ZhuiTech\BootLaravel\Remote\Service\SMS;
 
 class AuthController extends \Encore\Admin\Controllers\AuthController
 {
@@ -43,7 +39,7 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
                 return redirect()->back()->withInput()->withErrors(['code' => '验证码不能为空']);
             }
 
-            if (!Sms::checkCode($mobile, \request('code'))) {
+            if (!SMS::check($mobile, \request('code'))) {
                 return redirect()->back()->withInput()->withErrors(['code' => '验证码不正确']);
             }
 
