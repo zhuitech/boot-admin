@@ -73,7 +73,7 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
 
         if ($user = Administrator::where("$username", $request->username)->where('status', 1)->first() and $user->mobile) {
             return response()->json([
-                'data' => $user,
+                'data' => $user->only(['mobile']),
                 'status' => true,
             ]);
         }

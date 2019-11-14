@@ -117,7 +117,7 @@
 
         window.AppUrl = "{{env('APP_URL')}}";
         window._token = "{{ csrf_token() }}";
-        var postUrl = '{{env('APP_URL')}}/getMobile';
+        var postUrl = '{{env('APP_URL')}}/admin/auth/mobile';
 
         @if(config('ibrand.backend.sms_login'))
         $(document).ready(function () {
@@ -175,9 +175,9 @@
                         mobile: mobile,
                         access_token: _token
                     },
-                    url: AppUrl+"/{{config('ibrand.sms.route.prefix')}}/verify-code?_token="+_token,
+                    url: AppUrl+"/api/svc/sms/verify?_token="+_token,
                     success: function (data) {
-                        if (data.success) {
+                        if (data.status) {
                             $('input[name="access_token"]').val(_token);
                             var total = 60;
                             var message = '请等待{#counter#}秒';
