@@ -255,16 +255,21 @@ HTML;
                 foreach ($config['options'] as $field => $value) {
                     if (is_array($value)) {
                         $value += ['title' => '', 'help' => '', 'type' => 'text'];
+                        $form_item = null;
                         switch ($value['type']) {
                             case 'textarea':
-                                $form->textarea($field, $value['title'])->placeholder($value['help']);
+                                $form_item = $form->textarea($field, $value['title']);
                                 break;
                             case 'select':
-                                $form->select($field, $value['title'])->placeholder($value['help'])->options($value['options']);
+                                $form_item = $form->select($field, $value['title'])->options($value['options']);
                                 break;
                             default:
-                                $form->text($field, $value['title'])->placeholder($value['help']);
+                                $form_item = $form->text($field, $value['title']);
                                 break;
+                        }
+
+                        if (!empty($form_item) && !empty($value['help'])) {
+                            $form_item->help($value['help']);
                         }
                     }
                     else {
