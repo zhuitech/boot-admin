@@ -58,6 +58,8 @@ class AdminServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
+        $this->mergeConfig();
+        
         // 支持无数据库运行
         $this->app->extend(SettingInterface::class, function ($app) {
             $repository = new SettingRepository(new SystemSetting());

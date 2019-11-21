@@ -10,9 +10,18 @@ class UserController extends \Encore\Admin\Controllers\UserController
     public function form()
     {
         $form = parent::form();
+        
+        $userTable = config('admin.database.users_table');
+        $connection = config('admin.database.connection');
 
-        $form->mobile('mobile', '手机')->rules('required');
-        $form->email('email', '邮箱');
+        $form->mobile('mobile', '手机')
+            ->creationRules(['required', "unique:{$connection}.{$userTable},mobile"])
+            ->updateRules(['required', "unique:{$connection}.{$userTable},mobile,{{id}}"]);
+        
+        $form->email('email', '邮箱')
+            ->creationRules(['required', "unique:{$connection}.{$userTable},email"])
+            ->updateRules(['required', "unique:{$connection}.{$userTable},email,{{id}}"]);
+        
         $form->builder()->field('avatar')->dir(FileHelper::dir('avatar'));
         
         return $form;
