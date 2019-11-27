@@ -122,7 +122,7 @@ class AdminCommand extends Command
             ]);
 
             // 权限分配
-            $permissions = ['dashboard', 'logs'];
+            $permissions = ['admin.dashboard', 'admin.logs'];
             foreach ($permissions as $permission) {
                 $role->permissions()->save(Permission::where('slug', $permission)->first());
             }
