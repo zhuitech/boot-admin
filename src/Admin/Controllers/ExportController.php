@@ -4,8 +4,10 @@ namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
+use File;
+use Storage;
+use Excel;
+use ZhuiTech\BootAdmin\Admin\Excel\ExportCollection;
 use ZhuiTech\BootLaravel\Controllers\RestResponse;
 
 class ExportController extends Controller
@@ -47,16 +49,10 @@ class ExportController extends Controller
         set_time_limit(10000);
         ini_set('memory_limit', '300M');
 
-        Excel::create($fileName, function ($excel) use ($data, $title) {
-            $excel->sheet('Sheet1', function ($sheet) use ($data, $title) {
-                $sheet->prependRow(1, $title);
-                $sheet->rows($data);
-            });
-        })->store('xls', storage_path('exports'), false);
+        $result = Excel::store(new ExportCollection($data, $title), "exports/$fileName.xlsx", 'admin');
 
-        $result = \File::move(storage_path('exports').'/'.$fileName.'.xls', storage_path('app/public/exports/').$fileName.'.xls');
         if ($result) {
-            return $this->success(['url' => '/storage/exports/'.$fileName.'.xls']);
+            return $this->success(['url' => storage_url("exports/$fileName.xlsx", 'admin')]);
         }
         return $this->fail();
     }
