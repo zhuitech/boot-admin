@@ -87,7 +87,7 @@ $(function() {
     });
 
     // 非laravel-admin页面初始化
-    if ($('.wrapper-content .box').length === 0) {
+    if ($('.wrapper-content .laravel-admin').length === 0) {
         // 单选框 input checked radio 初始化
         $('.wrapper-content').find("input").iCheck({
             checkboxClass: 'icheckbox_square-green',

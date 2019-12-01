@@ -1,6 +1,5 @@
-<div class="tabs-container">
+<div class="tabs-container laravel-admin">
     <ul class="nav nav-tabs nav-tabs">
-
         @foreach($tabs as $id => $tab)
             @if($tab['type'] == \Encore\Admin\Widgets\Tab::TYPE_CONTENT)
                 <li {{ $id == $active ? 'class=active' : '' }}><a href="#tab_{{ $tab['id'] }}" data-toggle="tab">{{ $tab['title'] }}</a></li>
@@ -26,7 +25,14 @@
     <div class="tab-content">
         @foreach($tabs as $id => $tab)
         <div class="tab-pane {{ $id == $active ? 'active' : '' }}" id="tab_{{ $tab['id'] }}">
-            {!! array_get($tab, 'content') !!}
+            <div class="panel-body">
+                @php($content = \Illuminate\Support\Arr::get($tab, 'content'))
+                @if($content instanceof \Illuminate\Contracts\Support\Renderable)
+                    {!! $content->render() !!}
+                @else
+                    {!! $content !!}
+                @endif
+            </div>
         </div>
         @endforeach
 
