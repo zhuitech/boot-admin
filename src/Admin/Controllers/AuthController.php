@@ -3,8 +3,10 @@
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use ZhuiTech\BootLaravel\Helpers\FileHelper;
 use ZhuiTech\BootLaravel\Remote\Service\SMS;
 
 class AuthController extends \Encore\Admin\Controllers\AuthController
@@ -88,5 +90,39 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
     {
         $RegExp = '/^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/';
         return preg_match($RegExp, $Argv) ? $Argv : false;
+    }
+
+    protected function settingForm()
+    {
+        $class = config('admin.database.users_model');
+
+        $form = new Form(new $class());
+
+        $form->display('username', trans('admin.username'));
+        $form->text('name', trans('admin.name'))->rules('required');
+        $form->image('avatar', trans('admin.avatar'))->dir(FileHelper::dir('admin'))->uniqueName();
+        $form->password('password', trans('admin.password'))->rules('confirmed|required');
+        $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')
+            ->default(function ($form) {
+                return $form->model()->password;
+            });
+
+        $form->setAction(admin_url('auth/setting'));
+
+        $form->ignore(['password_confirmation']);
+
+        $form->saving(function (Form $form) {
+            if ($form->password && $form->model()->password != $form->password) {
+                $form->password = bcrypt($form->password);
+            }
+        });
+
+        $form->saved(function () {
+            admin_toastr(trans('admin.update_succeeded'));
+
+            return redirect(admin_url('auth/setting'));
+        });
+
+        return $form;
     }
 }

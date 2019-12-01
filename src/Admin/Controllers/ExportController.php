@@ -49,10 +49,10 @@ class ExportController extends Controller
         set_time_limit(10000);
         ini_set('memory_limit', '300M');
 
-        $result = Excel::store(new ExportCollection($data, $title), "exports/$fileName.xlsx", 'admin');
+        $result = Excel::store(new ExportCollection($data, $title), "exports/$fileName.xlsx");
 
         if ($result) {
-            return $this->success(['url' => storage_url("exports/$fileName.xlsx", 'admin')]);
+            return $this->success(['url' => storage_url("exports/$fileName.xlsx")]);
         }
         return $this->fail();
     }
