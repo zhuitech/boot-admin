@@ -38,7 +38,7 @@ class ServiceProxyController extends AdminController
 
             if ($top != $current) {
                 // 通过当前顶级菜单做pjax跳转
-                return redirect($top . '?' . http_build_query(['_active' => $current]));
+                //return redirect($top . '?' . http_build_query(['_active' => $current]));
             } else {
                 // 回到后台首页，防止循环跳转
                 return redirect(admin_url('/'));

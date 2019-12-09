@@ -260,41 +260,36 @@ class AdminCommand extends Command
                 'icon' => 'fa-list-alt',
                 'uri' => '/helpers/routes',
             ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
+            Menu::create([
+                'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => 'Redis',
                 'icon' => 'fa-database',
                 'uri' => '/redis',
             ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
+            Menu::create([
+                'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => '系统日志',
                 'icon' => 'fa-database',
                 'uri' => '/logs',
             ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
+            Menu::create([
+                'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => '备份管理',
                 'icon' => 'fa-copy',
                 'uri' => '/backup',
             ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
+            Menu::create([
+                'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => '计划任务',
                 'icon' => 'fa-clock-o',
                 'uri' => '/scheduling',
             ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
+            Menu::create([
+                'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => '配置管理',
                 'icon' => 'fa-gears',
