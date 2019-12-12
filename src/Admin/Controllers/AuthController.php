@@ -17,7 +17,7 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
             return redirect($this->redirectPath());
         }
 
-        return view('admin::admin-login-ibrand');
+        return view('admin::login');
     }
 
     public function postLogin(Request $request)

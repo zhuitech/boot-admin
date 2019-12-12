@@ -2,15 +2,17 @@
 
 namespace ZhuiTech\BootAdmin\Providers;
 
+use Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Show;
-use iBrand\Component\Setting\Models\SystemSetting;
-use iBrand\Component\Setting\Repositories\CacheDecorator;
-use iBrand\Component\Setting\Repositories\SettingInterface;
+use Encore\Admin\Widgets\Navbar\Fullscreen;
 use Illuminate\Support\Arr;
+use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
+use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
+use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
-use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
@@ -44,9 +46,12 @@ class AdminServiceProvider extends AbstractServiceProvider
             $this->publishes([base_path('vendor/overtrue/laravel-ueditor/src/assets/ueditor') => public_path('vendor/ueditor')], 'public');
             $this->publishes([base_path('vendor/encore/laravel-admin/resources/assets') => public_path('vendor/laravel-admin')], 'public');
             $this->publishes([base_path('vendor/laravel-admin-ext/chartjs/resources/assets') => public_path('vendor/laravel-admin-ext/chartjs')], 'public');
-            $this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
+            //$this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
             $this->publishes([__DIR__ . '/../../resources/laravel-admin' => public_path('vendor/laravel-admin')], 'public');
         }
+
+        $this->configAdmin();
+        $this->loadSettings();
 
         parent::boot();
     }
@@ -59,25 +64,41 @@ class AdminServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->mergeConfig();
+        $this->configStuff();
         
-        // 支持无数据库运行
-        $this->app->extend(SettingInterface::class, function ($app) {
-            $repository = new SettingRepository(new SystemSetting());
-            if (!config('ibrand.setting.cache')) {
-                return $repository;
-            }
-            return new CacheDecorator($repository);
-        });
+        parent::register();
+    }
 
+    /**
+     * 配置后台
+     */
+    private function configAdmin()
+    {
         // Admin 扩展
         Column::extend('yuan', Yuan::class);
         Column::extend('json', Json::class);
         Column::extend('image', Image::class);
-        Column::extend('admin', Admin::class);
+        Column::extend('admin', AdminUser::class);
         Form::extend('editor', CKEditor::class);
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
 
+        Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+            $navbar->left(view('admin::partials.topbar-left'));
+            $navbar->right(view('admin::partials.topbar-right'));
+
+            $navbar->right(Link::make('设置', 'system/settings', 'fa-cog'));
+            $navbar->right(new ClearCache());
+            $navbar->right(new Fullscreen());
+            $navbar->right(new AutoRefresh());
+        });
+    }
+
+    /**
+     * 配置员工
+     */
+    private function configStuff()
+    {
         // 员工
         $auth = [
             'guards' => [
@@ -95,7 +116,20 @@ class AdminServiceProvider extends AbstractServiceProvider
             ],
         ];
         config(Arr::dot($auth, 'auth.'));
-        
-        parent::register();
+    }
+
+    /**
+     * 加载设置
+     */
+    private function loadSettings()
+    {
+        $settings = [];
+        foreach (config('backend.settings') as $item) {
+            $value = settings($item);
+            if (!empty($value)) {
+                $settings[$item] = $value;
+            }
+        }
+        config($settings);
     }
 }
