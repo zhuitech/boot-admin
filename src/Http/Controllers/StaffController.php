@@ -3,14 +3,11 @@
 namespace ZhuiTech\BootAdmin\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Encore\Admin\Auth\Database\Administrator;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Models\Staff;
 use ZhuiTech\BootLaravel\Controllers\RestResponse;
 use ZhuiTech\BootLaravel\Helpers\RestClient;
-use ZhuiTech\BootLaravel\Models\TokenUser;
 
 class StaffController extends Controller
 {

@@ -2,7 +2,6 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
-use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
@@ -11,6 +10,8 @@ use Encore\Admin\Show;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
+use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
@@ -168,6 +169,19 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
                         $filter->disableIdFilter();
                     });
                 break;
+
+            case 'removable':
+                $model->orderBy('created_at', 'desc');
+                $grid->setActionClass(DropdownActions::class)->disableCreateButton()
+                    ->actions(function (Grid\Displayers\Actions $actions) {
+                        $actions->disableEdit()->disableView();
+                    })
+                    ->batchActions(function (Grid\Tools\BatchActions $batch) {
+                        $batch->disableDelete();
+                    })->filter(function(Grid\Filter $filter){
+                        $filter->disableIdFilter();
+                    });
+                break;
         }
         
         return $grid;
@@ -239,29 +253,34 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
     }
 
     /**
-     * @param Form $form
-     * @param $selectName
-     * @param $formName
-     * @param $formOptions
+     * @param ModelForm $form
+     * @param $select_name
+     * @param $option_name
+     * @param $options
      */
-    protected function selectForm(Form $form, $selectField, $formField, $formOptions)
+    protected function selectForm(ModelForm $form, $select_name, $option_name, $options)
     {
-        foreach ($formOptions as $key => $config) {
-            $html = <<<HTML
-<div class="field-$formField field-$formField-$key" style="display: none;">
-HTML;
-            $form->html($html)->plain();
-            $form->embeds("$formField.$key", $config['name'], function (Form\EmbeddedForm $form) use ($config) {
-                foreach ($config['options'] as $field => $value) {
-                    if (is_array($value)) {
+        foreach ($options as $key => $config) {
+            SwitchPanel::create($form, function (ModelForm $form) use ($option_name, $key, $config) {
+                // 创建子表单
+                $option_form = "{$option_name}_{$key}";
+                $form->embeds($option_form, $config['name'], function (Form\EmbeddedForm $form) use ($config) {
+                    foreach ($config['options'] as $field => $value) {
+                        if (!is_array($value)) {
+                            $value = ['type' => 'text', 'title' => $value];
+                        }
+
                         $value += ['title' => '', 'help' => '', 'type' => 'text'];
-                        $form_item = null;
                         switch ($value['type']) {
                             case 'textarea':
                                 $form_item = $form->textarea($field, $value['title']);
                                 break;
                             case 'select':
                                 $form_item = $form->select($field, $value['title'])->options($value['options']);
+                                break;
+                            case 'file':
+                                $value += ['disk' => 'local', 'dir' => 'local'];
+                                $form_item = $form->file($field, $value['title'])->disk($value['disk'])->dir($value['dir']);
                                 break;
                             default:
                                 $form_item = $form->text($field, $value['title']);
@@ -272,34 +291,33 @@ HTML;
                             $form_item->help($value['help']);
                         }
                     }
-                    else {
-                        $form->text($field, $value)->placeholder($value);
-                    }
-                }
-            });
-            $form->html('</div>')->plain();
+                });
+            }, $select_name, $key);
         }
 
-        $form->saving(function (Form $form) use ($selectField, $formField) {
-            $data = request()->all();
-            $form->model()->$formField = [
-                $data[$selectField] => $data["{$formField}_{$data[$selectField]}"]
-            ];
+        $form->editing(function (ModelForm $form) use ($select_name, $option_name) {
+            $model = $form->model();
+            // 生成子表单数据
+            $option_form = "{$option_name}_{$model->$select_name}";
+            $model->$option_form = $model->$option_name;
         });
 
-        Admin::script(<<<SCRIPT
-$(function () {
-    var {$selectField}Changed = function() {
-        var agent = $('select[name="$selectField"]').val();
-        $('.field-$formField').hide();
-        $('.field-$formField-' + agent).show();
-    };
-    {$selectField}Changed();
-    $('select[name="$selectField"]').change(function(){
-        {$selectField}Changed();
-    });
-});
-SCRIPT
-        );
+        $form->prepared(function (ModelForm $form) use ($select_name, $option_name, $options) {
+            $prepared = $form->preparedValues;
+
+            // 复制到实际字段
+            $option_form = "{$option_name}_{$prepared[$select_name]}";
+            $prepared[$option_name] = $prepared[$option_form];
+
+            // 删除子表单数据
+            foreach ($options as $key => $config) {
+                $option_form = "{$option_name}_{$key}";
+                unset($prepared[$option_form]);
+            }
+
+            $form->preparedValues = $prepared;
+        });
+
+        SwitchPanel::script($select_name, 'select');
     }
 }
