@@ -69,6 +69,11 @@ $(document).on('pjax:complete', function (xhr) {
 
     // 修正CSRF_TOKEN
     $('#pjax-container input[name=_token]').val(LA.token);
+
+    // 激活菜单项
+    var menu = $('.sidebar-menu li > a[href$="' + (location.pathname + location.search + location.hash) + '"]').parent().addClass('active');
+    menu.parents('ul.treeview-menu').addClass('menu-open');
+    menu.parents('li.treeview').addClass('active');
 });
 
 $(document).click(function () {
@@ -178,3 +183,18 @@ $('#totop').on('click', function (e) {
     };
 
 })(jQuery);
+
+$(function () {
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    // 加载页面
+    var load = getQueryString('load');
+    if (load) {
+        $.pjax({url: load, container: '#pjax-container'});
+    }
+});

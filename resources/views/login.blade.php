@@ -29,10 +29,13 @@
   <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition login-page" @if(config('admin.login_background_image'))style="background: url({{config('admin.login_background_image')}}) no-repeat;background-size: cover;"@endif>
+@php($background = config('admin.login_background_image')
+  ? storage_url(config('admin.login_background_image'))
+  : ('/vendor/boot-admin/img/wallpapers/' . random_int(1, 3) . '.jpg'))
+<body class="hold-transition login-page" style="background: url({{ $background }}) no-repeat;background-size: cover;">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{{ admin_url('/') }}"><b>{{config('admin.name')}}</b></a>
+    <a href="{{ admin_url('/') }}" style="color: #ffffff;"><b>{{config('admin.name')}}</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
