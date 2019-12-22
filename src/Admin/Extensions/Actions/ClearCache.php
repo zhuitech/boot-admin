@@ -11,6 +11,7 @@ class ClearCache extends Action
 
     public function handle(Request $request)
     {
+        \Artisan::call('cache:clear');
         return $this->response()->success('清理完成')->refresh();
     }
 

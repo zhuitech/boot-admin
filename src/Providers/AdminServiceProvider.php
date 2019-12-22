@@ -4,6 +4,7 @@ namespace ZhuiTech\BootAdmin\Providers;
 
 use Admin;
 use Encore\Admin\Form;
+use Encore\Admin\Grid;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Show;
 use Encore\Admin\Widgets\Navbar\Fullscreen;
@@ -15,6 +16,7 @@ use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\MenuCommand;
@@ -79,7 +81,10 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('json', Json::class);
         Column::extend('image', Image::class);
         Column::extend('admin', AdminUser::class);
+        Column::extend('remoteUser', RemoteUser::class);
+        
         Form::extend('editor', CKEditor::class);
+        
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
 
