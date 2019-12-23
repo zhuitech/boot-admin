@@ -11,6 +11,7 @@
         </ul>
 
         <ul class="nav navbar-top-links navbar-right">
+            {!! Admin::getNavbar()->render() !!}
             <li>
                 <a data-toggle="dropdown" class="dropdown-togg" href="graph_morris.html#">
                     <span class="block m-r-sm">

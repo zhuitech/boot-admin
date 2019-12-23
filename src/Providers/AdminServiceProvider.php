@@ -5,20 +5,16 @@ namespace ZhuiTech\BootAdmin\Providers;
 use Encore\Admin\Form;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Show;
-use iBrand\Component\Setting\Models\SystemSetting;
-use iBrand\Component\Setting\Repositories\CacheDecorator;
-use iBrand\Component\Setting\Repositories\SettingInterface;
 use Illuminate\Support\Arr;
+use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
-use ZhuiTech\BootAdmin\Console\MenuCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Models\Staff;
-use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
@@ -59,15 +55,6 @@ class AdminServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->mergeConfig();
-        
-        // 支持无数据库运行
-        $this->app->extend(SettingInterface::class, function ($app) {
-            $repository = new SettingRepository(new SystemSetting());
-            if (!config('ibrand.setting.cache')) {
-                return $repository;
-            }
-            return new CacheDecorator($repository);
-        });
 
         // Admin 扩展
         Column::extend('yuan', Yuan::class);
@@ -77,6 +64,10 @@ class AdminServiceProvider extends AbstractServiceProvider
         Form::extend('editor', CKEditor::class);
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
+
+        \Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+            $navbar->right(new ClearCache());
+        });
 
         // 员工
         $auth = [
