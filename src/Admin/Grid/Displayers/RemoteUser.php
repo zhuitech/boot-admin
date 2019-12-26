@@ -24,7 +24,12 @@ class RemoteUser extends AbstractDisplayer
         return self::render($this->value, $option);
     }
 
-    public static function render(UserAccount $user, $option = [])
+    /**
+     * @param $user UserAccount
+     * @param array $option
+     * @return string
+     */
+    public static function render($user, $option = [])
     {
         $option += ['avatar' => true, 'name' => true, 'mobile' => false];
         if (empty($user)) {
