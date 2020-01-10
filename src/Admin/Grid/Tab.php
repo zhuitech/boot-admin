@@ -3,8 +3,6 @@
 namespace ZhuiTech\BootAdmin\Admin\Grid;
 
 use Encore\Admin\Grid;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 
 class Tab extends \Encore\Admin\Widgets\Tab
 {

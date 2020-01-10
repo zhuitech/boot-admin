@@ -2,7 +2,7 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Menu;
 
-use ZhuiTech\BootAdmin\Admin\Menu\Menu as DataMenu;
+use ZhuiTech\BootAdmin\Models\Menu as DataMenu;
 
 class MenuManager
 {

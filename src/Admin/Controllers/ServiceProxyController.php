@@ -5,10 +5,8 @@ namespace ZhuiTech\BootAdmin\Admin\Controllers;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use ZhuiTech\BootAdmin\Admin\Controllers\AdminController;
-use ZhuiTech\BootAdmin\Admin\Menu\Menu;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use ZhuiTech\BootLaravel\Helpers\ProxyClient;
 use ZhuiTech\BootLaravel\Models\User;
 
@@ -31,25 +29,22 @@ class ServiceProxyController extends AdminController
     {
         $request = request();
 
-        // 不能直接访问内页
-        if ($request->method() == 'GET' && !$request->ajax()) {
-            $top = admin_url(with(\BackendMenu::getCurrentTopMenu())['uri']);
-            $current = request()->getPathInfo();
-
-            if ($top != $current) {
-                // 通过当前顶级菜单做pjax跳转
-                //return redirect($top . '?' . http_build_query(['_active' => $current]));
-            } else {
-                // 回到后台首页，防止循环跳转
-                return redirect(admin_url('/'));
-            }
-        }
-
         // 传递用户身份
         $user = new User();
         $user->id = Admin::user()->getAuthIdentifier();
         $user->type = 'admins';
+        $response = ProxyClient::server('service')->as($user)->pass();
 
-        return ProxyClient::server('service')->as($user)->pass();
+        // 把直接访问svc页面的请求通过顶级菜单转发
+        if ($request->method() == 'GET' && !$request->ajax() && $response->getStatusCode() == 200) {
+            $top = admin_url(with(\BackendMenu::getCurrentTopMenu())['uri']);
+            $current = request()->getPathInfo();
+            if ($top != $current) {
+                // 通过当前顶级菜单做pjax跳转
+                return redirect($top . '?' . http_build_query(['load' => $current]));
+            } 
+        }
+
+        return $response;
     }
 }

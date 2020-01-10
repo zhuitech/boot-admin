@@ -42,23 +42,6 @@ class AdminCommand extends Command
      */
     public function handle()
     {
-        // 基础配置
-        if (empty(settings('dmp_config'))) {
-            settings(['dmp_config' => [
-                "page_title" => "欢迎登录后台",
-                "short_title" => "后台",
-                "copyright" => "© 2016-2019",
-                "technical_support" => "上海追数网络科技有限公司",
-                "login_logo" => "/vendor/boot-admin/img/logo.png",
-                "backend_logo" => "/vendor/boot-admin/img/logo-mini.png",
-                "shortcut_icon" => "/vendor/boot-admin/img/icon.png",
-                "setting-cache" => "0"
-            ]]);
-            $this->line("<info>Default system settings set successfully.</info>");
-        } else {
-            $this->line("<error>Default system settings already exists.</error>");
-        }
-
         // 初始化数据
         $this->menus();
         $this->permissions();
@@ -291,9 +274,9 @@ class AdminCommand extends Command
             Menu::create([
                 'parent_id' => $parent->id,
                 'order' => $lastOrder++,
-                'title' => '配置管理',
+                'title' => '系统配置',
                 'icon' => 'fa-gears',
-                'uri' => '/sysSetting',
+                'uri' => '/system/settings',
             ]);
 
             $this->line("<info>Menus insert successfully.</info>");
