@@ -8,6 +8,7 @@ use Encore\Admin\Form\Field\File;
 use Encore\Admin\Form\Field\Number;
 use Encore\Admin\Form\Field\Rate;
 use Encore\Admin\Widgets\Form;
+use Illuminate\Support\Str;
 
 class SettingForm extends Form
 {
@@ -28,8 +29,10 @@ class SettingForm extends Form
             $value = $field->prepare($value);
 
             // 跳过没有修改的 config
-            if (in_array($field->column(), config('backend.settings') ?? [])) {
-                if ($value == config($field->column())) {
+            if (Str::contains($field->column(), '.')) {
+                $original = str_replace("\r\n", "\n", config($field->column()));
+                $new = str_replace("\r\n", "\n", $value);
+                if ($new == $original) {
                     continue;
                 }
             }
@@ -64,17 +67,18 @@ class SettingForm extends Form
             // 跳过系统字段
             if (in_array($field->column(), ['_form_'])) continue;
 
-            // 获取默认值
+            // 默认值
             $default = '';
             if ($field instanceof Number || $field instanceof Currency || $field instanceof Rate || $field instanceof Decimal) {
                 $default = 0;
             }
 
             // 使用config默认值
-            if (in_array($field->column(), config('backend.settings') ?? [])) {
-                $default = config($field->column());
+            if (Str::contains($field->column(), '.')) {
+                $default = config($field->column(), $default);
             }
 
+            // 加载设置
             $data[$field->column()] = settings($field->column(), $default);
         }
         return $data;

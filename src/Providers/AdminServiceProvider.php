@@ -53,7 +53,6 @@ class AdminServiceProvider extends AbstractServiceProvider
         }
 
         $this->configAdmin();
-        $this->loadSettings();
 
         parent::boot();
     }
@@ -121,20 +120,5 @@ class AdminServiceProvider extends AbstractServiceProvider
             ],
         ];
         config(Arr::dot($auth, 'auth.'));
-    }
-
-    /**
-     * 加载设置
-     */
-    private function loadSettings()
-    {
-        $settings = [];
-        foreach (config('backend.settings') as $item) {
-            $value = settings($item);
-            if (!empty($value)) {
-                $settings[$item] = $value;
-            }
-        }
-        config($settings);
     }
 }
