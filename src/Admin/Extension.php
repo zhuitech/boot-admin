@@ -10,11 +10,13 @@ class Extension extends \Encore\Admin\Extension
     {
         $extension = static::getInstance();
 
-        if ($menu = $extension->menu()) {
+        $menu = $extension->menu();
+        if ($menu) {
             static::createMenuTree($menu);
         }
 
-        if ($permission = $extension->permission()) {
+        $permission = $extension->permission();
+        if ($permission) {
             if ($extension->validatePermission($permission)) {
                 extract($permission);
                 static::createPermission($name, $slug, $path);
@@ -26,6 +28,7 @@ class Extension extends \Encore\Admin\Extension
     {
         $menuModel = config('admin.database.menu_model');
         $lastOrder = $menuModel::max('order');
+        $output = new ConsoleOutput();
 
         // 根菜单
         if (empty($rootMenu = $menuModel::where(['title' => $root['title'], 'parent_id' => 0])->first())) {
@@ -38,7 +41,7 @@ class Extension extends \Encore\Admin\Extension
             ]);
         }
 
-        foreach ($root['children'] as $parent) {
+        foreach ($root['children'] ?? [] as $parent) {
             // 父菜单
             if (empty($parentMenu = $menuModel::where(['title' => $parent['title'] ?? '', 'parent_id' => $rootMenu->id])->first())) {
                 $parentMenu = $menuModel::create([
@@ -49,21 +52,22 @@ class Extension extends \Encore\Admin\Extension
                     'uri' => $parent['uri'] ?? '',
                 ]);
 
-                // 子菜单
-                if (!empty($parent['children'])) {
-                    foreach ($parent['children'] as $child) {
-                        $menuModel::create([
-                            'parent_id' => $parentMenu->id,
-                            'order' => $lastOrder++,
-                            'title' => $child['title'] ?? '',
-                            'icon' => $child['icon'] ?? '',
-                            'uri' => $child['uri'] ?? '',
-                        ]);
-                    }
-                }
-
-                $output = new ConsoleOutput();
                 $output->writeln("<info>菜单[{$parent['title']}]创建成功</info>");
+            }
+
+            // 子菜单
+            foreach ($parent['children'] ?? [] as $child) {
+                if (empty($childMenu = $menuModel::where(['title' => $child['title'] ?? '', 'parent_id' => $parentMenu->id])->first())) {
+                    $menuModel::create([
+                        'parent_id' => $parentMenu->id,
+                        'order' => $lastOrder++,
+                        'title' => $child['title'] ?? '',
+                        'icon' => $child['icon'] ?? '',
+                        'uri' => $child['uri'] ?? '',
+                    ]);
+
+                    $output->writeln("<info>菜单[{$childMenu['title']}]创建成功</info>");
+                }
             }
         }
     }

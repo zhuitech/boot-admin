@@ -14,6 +14,7 @@ use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
@@ -81,11 +82,13 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('image', Image::class);
         Column::extend('admin', AdminUser::class);
         Column::extend('remoteUser', RemoteUser::class);
+        Column::extend('timestamp', Timestamp::class);
         
         Form::extend('editor', CKEditor::class);
         
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
+        Show::extend('timestamp', \ZhuiTech\BootAdmin\Admin\Show\Timestamp::class);
 
         Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
             $navbar->left(view('admin::partials.topbar-left'));
