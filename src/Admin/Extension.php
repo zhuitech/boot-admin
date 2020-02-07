@@ -66,7 +66,7 @@ class Extension extends \Encore\Admin\Extension
                         'uri' => $child['uri'] ?? '',
                     ]);
 
-                    $output->writeln("<info>菜单[{$childMenu['title']}]创建成功</info>");
+                    $output->writeln("<info>菜单[{$child['title']}]创建成功</info>");
                 }
             }
         }

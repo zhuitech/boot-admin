@@ -14,6 +14,12 @@ class SettingForm extends Form
 {
     public $title = 'Settings';
 
+    /**
+     * 字段名映射
+     * @var array
+     */
+    protected $keyMapping = [];
+
     public function handle()
     {
         $data = [];
@@ -28,17 +34,26 @@ class SettingForm extends Form
             // 预处理值
             $value = $field->prepare($value);
 
+            // 获取key
+            $key = $this->keyMapping[$field->column()] ?? $field->column();
+
             // 跳过没有修改的 config
-            if (Str::contains($field->column(), '.')) {
-                $original = str_replace("\r\n", "\n", config($field->column()));
-                $new = str_replace("\r\n", "\n", $value);
+            if (Str::contains($key, '.')) {
+                $original = config($key);
+                $new = $value;
+
+                if (is_string($original)) {
+                    $original = str_replace("\r\n", "\n", $original);
+                    $new = str_replace("\r\n", "\n", $value);
+                }
+
                 if ($new == $original) {
                     continue;
                 }
             }
 
             // 放入修改列表
-            $data[$field->column()] = $value;
+            $data[$key] = $value;
         }
 
         // 提交修改
@@ -73,13 +88,16 @@ class SettingForm extends Form
                 $default = 0;
             }
 
+            // 获取key
+            $key = $this->keyMapping[$field->column()] ?? $field->column();
+
             // 使用config默认值
-            if (Str::contains($field->column(), '.')) {
-                $default = config($field->column(), $default);
+            if (Str::contains($key, '.')) {
+                $default = config($key, $default);
             }
 
             // 加载设置
-            $data[$field->column()] = settings($field->column(), $default);
+            $data[$field->column()] = settings($key, $default);
         }
         return $data;
     }
