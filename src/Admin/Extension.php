@@ -27,20 +27,21 @@ class Extension extends \Encore\Admin\Extension
     public static function createMenuTree($root)
     {
         $menuModel = config('admin.database.menu_model');
-        $lastOrder = $menuModel::max('order');
         $output = new ConsoleOutput();
 
         // 根菜单
         if (empty($rootMenu = $menuModel::where(['title' => $root['title'], 'parent_id' => 0])->first())) {
+            $rootOrder = $menuModel::where('parent_id', 0)->max('order');
             $rootMenu = $menuModel::create([
                 'parent_id' => 0,
-                'order' => $lastOrder++,
+                'order' => ++$rootOrder,
                 'title' => $root['title'] ?? '',
                 'icon' => $root['icon'] ?? '',
                 'uri' => $root['uri'] ?? '',
             ]);
         }
 
+        $lastOrder = $rootMenu->order * 100;
         foreach ($root['children'] ?? [] as $parent) {
             // 父菜单
             if (empty($parentMenu = $menuModel::where(['title' => $parent['title'] ?? '', 'parent_id' => $rootMenu->id])->first())) {

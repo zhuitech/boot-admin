@@ -147,10 +147,10 @@ class AdminCommand extends Command
     private function menus()
     {
         if (!Menu::where(['title' => '系统', 'parent_id' => 0])->first()) {
-            $rootOrder = Menu::where('parent_id', 0)->max('order');
+            $rootOrder = 1;
             $root = Menu::create([
                 'parent_id' => 0,
-                'order' => ++$rootOrder,
+                'order' => $rootOrder,
                 'title' => '系统',
                 'icon' => 'fa-cogs',
                 'uri' => '/',
@@ -218,9 +218,9 @@ class AdminCommand extends Command
             Menu::create([
                 'parent_id' => $parent->id,
                 'order' => $lastOrder++,
-                'title' => '脚手架',
-                'icon' => 'fa-keyboard-o',
-                'uri' => '/helpers/scaffold',
+                'title' => '文件',
+                'icon' => 'fa-file',
+                'uri' => '/media',
             ]);
             Menu::create([
                 'parent_id' => $parent->id,
@@ -250,20 +250,13 @@ class AdminCommand extends Command
                 'icon' => 'fa-database',
                 'uri' => '/redis',
             ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '系统日志',
-                'icon' => 'fa-database',
-                'uri' => '/logs',
-            ]);
-            Menu::create([
+            /*Menu::create([
                 'parent_id' => $parent->id,
                 'order' => $lastOrder++,
                 'title' => '备份管理',
                 'icon' => 'fa-copy',
                 'uri' => '/backup',
-            ]);
+            ]);*/
             Menu::create([
                 'parent_id' => $parent->id,
                 'order' => $lastOrder++,
@@ -277,6 +270,13 @@ class AdminCommand extends Command
                 'title' => '系统配置',
                 'icon' => 'fa-gears',
                 'uri' => '/system/settings',
+            ]);
+            Menu::create([
+                'parent_id' => $parent->id,
+                'order' => $lastOrder++,
+                'title' => '系统日志',
+                'icon' => 'fa-database',
+                'uri' => '/logs',
             ]);
 
             $this->line("<info>Menus insert successfully.</info>");
