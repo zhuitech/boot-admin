@@ -39,9 +39,7 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="header">{{ trans('admin.menu') }}</li>
-
-            @each('admin::partials.menu', BackendMenu::sideMenu(), 'item')
-
+            @each('admin::partials.menu', AdminMenu::sideMenu(), 'item')
         </ul>
         <!-- /.sidebar-menu -->
     </section>

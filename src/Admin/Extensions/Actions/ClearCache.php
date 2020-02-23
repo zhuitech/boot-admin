@@ -26,7 +26,7 @@ class ClearCache extends Action
 <li>
     <a class="clear-cache" href="#">
       <i class="fa fa-trash"></i>
-      <span>清理缓存</span>
+      <span>缓存</span>
     </a>
 </li>
 HTML;

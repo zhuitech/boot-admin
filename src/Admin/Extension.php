@@ -31,23 +31,23 @@ class Extension extends \Encore\Admin\Extension
 
         // 根菜单
         if (empty($rootMenu = $menuModel::where(['title' => $root['title'], 'parent_id' => 0])->first())) {
-            $rootOrder = $menuModel::where('parent_id', 0)->max('order');
+            $order = $menuModel::where('parent_id', 0)->max('order') + 1;
             $rootMenu = $menuModel::create([
                 'parent_id' => 0,
-                'order' => ++$rootOrder,
+                'order' => $order,
                 'title' => $root['title'] ?? '',
                 'icon' => $root['icon'] ?? '',
                 'uri' => $root['uri'] ?? '',
             ]);
         }
 
-        $lastOrder = $rootMenu->order * 100;
         foreach ($root['children'] ?? [] as $parent) {
             // 父菜单
             if (empty($parentMenu = $menuModel::where(['title' => $parent['title'] ?? '', 'parent_id' => $rootMenu->id])->first())) {
+                $order = $menuModel::where('parent_id', $rootMenu->id)->max('order') + 1;
                 $parentMenu = $menuModel::create([
                     'parent_id' => $rootMenu->id,
-                    'order' => $lastOrder++,
+                    'order' => $order,
                     'title' => $parent['title'] ?? '',
                     'icon' => $parent['icon'] ?? '',
                     'uri' => $parent['uri'] ?? '',
@@ -59,9 +59,10 @@ class Extension extends \Encore\Admin\Extension
             // 子菜单
             foreach ($parent['children'] ?? [] as $child) {
                 if (empty($childMenu = $menuModel::where(['title' => $child['title'] ?? '', 'parent_id' => $parentMenu->id])->first())) {
+                    $order = $menuModel::where('parent_id', $parentMenu->id)->max('order') + 1;
                     $menuModel::create([
                         'parent_id' => $parentMenu->id,
-                        'order' => $lastOrder++,
+                        'order' => $order,
                         'title' => $child['title'] ?? '',
                         'icon' => $child['icon'] ?? '',
                         'uri' => $child['uri'] ?? '',

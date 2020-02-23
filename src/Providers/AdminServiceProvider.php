@@ -4,7 +4,6 @@ namespace ZhuiTech\BootAdmin\Providers;
 
 use Admin;
 use Encore\Admin\Form;
-use Encore\Admin\Grid;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Show;
 use Encore\Admin\Widgets\Navbar\Fullscreen;
@@ -14,16 +13,15 @@ use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
-use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
-use ZhuiTech\BootAdmin\Console\MenuCommand;
+use ZhuiTech\BootAdmin\Console\ExportMenuCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Models\Staff;
-use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
@@ -31,6 +29,11 @@ class AdminServiceProvider extends AbstractServiceProvider
     protected $commands = [
         AdminCommand::class,
         ServiceCommand::class,
+        ExportMenuCommand::class,
+    ];
+
+    protected $facades = [
+        'AdminMenu' => \ZhuiTech\BootAdmin\Admin\Menu\Facade::class
     ];
 
     /**

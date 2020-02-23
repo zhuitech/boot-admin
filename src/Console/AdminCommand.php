@@ -6,6 +6,7 @@ use Encore\Admin\Auth\Database\Menu;
 use Encore\Admin\Auth\Database\Permission;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Console\Command;
+use ZhuiTech\BootAdmin\Admin\Extension;
 use ZhuiTech\BootAdmin\Seeds\AdminTableSeeder;
 use Encore\Admin\Auth\Database\Administrator;
 
@@ -146,140 +147,101 @@ class AdminCommand extends Command
 
     private function menus()
     {
-        if (!Menu::where(['title' => '系统', 'parent_id' => 0])->first()) {
-            $rootOrder = 1;
-            $root = Menu::create([
-                'parent_id' => 0,
-                'order' => $rootOrder,
-                'title' => '系统',
-                'icon' => 'fa-cogs',
-                'uri' => '/',
-            ]);
-
-            $lastOrder = $rootOrder * 100;
-            $parent = Menu::create([
-                'parent_id' => $root->id,
-                'order' => $lastOrder++,
-                'title' => '控制台',
-                'icon' => 'fa-bar-chart',
-                'uri' => '/',
-            ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
-                'order' => $lastOrder++,
-                'title' => '安全',
-                'icon' => 'fa-tasks',
-                'uri' => '',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '管理员',
-                'icon' => 'fa-users',
-                'uri' => '/auth/users',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '角色管理',
-                'icon' => 'fa-user',
-                'uri' => '/auth/roles',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '权限管理',
-                'icon' => 'fa-ban',
-                'uri' => '/auth/permissions',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '菜单管理',
-                'icon' => 'fa-bars',
-                'uri' => '/auth/menu',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '操作日志',
-                'icon' => 'fa-history',
-                'uri' => '/auth/logs',
-            ]);
-
-            $parent = Menu::create([
-                'parent_id' => $root->id,
-                'order' => $lastOrder++,
-                'title' => '工具',
-                'icon' => 'fa-gears',
-                'uri' => '',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '文件',
-                'icon' => 'fa-file',
-                'uri' => '/media',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '数据库',
-                'icon' => 'fa-database',
-                'uri' => '/helpers/terminal/database',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '命令行',
-                'icon' => 'fa-terminal',
-                'uri' => '/helpers/terminal/artisan',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '路由',
-                'icon' => 'fa-list-alt',
-                'uri' => '/helpers/routes',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => 'Redis',
-                'icon' => 'fa-database',
-                'uri' => '/redis',
-            ]);
-            /*Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '备份管理',
-                'icon' => 'fa-copy',
-                'uri' => '/backup',
-            ]);*/
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '计划任务',
-                'icon' => 'fa-clock-o',
-                'uri' => '/scheduling',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '系统配置',
-                'icon' => 'fa-gears',
-                'uri' => '/system/settings',
-            ]);
-            Menu::create([
-                'parent_id' => $parent->id,
-                'order' => $lastOrder++,
-                'title' => '系统日志',
-                'icon' => 'fa-database',
-                'uri' => '/logs',
-            ]);
-
-            $this->line("<info>Menus insert successfully.</info>");
-        }
+        $menus = [
+            'title' => '系统',
+            'icon' => 'fa-cogs',
+            'uri' => '/',
+            'children' => [
+                [
+                    'title' => '控制台',
+                    'icon' => 'fa-bar-chart',
+                    'uri' => '/',
+                ],
+                [
+                    'title' => '安全管理',
+                    'icon' => 'fa-tasks',
+                    'children' => [
+                        [
+                            'title' => '管理员',
+                            'icon' => 'fa-users',
+                            'uri' => '/auth/users',
+                        ],
+                        [
+                            'title' => '角色管理',
+                            'icon' => 'fa-user',
+                            'uri' => '/auth/roles',
+                        ],
+                        [
+                            'title' => '权限管理',
+                            'icon' => 'fa-ban',
+                            'uri' => '/auth/permissions',
+                        ],
+                        [
+                            'title' => '菜单管理',
+                            'icon' => 'fa-bars',
+                            'uri' => '/auth/menu',
+                        ],
+                        [
+                            'title' => '操作日志',
+                            'icon' => 'fa-history',
+                            'uri' => '/auth/logs',
+                        ],
+                    ],
+                ],
+                [
+                    'title' => '配置管理',
+                    'icon' => 'fa-gears',
+                    'children' => [
+                        [
+                            'title' => '系统设置',
+                            'icon' => 'fa-cog',
+                            'uri' => '/system/settings',
+                        ],
+                    ],
+                ],
+                [
+                    'title' => '实用工具',
+                    'icon' => 'fa-wrench',
+                    'children' => [
+                        [
+                            'title' => '文件管理',
+                            'icon' => 'fa-file',
+                            'uri' => '/media',
+                        ],
+                        [
+                            'title' => '命令行',
+                            'icon' => 'fa-terminal',
+                            'uri' => '/helpers/terminal/artisan',
+                        ],
+                        [
+                            'title' => '路由',
+                            'icon' => 'fa-list-alt',
+                            'uri' => '/helpers/routes',
+                        ],
+                        [
+                            'title' => '数据库',
+                            'icon' => 'fa-database',
+                            'uri' => '/helpers/terminal/database',
+                        ],
+                        [
+                            'title' => 'Redis',
+                            'icon' => 'fa-codepen',
+                            'uri' => '/redis',
+                        ],
+                        [
+                            'title' => '计划任务',
+                            'icon' => 'fa-clock-o',
+                            'uri' => '/scheduling',
+                        ],
+                        [
+                            'title' => '系统日志',
+                            'icon' => 'fa-history',
+                            'uri' => '/logs',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        Extension::createMenuTree($menus);
     }
 }

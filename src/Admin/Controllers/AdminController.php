@@ -113,7 +113,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
         $breadcrumbs = [];
         
         // 一级页面
-        $top = \BackendMenu::getCurrentTopMenu();
+        $top = \AdminMenu::getCurrentTopMenu();
         if (!empty($top)) {
             $breadcrumbs[] = ['text' => $top['title'], 'url' => $top['uri']];
         }
