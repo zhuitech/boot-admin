@@ -17,5 +17,8 @@ Route::group(['namespace' => 'ZhuiTech\BootAdmin\Admin\Controllers'], function (
     Route::get('export/downLoadFile', 'ExportController@downLoadFile')->name('admin.export.downLoadFile');
 
     // 系统设置
-    Route::get('system/settings', 'SystemController@settings')->name('admin.system.settings');
+    Route::get('setting/system', 'SystemController@systemSetting')->name('admin.system.settings');
+
+    // 数据转换
+    Route::get('helpers/convert', 'SystemController@convertHelper');
 });

@@ -2,13 +2,11 @@
 
 namespace ZhuiTech\BootAdmin\Console;
 
-use Encore\Admin\Auth\Database\Menu;
+use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Auth\Database\Permission;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Console\Command;
 use ZhuiTech\BootAdmin\Admin\Extension;
-use ZhuiTech\BootAdmin\Seeds\AdminTableSeeder;
-use Encore\Admin\Auth\Database\Administrator;
 
 class AdminCommand extends Command
 {
@@ -195,7 +193,7 @@ class AdminCommand extends Command
                         [
                             'title' => '系统设置',
                             'icon' => 'fa-cog',
-                            'uri' => '/system/settings',
+                            'uri' => '/setting/system',
                         ],
                     ],
                 ],
@@ -203,6 +201,16 @@ class AdminCommand extends Command
                     'title' => '实用工具',
                     'icon' => 'fa-wrench',
                     'children' => [
+                        [
+                            'title' => '系统日志',
+                            'icon' => 'fa-history',
+                            'uri' => '/logs',
+                        ],
+                        [
+                            'title' => '计划任务',
+                            'icon' => 'fa-clock-o',
+                            'uri' => '/scheduling',
+                        ],
                         [
                             'title' => '文件管理',
                             'icon' => 'fa-file',
@@ -229,14 +237,9 @@ class AdminCommand extends Command
                             'uri' => '/redis',
                         ],
                         [
-                            'title' => '计划任务',
-                            'icon' => 'fa-clock-o',
-                            'uri' => '/scheduling',
-                        ],
-                        [
-                            'title' => '系统日志',
-                            'icon' => 'fa-history',
-                            'uri' => '/logs',
+                            'title' => '数据转换',
+                            'icon' => 'fa-retweet',
+                            'uri' => '/helpers/convert',
                         ],
                     ],
                 ],

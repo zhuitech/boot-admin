@@ -2,28 +2,73 @@
 
 namespace ZhuiTech\BootAdmin\Admin;
 
+use DB;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class Extension extends \Encore\Admin\Extension
 {
+    public $records = [
+        /*'table' => [
+            'fields' => [],
+            'records' => [],
+        ],*/
+    ];
+
+    public $settings = [];
+
+    /**
+     * 导入模块
+     * @throws \Throwable
+     */
     public static function import()
     {
         $extension = static::getInstance();
 
-        $menu = $extension->menu();
-        if ($menu) {
-            static::createMenuTree($menu);
-        }
+        DB::transaction(function () use ($extension) {
+            $output = new ConsoleOutput();
 
-        $permission = $extension->permission();
-        if ($permission) {
-            if ($extension->validatePermission($permission)) {
-                extract($permission);
-                static::createPermission($name, $slug, $path);
+            // 菜单
+            $menu = $extension->menu();
+            if ($menu) {
+                static::createMenuTree($menu);
             }
-        }
+
+            // 权限
+            $permission = $extension->permission();
+            if ($permission) {
+                if ($extension->validatePermission($permission)) {
+                    extract($permission);
+                    static::createPermission($permission['name'], $permission['slug'], $permission['path']);
+                }
+            }
+
+            // 数据
+            if ($extension->records) {
+                foreach ($extension->records as $table => $data) {
+                    self::insertRecords($table, $data['fields'], $data['records']);
+                }
+            }
+
+            // 配置
+            if ($extension->settings) {
+                $i = 0;
+                foreach ($extension->settings as $key => $value) {
+                    if (empty(settings($key))) {
+                        settings([$key => $value]);
+                        $i++;
+                    }
+                }
+                if ($i > 0) {
+                    $output->writeln("<info>成功写入[{$i}]条配置数据</info>");
+                }
+            }
+        });
     }
 
+    /**
+     * 创建菜单树
+     * @param $root
+     */
     public static function createMenuTree($root)
     {
         $menuModel = config('admin.database.menu_model');
@@ -71,6 +116,32 @@ class Extension extends \Encore\Admin\Extension
                     $output->writeln("<info>菜单[{$child['title']}]创建成功</info>");
                 }
             }
+        }
+    }
+
+    /**
+     * 插入记录
+     * @param $table
+     * @param $fields
+     * @param $records
+     */
+    public static function insertRecords($table, $fields, $records)
+    {
+        $output = new ConsoleOutput();
+        $count = DB::table($table)->count();
+
+        if ($count == 0) {
+            $inserts = [];
+            foreach ($records as $record) {
+                $insert = [];
+                for ($i = 0; $i < count($fields); $i++) {
+                    $insert[$fields[$i]] = $record[$i];
+                }
+                $inserts[] = $insert;
+            }
+            $count1 = DB::table($table)->insertOrIgnore($inserts);
+
+            $output->writeln("<info>成功向表[{$table}]插入{$count1}条数据</info>");
         }
     }
 }
