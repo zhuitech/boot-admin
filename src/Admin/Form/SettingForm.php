@@ -8,10 +8,17 @@ use Encore\Admin\Form\Field\File;
 use Encore\Admin\Form\Field\Number;
 use Encore\Admin\Form\Field\Rate;
 use Encore\Admin\Widgets\Form;
+use Illuminate\Support\Str;
 
 class SettingForm extends Form
 {
     public $title = 'Settings';
+
+    /**
+     * 字段名映射
+     * @var array
+     */
+    protected $keyMapping = [];
 
     public function handle()
     {
@@ -27,15 +34,26 @@ class SettingForm extends Form
             // 预处理值
             $value = $field->prepare($value);
 
+            // 获取key
+            $key = $this->keyMapping[$field->column()] ?? $field->column();
+
             // 跳过没有修改的 config
-            if (in_array($field->column(), config('backend.settings') ?? [])) {
-                if ($value == config($field->column())) {
+            if (Str::contains($key, '.')) {
+                $original = config($key);
+                $new = $value;
+
+                if (is_string($original)) {
+                    $original = str_replace("\r\n", "\n", $original);
+                    $new = str_replace("\r\n", "\n", $value);
+                }
+
+                if ($new == $original) {
                     continue;
                 }
             }
 
             // 放入修改列表
-            $data[$field->column()] = $value;
+            $data[$key] = $value;
         }
 
         // 提交修改
@@ -64,18 +82,22 @@ class SettingForm extends Form
             // 跳过系统字段
             if (in_array($field->column(), ['_form_'])) continue;
 
-            // 获取默认值
+            // 默认值
             $default = '';
             if ($field instanceof Number || $field instanceof Currency || $field instanceof Rate || $field instanceof Decimal) {
                 $default = 0;
             }
 
+            // 获取key
+            $key = $this->keyMapping[$field->column()] ?? $field->column();
+
             // 使用config默认值
-            if (in_array($field->column(), config('backend.settings') ?? [])) {
-                $default = config($field->column());
+            if (Str::contains($key, '.')) {
+                $default = config($key, $default);
             }
 
-            $data[$field->column()] = settings($field->column(), $default);
+            // 加载设置
+            $data[$field->column()] = settings($key, $default);
         }
         return $data;
     }

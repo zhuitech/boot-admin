@@ -28,10 +28,7 @@
         "laravel": {
             "providers": [
                 "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
-            ],
-            "aliases": {
-                "BackendMenu": "ZhuiTech\\BootAdmin\\Admin\\Menu\\Facade"
-            }
+            ]
         }
     }
 }

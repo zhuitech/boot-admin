@@ -4,7 +4,6 @@ namespace ZhuiTech\BootAdmin\Providers;
 
 use Admin;
 use Encore\Admin\Form;
-use Encore\Admin\Grid;
 use Encore\Admin\Grid\Column;
 use Encore\Admin\Show;
 use Encore\Admin\Widgets\Navbar\Fullscreen;
@@ -17,12 +16,12 @@ use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
-use ZhuiTech\BootAdmin\Console\MenuCommand;
+use ZhuiTech\BootAdmin\Console\ExportMenuCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Models\Staff;
-use ZhuiTech\BootAdmin\Repositories\SettingRepository;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
@@ -30,6 +29,11 @@ class AdminServiceProvider extends AbstractServiceProvider
     protected $commands = [
         AdminCommand::class,
         ServiceCommand::class,
+        ExportMenuCommand::class,
+    ];
+
+    protected $facades = [
+        'AdminMenu' => \ZhuiTech\BootAdmin\Admin\Menu\Facade::class
     ];
 
     /**
@@ -53,7 +57,6 @@ class AdminServiceProvider extends AbstractServiceProvider
         }
 
         $this->configAdmin();
-        $this->loadSettings();
 
         parent::boot();
     }
@@ -82,11 +85,13 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('image', Image::class);
         Column::extend('admin', AdminUser::class);
         Column::extend('remoteUser', RemoteUser::class);
+        Column::extend('timestamp', Timestamp::class);
         
         Form::extend('editor', CKEditor::class);
         
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
+        Show::extend('timestamp', \ZhuiTech\BootAdmin\Admin\Show\Timestamp::class);
 
         Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
             $navbar->left(view('admin::partials.topbar-left'));
@@ -121,20 +126,5 @@ class AdminServiceProvider extends AbstractServiceProvider
             ],
         ];
         config(Arr::dot($auth, 'auth.'));
-    }
-
-    /**
-     * 加载设置
-     */
-    private function loadSettings()
-    {
-        $settings = [];
-        foreach (config('backend.settings') as $item) {
-            $value = settings($item);
-            if (!empty($value)) {
-                $settings[$item] = $value;
-            }
-        }
-        config($settings);
     }
 }

@@ -1,3 +1,20 @@
+function activeMenuItem()
+{
+    let menu = $('.sidebar-menu li > a[href$="' + (location.pathname + location.search + location.hash) + '"]').parent().addClass('active');
+    if (menu.length === 0) {
+        menu = $('.sidebar-menu li.active');
+    }
+    menu.parents('ul.treeview-menu').addClass('menu-open');
+    menu.parents('li.treeview').addClass('active');
+}
+
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
 $.fn.editable.defaults.params = function (params) {
     params._token = LA.token;
     params._editable = 1;
@@ -32,7 +49,7 @@ NProgress.configure({parent: '#app'});
 
 $(document).on('pjax:timeout', function (event) {
     event.preventDefault();
-})
+});
 
 $(document).on('submit', 'form[pjax-container]', function (event) {
     $.pjax.submit(event, '#pjax-container')
@@ -69,11 +86,7 @@ $(document).on('pjax:complete', function (xhr) {
 
     // 修正CSRF_TOKEN
     $('#pjax-container input[name=_token]').val(LA.token);
-
-    // 激活菜单项
-    var menu = $('.sidebar-menu li > a[href$="' + (location.pathname + location.search + location.hash) + '"]').parent().addClass('active');
-    menu.parents('ul.treeview-menu').addClass('menu-open');
-    menu.parents('li.treeview').addClass('active');
+    activeMenuItem();
 });
 
 $(document).click(function () {
@@ -86,9 +99,7 @@ $(function () {
         $parent.siblings('.treeview.active').find('> a').trigger('click');
         $parent.siblings().removeClass('active').find('li').removeClass('active');
     });
-    var menu = $('.sidebar-menu li > a[href$="' + (location.pathname + location.search + location.hash) + '"]').parent().addClass('active');
-    menu.parents('ul.treeview-menu').addClass('menu-open');
-    menu.parents('li.treeview').addClass('active');
+    activeMenuItem();
 
     $('[data-toggle="popover"]').popover();
 
@@ -185,13 +196,6 @@ $('#totop').on('click', function (e) {
 })(jQuery);
 
 $(function () {
-    function getQueryString(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]);
-        return null;
-    }
-
     // 加载页面
     var load = getQueryString('load');
     if (load) {
