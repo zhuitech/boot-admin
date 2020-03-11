@@ -2,11 +2,10 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
-use Encore\Admin\Facades\Admin;
+use Admin;
+use AdminMenu;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use ZhuiTech\BootLaravel\Helpers\ProxyClient;
 use ZhuiTech\BootLaravel\Models\User;
 
@@ -37,7 +36,7 @@ class ServiceProxyController extends AdminController
 
         // 把直接访问svc页面的请求通过顶级菜单转发
         if ($request->method() == 'GET' && !$request->ajax() && $response->getStatusCode() == 200) {
-            $top = admin_url(with(\Facade::getCurrentTopMenu())['uri']);
+            $top = admin_url(with(AdminMenu::getCurrentTopMenu())['uri']);
             $current = request()->getPathInfo();
             if ($top != $current) {
                 // 通过当前顶级菜单做pjax跳转
