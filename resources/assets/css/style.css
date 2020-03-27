@@ -33,3 +33,8 @@
     position: relative;
     z-index: 2050;
 }
+
+.krajee-default.file-preview-frame .kv-file-content {
+    width: 213px;
+    height: auto !important;
+}
