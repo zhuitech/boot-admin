@@ -4,14 +4,15 @@ namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Grid\Displayers\DropdownActions;
-use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Encore\Admin\Layout\Content;
+use Illuminate\Database\Eloquent\Model;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
+use Encore\Admin\Grid\Displayers\DropdownActions;
+use ZhuiTech\BootAdmin\Admin\Grid\Tools\BatchDelete;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
@@ -110,24 +111,32 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     protected function configContent(Content $content, $title = null, $description = null, $action = null)
     {
-        $breadcrumbs = [];
+		$breadcrumbs = [];
+		$path = Str::replaceFirst(admin_base_path(), '', request()->getPathInfo());
         
-        // 一级页面
+        // 一级
         $top = \AdminMenu::getCurrentTopMenu();
         if (!empty($top)) {
-            $breadcrumbs[] = ['text' => $top['title'], 'url' => $top['uri']];
-        }
-        
-        // 二级页面
-        $paths = explode('/', Str::replaceFirst(admin_base_path(), '', request()->getPathInfo()));
-        array_pop($paths);
-        $breadcrumbs[] = ['text' => $title, 'url' => implode('/', $paths)];
+            array_push($breadcrumbs, ['text' => $top['title'], 'url' => $top['uri']]);
+		}
+		
+		// 二级：菜单树中最近菜单项
+		$node = \AdminMenu::getCurrentNode();
+		if (!empty($node)) {
+            array_push($breadcrumbs, ['text' => $node['title'], 'url' => $node['uri']]);
+			
+			// 三级：子项列表
+			$pathes = explode('/', trim(Str::replaceFirst($node['uri'], '', $path), '/'));
+			if (count($pathes) >= 2 && !in_array($pathes[1], ['create', 'edit'])) {
+				array_push($breadcrumbs, ['text' => $title, 'url' => implode('/', [$node['uri'], $pathes[0], $pathes[1]])]);
+			}
+		}
 
-        // 三级页面
-        if (!empty($action)) {
-            $breadcrumbs[] = ['text' => $action];
-        }
-        
+		// 三级/四级：create/edit/view
+		if (!empty($action)) {
+			array_push($breadcrumbs, ['text' => $action]);
+		}
+
         return $content->title($title)->description($description)->breadcrumb(... $breadcrumbs);
     }
 
@@ -145,20 +154,18 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 
         switch ($mode) {
             case 'editable':
-                $model->orderBy('created_at', 'desc');
                 $grid->setActionClass(DropdownActions::class)
                     ->actions(function (Grid\Displayers\Actions $actions) {
                         $actions->disableView();
                     })
                     ->batchActions(function (Grid\Tools\BatchActions $batch) {
-                        $batch->disableDelete();
+                       $batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
                     })->filter(function(Grid\Filter $filter){
                         $filter->disableIdFilter();
                     });
                 break;
 
             case 'readonly':
-                $model->orderBy('created_at', 'desc');
                 $grid->setActionClass(DropdownActions::class)->disableCreateButton()
                     ->actions(function (Grid\Displayers\Actions $actions) {
                         $actions->disableDelete()->disableEdit();
@@ -171,17 +178,21 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
                 break;
 
             case 'removable':
-                $model->orderBy('created_at', 'desc');
                 $grid->setActionClass(DropdownActions::class)->disableCreateButton()
                     ->actions(function (Grid\Displayers\Actions $actions) {
                         $actions->disableEdit()->disableView();
                     })
                     ->batchActions(function (Grid\Tools\BatchActions $batch) {
-                        $batch->disableDelete();
+                        $batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
                     })->filter(function(Grid\Filter $filter){
                         $filter->disableIdFilter();
                     });
                 break;
+        }
+
+        // 默认排序
+        if (empty($model->orders)) {
+            $model->orderBy('created_at', 'desc');
         }
         
         return $grid;
