@@ -16,6 +16,7 @@ use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Thumbnail;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
@@ -86,6 +87,7 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('admin', AdminUser::class);
         Column::extend('remoteUser', RemoteUser::class);
         Column::extend('timestamp', Timestamp::class);
+        Column::extend('thumbnail', Thumbnail::class);
         
         Form::extend('editor', CKEditor::class);
         
