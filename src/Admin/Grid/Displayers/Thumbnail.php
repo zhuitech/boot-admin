@@ -21,7 +21,24 @@ class Thumbnail extends AbstractDisplayer
      */
     public function display($width = 200, $height = 200)
     {
-        $src = \Croppa::url(storage_url($this->value), $width, $height);
-        return "<img src='$src' class='img img-thumbnail' />";
+        if ($this->value) {
+            $url = storage_url($this->value);
+            $src = \Croppa::url($url, $width, $height);
+            return <<<EOT
+        <a href="{$url}" target="_blank"><img src="{$src}" class="img img-thumbnail" /></a>
+EOT;
+        } else {
+            $src = url('vendor/boot-admin/img/no-image.png');
+
+            $style = '';
+            if ($width)
+                $style .= "max-width:{$width}px;";
+            if ($height)
+                $style .= "max-height:{$height}px;";
+
+            return <<<EOT
+        <img src="{$src}" class="img img-thumbnail" style="{$style}" />
+EOT;
+        }
     }
 }
