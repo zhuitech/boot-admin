@@ -16,7 +16,8 @@ class ServiceProxyController extends AdminController
         return $content
             ->title('Dashboard')
             ->description('Description...')
-            ->row(function (Row $row) {});
+            ->row(function (Row $row) {
+            });
     }
 
     /**
@@ -41,9 +42,14 @@ class ServiceProxyController extends AdminController
             if ($top != $current) {
                 // 通过当前顶级菜单做pjax跳转
                 return redirect($top . '?' . http_build_query(['load' => $current]));
-            } 
+            }
         }
 
-        return $response;
+        // 修改 csrf_token
+        $content = (string) $response->getBody();
+        $content = preg_replace('/"_token":"(\w|\d)+"/i', '"_token":"' . csrf_token() . '"', $content);
+        $content = preg_replace('/_token:\'(\w|\d)+\'/i', '_token:\'' . csrf_token() . '\'', $content);
+
+        return response($content, $response->getStatusCode(), $response->getHeaders());
     }
 }
