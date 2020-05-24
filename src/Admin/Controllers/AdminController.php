@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
 use Encore\Admin\Grid\Displayers\DropdownActions;
-use ZhuiTech\BootAdmin\Admin\Grid\Tools\BatchDelete;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
@@ -159,7 +158,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
                         $actions->disableView();
                     })
                     ->batchActions(function (Grid\Tools\BatchActions $batch) {
-                       $batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
+                       //$batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
                     })->filter(function(Grid\Filter $filter){
                         $filter->disableIdFilter();
                     });
@@ -183,7 +182,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
                         $actions->disableEdit()->disableView();
                     })
                     ->batchActions(function (Grid\Tools\BatchActions $batch) {
-                        $batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
+                        //$batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
                     })->filter(function(Grid\Filter $filter){
                         $filter->disableIdFilter();
                     });
