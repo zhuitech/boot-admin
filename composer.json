@@ -17,6 +17,7 @@
         "laravel-admin-ext/backup": "~1.0",
         "laravel-admin-ext/media-manager": "~1.0",
         "laravel-admin-ext/chartjs": "~1.0",
+        "dianwoung/large-file-upload": "^0.0.3",
         "overtrue/laravel-ueditor": "~1.0"
     },
     "autoload": {
