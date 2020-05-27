@@ -13,6 +13,7 @@ use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
@@ -90,6 +91,7 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('timestamp', Timestamp::class);
         Column::extend('thumbnail', Thumbnail::class);
         Column::extend('edit', Edit::class);
+        Column::extend('call', Call::class);
         
         Form::extend('editor', CKEditor::class);
         
