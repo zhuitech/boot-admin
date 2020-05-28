@@ -109,7 +109,7 @@ class AdminServiceProvider extends AbstractServiceProvider
             $navbar->left(view('admin::partials.topbar-left'));
             $navbar->right(view('admin::partials.topbar-right'));
 
-            $navbar->right(Link::make('设置', 'system/settings', 'fa-cog'));
+            $navbar->right(Link::make('设置', 'setting/system', 'fa-cog'));
             $navbar->right(new ClearCache());
             $navbar->right(new Fullscreen());
             $navbar->right(new AutoRefresh());
