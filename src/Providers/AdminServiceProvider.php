@@ -17,6 +17,7 @@ use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\LargeFile;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Thumbnail;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
@@ -95,8 +96,10 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('thumbnail', Thumbnail::class);
         Column::extend('edit', Edit::class);
         Column::extend('call', Call::class);
+        Column::extend('largefile', LargeFile::class);
         
         Form::extend('editor', CKEditor::class);
+        Form::extend('largefile', \Encore\LargeFileUpload\LargeFileField::class);
         
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
