@@ -98,7 +98,8 @@ class AdminServiceProvider extends AbstractServiceProvider
         Column::extend('call', Call::class);
         Column::extend('largefile', LargeFile::class);
         
-        Form::extend('editor', CKEditor::class);
+        //Form::extend('editor', CKEditor::class);
+        Form::extend('editor', \ghost\CKEditor\CKEditor::class);
         Form::extend('largefile', \Encore\LargeFileUpload\LargeFileField::class);
         
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
