@@ -53,11 +53,11 @@ class AdminServiceProvider extends AbstractServiceProvider
         $this->loadRoutes();
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([base_path('vendor/overtrue/laravel-ueditor/src/assets/ueditor') => public_path('vendor/ueditor')], 'public');
             $this->publishes([base_path('vendor/encore/laravel-admin/resources/assets') => public_path('vendor/laravel-admin')], 'public');
             $this->publishes([base_path('vendor/laravel-admin-ext/chartjs/resources/assets') => public_path('vendor/laravel-admin-ext/chartjs')], 'public');
             $this->publishes([base_path('vendor/dianwoung/large-file-upload/resources/assets') => public_path('vendor/laravel-admin-ext/large-file-upload')], 'public');
             $this->publishes([base_path('vendor/peinhu/aetherupload-laravel/assets') => public_path('vendor/aetherupload/js')], 'public');
+            $this->publishes([base_path('vendor/ghost/ckeditor/resources/assets') => public_path('vendor/ghost/ckeditor')], 'public');
 
             $this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
             $this->publishes([__DIR__ . '/../../resources/laravel-admin' => public_path('vendor/laravel-admin')], 'public');
