@@ -25,8 +25,18 @@ class PopupEdit extends RowAction
         "data-backdrop" => "static",
         "data-keyboard" => "false"
     ];
+	/**
+	 * @var null
+	 */
+	private $url;
 
-    /**
+	public function __construct($url = NULL)
+    {
+	    $this->url = $url;
+	    parent::__construct();
+    }
+
+	/**
      * @return array|null|string
      */
     public function name()
@@ -36,7 +46,9 @@ class PopupEdit extends RowAction
 
     public function render()
     {
-        $this->attribute('data-url', "{$this->getResource()}/{$this->getKey()}/edit");
+		$url= $this->url ? magic_replace($this->url, ['key' => $this->getKey()]) : "{$this->getResource()}/{$this->getKey()}/edit";
+
+        $this->attribute('data-url', $url);
         return parent::render();
     }
 

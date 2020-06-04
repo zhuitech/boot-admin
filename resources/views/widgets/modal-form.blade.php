@@ -5,7 +5,7 @@
 @endsection
 
 @section('body')
-    {!! $form ?? '' !!}
+    {!! $form ? str_replace('pjax-container', '', $form) : '' !!}
 @endsection
 
 @section('footer')

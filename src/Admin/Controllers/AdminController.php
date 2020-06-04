@@ -181,9 +181,6 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
      */
     protected function configForm(Form $form)
     {
-        $form->display('created_at', '创建时间');
-        $form->display('updated_at', '更新时间');
-
         $this->configFormTools($form->builder()->getTools());
         $this->configFormFooter($form->builder()->getFooter());
 
