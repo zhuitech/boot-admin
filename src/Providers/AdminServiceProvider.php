@@ -48,7 +48,6 @@ class AdminServiceProvider extends AbstractServiceProvider
     public function boot()
     {
         app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views');
-        $this->loadMigrationsFrom(base_path('vendor/encore/laravel-admin/database/migrations'));
         $this->loadMigrations();
         $this->loadRoutes();
 

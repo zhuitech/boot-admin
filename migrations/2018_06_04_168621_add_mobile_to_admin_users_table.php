@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of ibrand/backend.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Jialeo\LaravelSchemaExtend\Schema;
 
 class AddMobileToAdminUsersTable extends Migration
 {
@@ -21,8 +12,10 @@ class AddMobileToAdminUsersTable extends Migration
     public function up()
     {
         Schema::table('admin_users', function (Blueprint $table) {
-            $table->string('mobile')->after('name')->unique()->nullable();
-            $table->string('email')->after('username')->unique()->nullable();
+            $table->string('mobile')->comment('手机号码')->after('name')->unique()->nullable();
+            $table->string('email')->comment('邮箱地址')->after('username')->unique()->nullable();
+	        $table->integer('status')->comment('状态')->default(1);
+	        $table->comment = '后台用户表';
         });
     }
 
@@ -32,8 +25,7 @@ class AddMobileToAdminUsersTable extends Migration
     public function down()
     {
         Schema::table('admin_users', function (Blueprint $table) {
-            $table->dropColumn('mobile');
-            $table->dropColumn('email');
+            $table->dropColumn(['mobile', 'email', 'status']);
         });
     }
 }

@@ -1,17 +1,8 @@
 <?php
 
-/*
- * This file is part of ibrand/backend.
- *
- * (c) iBrand <https://www.ibrand.cc>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Jialeo\LaravelSchemaExtend\Schema;
 
 class AddBlankToAdminMenuTable extends Migration
 {
@@ -21,7 +12,9 @@ class AddBlankToAdminMenuTable extends Migration
     public function up()
     {
         Schema::table('admin_menu', function (Blueprint $table) {
-            $table->integer('blank')->after('icon')->default(0);
+            $table->integer('blank')->comment('弹出新窗口')->after('icon')->default(0);
+	        $table->string('icon')->comment('图标')->nullable()->change();
+	        $table->comment = '后台菜单表';
         });
     }
 
@@ -31,7 +24,7 @@ class AddBlankToAdminMenuTable extends Migration
     public function down()
     {
         Schema::table('admin_menu', function (Blueprint $table) {
-            $table->dropColumn('blank');
+            $table->dropColumn(['blank']);
         });
     }
 }
