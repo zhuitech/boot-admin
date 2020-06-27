@@ -2,11 +2,10 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
-use Encore\Admin\Facades\Admin;
+use Admin;
+use AdminMenu;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use ZhuiTech\BootLaravel\Helpers\ProxyClient;
 use ZhuiTech\BootLaravel\Models\User;
 
@@ -17,7 +16,8 @@ class ServiceProxyController extends AdminController
         return $content
             ->title('Dashboard')
             ->description('Description...')
-            ->row(function (Row $row) {});
+            ->row(function (Row $row) {
+            });
     }
 
     /**
@@ -37,14 +37,19 @@ class ServiceProxyController extends AdminController
 
         // 把直接访问svc页面的请求通过顶级菜单转发
         if ($request->method() == 'GET' && !$request->ajax() && $response->getStatusCode() == 200) {
-            $top = admin_url(with(\Facade::getCurrentTopMenu())['uri']);
+            $top = admin_url(with(AdminMenu::getCurrentTopMenu())['uri']);
             $current = request()->getPathInfo();
             if ($top != $current) {
                 // 通过当前顶级菜单做pjax跳转
                 return redirect($top . '?' . http_build_query(['load' => $current]));
-            } 
+            }
         }
 
-        return $response;
+        // 修改 csrf_token
+        $content = (string) $response->getBody();
+        $content = preg_replace('/"_token":"(\w|\d)+"/i', '"_token":"' . csrf_token() . '"', $content);
+        $content = preg_replace('/_token:\'(\w|\d)+\'/i', '_token:\'' . csrf_token() . '\'', $content);
+
+        return response($content, $response->getStatusCode(), $response->getHeaders());
     }
 }

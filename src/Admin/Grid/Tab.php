@@ -31,7 +31,9 @@ class Tab extends \Encore\Admin\Widgets\Tab
 
         $titles = [];
         foreach ($options as $key => $value) {
-            $query = $grid->model()->getQueryBuilder();
+            $model = $grid->getFilter()->getModel();
+            $query = $model->getQueryBuilder();
+
             if ($key === '') {
                 $count = $query->count();
             } else {

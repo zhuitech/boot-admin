@@ -19,29 +19,41 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PopupEdit extends RowAction
 {
-    protected $attributes = [
-        "data-toggle" => "modal",
-        "data-target" => "#modal",
-        "data-backdrop" => "static",
-        "data-keyboard" => "false"
-    ];
+	protected $attributes = [
+		"data-toggle" => "modal",
+		"data-target" => "#modal",
+		"data-backdrop" => "static",
+		"data-keyboard" => "false"
+	];
+	/**
+	 * @var null
+	 */
+	private $url;
 
-    /**
-     * @return array|null|string
-     */
-    public function name()
-    {
-        return __('admin.edit');
-    }
+	public function __construct($url = NULL)
+	{
+		$this->url = $url;
+		parent::__construct();
+	}
 
-    public function render()
-    {
-        $this->attribute('data-url', "{$this->getResource()}/{$this->getKey()}/edit");
-        return parent::render();
-    }
+	/**
+	 * @return array|null|string
+	 */
+	public function name()
+	{
+		return __('admin.edit');
+	}
 
-    public function handle(Model $model)
-    {
-        return $this->response()->success();
-    }
+	public function render()
+	{
+		$url= $this->url ? magic_replace($this->url, ['key' => $this->getKey()]) : "{$this->getResource()}/{$this->getKey()}/edit";
+
+		$this->attribute('data-url', $url);
+		return parent::render();
+	}
+
+	public function handle(Model $model)
+	{
+		return $this->response()->success();
+	}
 }
