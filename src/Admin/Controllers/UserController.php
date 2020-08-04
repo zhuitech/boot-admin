@@ -54,6 +54,15 @@ class UserController extends \Encore\Admin\Controllers\UserController
             });
         });
 
+	    // 筛选
+	    $grid->filter(function (Grid\Filter $filter) {
+		    $filter->disableIdFilter();
+		    $filter->like('username', '用户名');
+		    $filter->like('name', '名称');
+		    $filter->like('email', '邮箱');
+		    $filter->like('mobile', '手机');
+	    });
+
         return $grid;
     }
 }
