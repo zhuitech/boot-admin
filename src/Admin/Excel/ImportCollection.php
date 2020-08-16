@@ -7,40 +7,40 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 
 class ImportCollection implements ToCollection
 {
-    /**
-     * @var Collection
-     */
-    public $data = [];
+	/**
+	 * @var Collection
+	 */
+	public $data = [];
 
-    public function collection(Collection $rows)
-    {
-        foreach ($rows as $row) {
-            $this->data[] = $row->toArray();
-        }
-    }
+	public function collection(Collection $rows)
+	{
+		foreach ($rows as $row) {
+			$this->data[] = $row->toArray();
+		}
+	}
 
-    /**
-     * 转换标题行为健名
-     * @return array
-     */
-    public function treatTitle()
-    {
-        $result = [];
-        $titles = [];
+	/**
+	 * 转换标题行为健名
+	 * @return array
+	 */
+	public function treatTitle()
+	{
+		$result = [];
+		$titles = [];
 
-        foreach ($this->data as $i => $row) {
-            if ($i === 0) {
-                $titles = $row;
-                continue;
-            }
+		foreach ($this->data as $i => $row) {
+			if ($i === 0) {
+				$titles = $row;
+				continue;
+			}
 
-            $item = [];
-            foreach ($row as $j => $cell) {
-                $item[$titles[$j]] = $cell;
-            }
-            $result[] = $item;
-        }
+			$item = [];
+			foreach ($row as $j => $cell) {
+				$item[$titles[$j]] = $cell;
+			}
+			$result[] = $item;
+		}
 
-        return $result;
-    }
+		return $result;
+	}
 }

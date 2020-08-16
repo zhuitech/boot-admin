@@ -2,6 +2,7 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
+use Croppa;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 /**
@@ -12,33 +13,33 @@ use Encore\Admin\Grid\Displayers\AbstractDisplayer;
  */
 class Thumbnail extends AbstractDisplayer
 {
-    /**
-     * Display method.
-     *
-     * @param int $width
-     * @param int $height
-     * @return mixed
-     */
-    public function display($width = 200, $height = 200)
-    {
-        if ($this->value) {
-            $url = storage_url($this->value);
-            $src = \Croppa::url($url, $width, $height);
-            return <<<EOT
+	/**
+	 * Display method.
+	 *
+	 * @param int $width
+	 * @param int $height
+	 * @return mixed
+	 */
+	public function display($width = 200, $height = 200)
+	{
+		if ($this->value) {
+			$url = storage_url($this->value);
+			$src = Croppa::url($url, $width, $height);
+			return <<<EOT
         <a href="{$url}" target="_blank"><img src="{$src}" class="img img-thumbnail" /></a>
 EOT;
-        } else {
-            $src = url('vendor/boot-admin/img/no-image.png');
+		} else {
+			$src = url('vendor/boot-admin/img/no-image.png');
 
-            $style = '';
-            if ($width)
-                $style .= "max-width:{$width}px;";
-            if ($height)
-                $style .= "max-height:{$height}px;";
+			$style = '';
+			if ($width)
+				$style .= "max-width:{$width}px;";
+			if ($height)
+				$style .= "max-height:{$height}px;";
 
-            return <<<EOT
+			return <<<EOT
         <img src="{$src}" class="img img-thumbnail" style="{$style}" />
 EOT;
-        }
-    }
+		}
+	}
 }

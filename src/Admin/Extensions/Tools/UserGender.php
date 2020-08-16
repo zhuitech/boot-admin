@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Request;
 
 class UserGender extends AbstractTool
 {
-    public function script()
-    {
-        $url = Request::fullUrlWithQuery(['gender' => '_gender_']);
+	public function script()
+	{
+		$url = Request::fullUrlWithQuery(['gender' => '_gender_']);
 
-        return <<<EOT
+		return <<<EOT
 
 $('input:radio.user-gender').change(function () {
 
@@ -23,18 +23,18 @@ $('input:radio.user-gender').change(function () {
 });
 
 EOT;
-    }
+	}
 
-    public function render()
-    {
-        Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        $options = [
-            'all'   => 'All',
-            'm'     => 'Male',
-            'f'     => 'Female',
-        ];
+		$options = [
+			'all' => 'All',
+			'm' => 'Male',
+			'f' => 'Female',
+		];
 
-        return view('admin.tools.gender', compact('options'));
-    }
+		return view('admin.tools.gender', compact('options'));
+	}
 }

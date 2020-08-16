@@ -6,16 +6,16 @@ use Encore\Admin\Grid\Tools\BatchAction;
 
 class ReleasePost extends BatchAction
 {
-    protected $action;
+	protected $action;
 
-    public function __construct($action = 1)
-    {
-        $this->action = $action;
-    }
-    
-    public function script()
-    {
-        return <<<EOT
+	public function __construct($action = 1)
+	{
+		$this->action = $action;
+	}
+
+	public function script()
+	{
+		return <<<EOT
         
 $('{$this->getElementClass()}').on('click', function() {
 
@@ -36,5 +36,5 @@ $('{$this->getElementClass()}').on('click', function() {
 
 EOT;
 
-    }
+	}
 }

@@ -6,9 +6,9 @@ use Encore\Admin\Grid\Tools\AbstractTool;
 
 class DropDown extends AbstractTool
 {
-    public function render()
-    {
-        return <<<EOT
+	public function render()
+	{
+		return <<<EOT
 
 <div class="btn-group">
     <button type="button" class="btn btn-sm btn-default">操作</button>
@@ -27,5 +27,5 @@ class DropDown extends AbstractTool
 
 EOT;
 
-    }
+	}
 }

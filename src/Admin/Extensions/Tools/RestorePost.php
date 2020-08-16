@@ -6,9 +6,9 @@ use Encore\Admin\Grid\Tools\BatchAction;
 
 class RestorePost extends BatchAction
 {
-    public function script()
-    {
-        return <<<EOT
+	public function script()
+	{
+		return <<<EOT
 
 $('{$this->getElementClass()}').on('click', function() {
 
@@ -28,5 +28,5 @@ $('{$this->getElementClass()}').on('click', function() {
 
 EOT;
 
-    }
+	}
 }

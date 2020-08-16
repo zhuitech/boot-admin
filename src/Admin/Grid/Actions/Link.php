@@ -18,18 +18,18 @@ use Encore\Admin\Actions\RowAction;
  */
 class Link extends RowAction
 {
-    private $link;
+	private $link;
 
-    public function __construct($link, $name = '跳转')
-    {
-        $this->link = $link;
-        $this->name = $name;
+	public function __construct($link, $name = '跳转')
+	{
+		$this->link = $link;
+		$this->name = $name;
 
-        parent::__construct();
-    }
+		parent::__construct();
+	}
 
-    public function href()
-    {
-        return $this->link;
-    }
+	public function href()
+	{
+		return $this->link;
+	}
 }

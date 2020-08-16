@@ -10,241 +10,241 @@ use ZhuiTech\BootAdmin\Admin\Extension;
 
 class AdminCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'zhuitech:admin';
+	/**
+	 * The name and signature of the console command.
+	 *
+	 * @var string
+	 */
+	protected $signature = 'zhuitech:admin';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = '安装后台模块';
+	/**
+	 * The console command description.
+	 *
+	 * @var string
+	 */
+	protected $description = '安装后台模块';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+	/**
+	 * Create a new command instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        // 初始化数据
-        $this->menus();
-        $this->permissions();
-        $this->roles();
-        $this->users();
-    }
+	/**
+	 * Execute the console command.
+	 *
+	 * @return mixed
+	 */
+	public function handle()
+	{
+		// 初始化数据
+		$this->menus();
+		$this->permissions();
+		$this->roles();
+		$this->users();
+	}
 
-    private function permissions()
-    {
-        if (!Permission::where(['slug' => '*'])->first()) {
-            Permission::insert([
-                [
-                    'name' => '所有权限',
-                    'slug' => '*',
-                    'http_method' => '',
-                    'http_path' => '*',
-                ], [
-                    'name' => '基础权限',
-                    'slug' => 'admin.dashboard',
-                    'http_method' => '',
-                    'http_path' => '/
+	private function permissions()
+	{
+		if (!Permission::where(['slug' => '*'])->first()) {
+			Permission::insert([
+				[
+					'name' => '所有权限',
+					'slug' => '*',
+					'http_method' => '',
+					'http_path' => '*',
+				], [
+					'name' => '基础权限',
+					'slug' => 'admin.dashboard',
+					'http_method' => '',
+					'http_path' => '/
 /auth/setting
 /login
 /logout
 /_handle_action_',
-                ], [
-                    'name' => '授权管理',
-                    'slug' => 'admin.auth',
-                    'http_method' => '',
-                    'http_path' => '/auth*',
-                ], [
-                    'name' => '系统日志',
-                    'slug' => 'admin.logs',
-                    'http_method' => '',
-                    'http_path' => '/logs*',
-                ],
-            ]);
+				], [
+					'name' => '授权管理',
+					'slug' => 'admin.auth',
+					'http_method' => '',
+					'http_path' => '/auth*',
+				], [
+					'name' => '系统日志',
+					'slug' => 'admin.logs',
+					'http_method' => '',
+					'http_path' => '/logs*',
+				],
+			]);
 
-            $this->line("<info>Permissions insert successfully.</info>");
-        }
-    }
+			$this->line("<info>Permissions insert successfully.</info>");
+		}
+	}
 
-    private function roles()
-    {
-        if (!Role::where(['slug' => 'administrator'])->first()) {
-            $role = Role::create([
-                'name' => '系统管理员',
-                'slug' => 'administrator',
-            ]);
+	private function roles()
+	{
+		if (!Role::where(['slug' => 'administrator'])->first()) {
+			$role = Role::create([
+				'name' => '系统管理员',
+				'slug' => 'administrator',
+			]);
 
-            // 权限分配
-            $role->permissions()->save(Permission::first());
+			// 权限分配
+			$role->permissions()->save(Permission::first());
 
-            $this->line("<info>Role administrator insert successfully.</info>");
-        }
+			$this->line("<info>Role administrator insert successfully.</info>");
+		}
 
-        if (!Role::where(['slug' => 'manager'])->first()) {
-            $role = Role::create([
-                'name' => '普通管理员',
-                'slug' => 'manager',
-            ]);
+		if (!Role::where(['slug' => 'manager'])->first()) {
+			$role = Role::create([
+				'name' => '普通管理员',
+				'slug' => 'manager',
+			]);
 
-            // 权限分配
-            $permissions = ['admin.dashboard', 'admin.logs'];
-            foreach ($permissions as $permission) {
-                $role->permissions()->save(Permission::where('slug', $permission)->first());
-            }
+			// 权限分配
+			$permissions = ['admin.dashboard', 'admin.logs'];
+			foreach ($permissions as $permission) {
+				$role->permissions()->save(Permission::where('slug', $permission)->first());
+			}
 
-            $this->line("<info>Role manager insert successfully.</info>");
-        }
-    }
+			$this->line("<info>Role manager insert successfully.</info>");
+		}
+	}
 
-    private function users()
-    {
-        if (!Administrator::where(['username' => 'admin'])->first()) {
-            $user = Administrator::create([
-                'username' => 'admin',
-                'password' => bcrypt('letmein2019'),
-                'name' => '系统管理员',
-                'mobile' => '18017250227'
-            ]);
+	private function users()
+	{
+		if (!Administrator::where(['username' => 'admin'])->first()) {
+			$user = Administrator::create([
+				'username' => 'admin',
+				'password' => bcrypt('letmein2019'),
+				'name' => '系统管理员',
+				'mobile' => '18017250227'
+			]);
 
-            // add role to user.
-            $user->roles()->save(Role::where(['slug' => 'administrator'])->first());
+			// add role to user.
+			$user->roles()->save(Role::where(['slug' => 'administrator'])->first());
 
-            $this->line("<info>User admin insert successfully.</info>");
-        }
+			$this->line("<info>User admin insert successfully.</info>");
+		}
 
-        if (!Administrator::where(['username' => 'manager'])->first()) {
-            $user = Administrator::create([
-                'username' => 'manager',
-                'password' => bcrypt('letmein2019'),
-                'name' => '普通管理员',
-            ]);
+		if (!Administrator::where(['username' => 'manager'])->first()) {
+			$user = Administrator::create([
+				'username' => 'manager',
+				'password' => bcrypt('letmein2019'),
+				'name' => '普通管理员',
+			]);
 
-            // add role to user.
-            $user->roles()->save(Role::where(['slug' => 'manager'])->first());
+			// add role to user.
+			$user->roles()->save(Role::where(['slug' => 'manager'])->first());
 
-            $this->line("<info>User manager insert successfully.</info>");
-        }
-    }
+			$this->line("<info>User manager insert successfully.</info>");
+		}
+	}
 
-    private function menus()
-    {
-        $menus = [
-            'title' => '系统',
-            'icon' => 'fa-cogs',
-            'uri' => '/',
-            'children' => [
-                [
-                    'title' => '控制台',
-                    'icon' => 'fa-bar-chart',
-                    'uri' => '/',
-                ],
-                [
-                    'title' => '安全管理',
-                    'icon' => 'fa-tasks',
-                    'children' => [
-                        [
-                            'title' => '管理员',
-                            'icon' => 'fa-users',
-                            'uri' => '/auth/users',
-                        ],
-                        [
-                            'title' => '角色管理',
-                            'icon' => 'fa-user',
-                            'uri' => '/auth/roles',
-                        ],
-                        [
-                            'title' => '权限管理',
-                            'icon' => 'fa-ban',
-                            'uri' => '/auth/permissions',
-                        ],
-                        [
-                            'title' => '菜单管理',
-                            'icon' => 'fa-bars',
-                            'uri' => '/auth/menu',
-                        ],
-                        [
-                            'title' => '操作日志',
-                            'icon' => 'fa-history',
-                            'uri' => '/auth/logs',
-                        ],
-                    ],
-                ],
-                [
-                    'title' => '配置管理',
-                    'icon' => 'fa-gears',
-                    'children' => [
-                        [
-                            'title' => '系统设置',
-                            'icon' => 'fa-cog',
-                            'uri' => '/setting/system',
-                        ],
-                    ],
-                ],
-                [
-                    'title' => '实用工具',
-                    'icon' => 'fa-wrench',
-                    'children' => [
-                        [
-                            'title' => '系统日志',
-                            'icon' => 'fa-history',
-                            'uri' => '/logs',
-                        ],
-                        [
-                            'title' => '计划任务',
-                            'icon' => 'fa-clock-o',
-                            'uri' => '/scheduling',
-                        ],
-                        [
-                            'title' => '文件管理',
-                            'icon' => 'fa-file',
-                            'uri' => '/media',
-                        ],
-                        [
-                            'title' => '命令行',
-                            'icon' => 'fa-terminal',
-                            'uri' => '/helpers/terminal/artisan',
-                        ],
-                        [
-                            'title' => '路由',
-                            'icon' => 'fa-list-alt',
-                            'uri' => '/helpers/routes',
-                        ],
-                        [
-                            'title' => '数据库',
-                            'icon' => 'fa-database',
-                            'uri' => '/helpers/terminal/database',
-                        ],
-                        [
-                            'title' => 'Redis',
-                            'icon' => 'fa-codepen',
-                            'uri' => '/redis',
-                        ],
-                        [
-                            'title' => '数据转换',
-                            'icon' => 'fa-retweet',
-                            'uri' => '/helpers/convert',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-        Extension::createMenuTree($menus);
-    }
+	private function menus()
+	{
+		$menus = [
+			'title' => '系统',
+			'icon' => 'fa-cogs',
+			'uri' => '/',
+			'children' => [
+				[
+					'title' => '控制台',
+					'icon' => 'fa-bar-chart',
+					'uri' => '/',
+				],
+				[
+					'title' => '安全管理',
+					'icon' => 'fa-tasks',
+					'children' => [
+						[
+							'title' => '管理员',
+							'icon' => 'fa-users',
+							'uri' => '/auth/users',
+						],
+						[
+							'title' => '角色管理',
+							'icon' => 'fa-user',
+							'uri' => '/auth/roles',
+						],
+						[
+							'title' => '权限管理',
+							'icon' => 'fa-ban',
+							'uri' => '/auth/permissions',
+						],
+						[
+							'title' => '菜单管理',
+							'icon' => 'fa-bars',
+							'uri' => '/auth/menu',
+						],
+						[
+							'title' => '操作日志',
+							'icon' => 'fa-history',
+							'uri' => '/auth/logs',
+						],
+					],
+				],
+				[
+					'title' => '配置管理',
+					'icon' => 'fa-gears',
+					'children' => [
+						[
+							'title' => '系统设置',
+							'icon' => 'fa-cog',
+							'uri' => '/setting/system',
+						],
+					],
+				],
+				[
+					'title' => '实用工具',
+					'icon' => 'fa-wrench',
+					'children' => [
+						[
+							'title' => '系统日志',
+							'icon' => 'fa-history',
+							'uri' => '/logs',
+						],
+						[
+							'title' => '计划任务',
+							'icon' => 'fa-clock-o',
+							'uri' => '/scheduling',
+						],
+						[
+							'title' => '文件管理',
+							'icon' => 'fa-file',
+							'uri' => '/media',
+						],
+						[
+							'title' => '命令行',
+							'icon' => 'fa-terminal',
+							'uri' => '/helpers/terminal/artisan',
+						],
+						[
+							'title' => '路由',
+							'icon' => 'fa-list-alt',
+							'uri' => '/helpers/routes',
+						],
+						[
+							'title' => '数据库',
+							'icon' => 'fa-database',
+							'uri' => '/helpers/terminal/database',
+						],
+						[
+							'title' => 'Redis',
+							'icon' => 'fa-codepen',
+							'uri' => '/redis',
+						],
+						[
+							'title' => '数据转换',
+							'icon' => 'fa-retweet',
+							'uri' => '/helpers/convert',
+						],
+					],
+				],
+			],
+		];
+		Extension::createMenuTree($menus);
+	}
 }

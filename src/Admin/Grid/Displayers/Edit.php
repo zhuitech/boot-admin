@@ -2,7 +2,6 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 /**
@@ -13,17 +12,17 @@ use Encore\Admin\Grid\Displayers\AbstractDisplayer;
  */
 class Edit extends AbstractDisplayer
 {
-    /**
-     * Display method.
-     *
-     * @return mixed
-     */
-    public function display()
-    {
-        $url = url("{$this->getResource()}/{$this->getKey()}/edit");
-        return <<<EOT
+	/**
+	 * Display method.
+	 *
+	 * @return mixed
+	 */
+	public function display()
+	{
+		$url = url("{$this->getResource()}/{$this->getKey()}/edit");
+		return <<<EOT
         <a href="$url" target="_blank">{$this->value}</a>
 EOT;
 
-    }
+	}
 }

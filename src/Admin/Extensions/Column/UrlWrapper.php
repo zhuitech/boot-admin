@@ -7,9 +7,9 @@ use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 class UrlWrapper extends AbstractDisplayer
 {
-    protected function script()
-    {
-        return <<<EOT
+	protected function script()
+	{
+		return <<<EOT
 
 $('.grid-qrcode').popover({
     title: "Scan code to visit",
@@ -28,15 +28,15 @@ $('.clipboard').tooltip({
 
 EOT;
 
-    }
+	}
 
-    public function display()
-    {
-        Admin::script($this->script());
+	public function display()
+	{
+		Admin::script($this->script());
 
-        $qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$this->value}' style='height: 150px;width: 150px;'/>";
+		$qrcode = "<img src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={$this->value}' style='height: 150px;width: 150px;'/>";
 
-        return <<<EOT
+		return <<<EOT
 
 <div class="input-group" style="width:250px;">
   <input type="text" id="grid-homepage-{$this->getKey()}" class="form-control input-sm" value="{$this->value}" />
@@ -52,5 +52,5 @@ EOT;
 
 EOT;
 
-    }
+	}
 }

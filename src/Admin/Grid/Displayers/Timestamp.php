@@ -12,19 +12,19 @@ use Encore\Admin\Grid\Displayers\AbstractDisplayer;
  */
 class Timestamp extends AbstractDisplayer
 {
-    /**
-     * Display method.
-     *
-     * @param string $format
-     * @return mixed
-     */
-    public function display($format = 'Y-m-d H:i:s')
-    {
-        return self::render($this->value, $format);
-    }
-    
-    public static function render($value, $format = 'Y-m-d H:i:s')
-    {
-        return date($format, $value);
-    }
+	/**
+	 * Display method.
+	 *
+	 * @param string $format
+	 * @return mixed
+	 */
+	public function display($format = 'Y-m-d H:i:s')
+	{
+		return self::render($this->value, $format);
+	}
+
+	public static function render($value, $format = 'Y-m-d H:i:s')
+	{
+		return date($format, $value);
+	}
 }

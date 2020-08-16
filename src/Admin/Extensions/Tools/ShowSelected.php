@@ -6,9 +6,9 @@ use Encore\Admin\Grid\Tools\BatchAction;
 
 class ShowSelected extends BatchAction
 {
-    public function script()
-    {
-        return <<<EOT
+	public function script()
+	{
+		return <<<EOT
         
 $('{$this->getElementClass()}').on('click', function() {
 
@@ -20,5 +20,5 @@ $('{$this->getElementClass()}').on('click', function() {
 
 EOT;
 
-    }
+	}
 }

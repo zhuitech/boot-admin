@@ -2,14 +2,14 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Tools;
 
-use Encore\Admin\Grid;
+use Admin;
 use Encore\Admin\Grid\Tools\AbstractTool;
 
 class Refresh extends AbstractTool
 {
-    protected function script()
-    {
-        return <<<EOT
+	protected function script()
+	{
+		return <<<EOT
     $(function () {
         if (!$.admin.refreshCallback) {
             LA.refreshTimeoutId = null;
@@ -37,16 +37,16 @@ class Refresh extends AbstractTool
         });
     });
 EOT;
-    }
+	}
 
-    public function render()
-    {
-        \Admin::script($this->script());
-        $refresh = trans('admin.refresh');
+	public function render()
+	{
+		Admin::script($this->script());
+		$refresh = trans('admin.refresh');
 
-        return <<<EOT
+		return <<<EOT
     <button type="button" class="btn btn-primary btn-sm tools-refresh"><i class="fa fa-refresh"></i> ${refresh}</button>
     <button type="button" class="btn btn-default btn-sm tools-live"><i class="fa fa-play"></i> </button>
 EOT;
-    }
+	}
 }

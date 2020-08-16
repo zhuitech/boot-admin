@@ -18,20 +18,20 @@ use Encore\Admin\Actions\RowAction;
  */
 class Route extends RowAction
 {
-    private $route;
-    private $resourceKey;
+	private $route;
+	private $resourceKey;
 
-    public function __construct($route, $name = '跳转', $resourceKey = 'id')
-    {
-        $this->route = $route;
-        $this->name = $name;
-        $this->resourceKey = $resourceKey;
+	public function __construct($route, $name = '跳转', $resourceKey = 'id')
+	{
+		$this->route = $route;
+		$this->name = $name;
+		$this->resourceKey = $resourceKey;
 
-        parent::__construct();
-    }
+		parent::__construct();
+	}
 
-    public function href()
-    {
-        return route($this->route, [$this->resourceKey => $this->getKey()]);
-    }
+	public function href()
+	{
+		return route($this->route, [$this->resourceKey => $this->getKey()]);
+	}
 }

@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Request;
 
 class DatePicker extends AbstractTool
 {
-    protected function script()
-    {
-        $url = Request::fullUrlWithQuery(['date' => '_date_']);
+	protected function script()
+	{
+		$url = Request::fullUrlWithQuery(['date' => '_date_']);
 
-        return <<<EOT
+		return <<<EOT
 
 $('#grid-date-picker').datetimepicker({format:'YYYY-MM-DD'}).on("dp.change", function () {
 
@@ -24,15 +24,15 @@ $('#grid-date-picker').datetimepicker({format:'YYYY-MM-DD'}).on("dp.change", fun
 
 EOT;
 
-    }
+	}
 
-    public function render()
-    {
-        Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        $date = request('date', date('Y-m-d'));
+		$date = request('date', date('Y-m-d'));
 
-        return <<<EOT
+		return <<<EOT
 
 <div class="input-group pull-right input-group-sm" style="width: 120px; margin-left:10px;">
   <div class="input-group-addon">
@@ -42,5 +42,5 @@ EOT;
 </div>
 
 EOT;
-    }
+	}
 }

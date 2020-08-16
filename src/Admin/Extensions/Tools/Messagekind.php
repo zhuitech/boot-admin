@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Request;
 
 class Messagekind extends AbstractTool
 {
-    public function script()
-    {
-        $url = Request::fullUrlWithQuery(['kind' => '_kind_']);
+	public function script()
+	{
+		$url = Request::fullUrlWithQuery(['kind' => '_kind_']);
 
-        return <<<EOT
+		return <<<EOT
 
 $('input:radio.message-kind').change(function () {
 
@@ -23,17 +23,17 @@ $('input:radio.message-kind').change(function () {
 });
 
 EOT;
-    }
+	}
 
-    public function render()
-    {
-        Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        $options = [
-            'inbox'   => 'Inbox',
-            'outbox'  => 'Outbox',
-        ];
+		$options = [
+			'inbox' => 'Inbox',
+			'outbox' => 'Outbox',
+		];
 
-        return view('admin.tools.message-kind', compact('options'));
-    }
+		return view('admin.tools.message-kind', compact('options'));
+	}
 }

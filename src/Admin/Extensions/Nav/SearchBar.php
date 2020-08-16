@@ -6,8 +6,8 @@ use Illuminate\Contracts\Support\Renderable;
 
 class SearchBar implements Renderable
 {
-    public function render()
-    {
-        return view('admin.search-bar')->render();
-    }
+	public function render()
+	{
+		return view('admin.search-bar')->render();
+	}
 }

@@ -2,16 +2,16 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Tree\Tools;
 
-use Encore\Admin\Grid;
+use Admin;
 use Encore\Admin\Grid\Tools\AbstractTool;
 
 class Fix extends AbstractTool
 {
-    protected function script()
-    {
-        $url = route('admin.auth.menu.fix');
+	protected function script()
+	{
+		$url = route('admin.auth.menu.fix');
 
-        return <<<EOT
+		return <<<EOT
         
         $('.menu-fix-visible').click(function () {
             let self = $(this);
@@ -31,16 +31,16 @@ class Fix extends AbstractTool
         });
 
 EOT;
-    }
+	}
 
-    public function render()
-    {
-        \Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        return <<<EOT
+		return <<<EOT
             <a class="btn btn-warning btn-sm menu-fix-visible" title="修复可见性">
                 <i class="fa fa-eye-slash"></i><span class="hidden-xs">&nbsp;修复可见性</span>
             </a>
 EOT;
-    }
+	}
 }

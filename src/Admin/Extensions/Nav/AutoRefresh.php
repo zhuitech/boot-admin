@@ -7,11 +7,11 @@ use Illuminate\Contracts\Support\Renderable;
 
 class AutoRefresh implements Renderable
 {
-    public function render()
-    {
-        $message = __('admin.refresh_succeeded');
+	public function render()
+	{
+		$message = __('admin.refresh_succeeded');
 
-        $script = <<<SCRIPT
+		$script = <<<SCRIPT
 $('.auto-refresh-trigger').off('click').on('click', function () {
 
     if (typeof $.admin.autoRefresh !== 'undefined') {
@@ -46,9 +46,9 @@ $('.auto-refresh').off('click').on('click', '.refresh-pause', function (e) {
 
 SCRIPT;
 
-        Admin::script($script);
+		Admin::script($script);
 
-        return <<<HTML
+		return <<<HTML
 <li class="dropdown">
     <a href="#" class="dropdown-toggle auto-refresh" data-toggle="dropdown" title="Auto refresh">
         <i class="fa fa-play"></i>&nbsp;&nbsp;
@@ -65,5 +65,5 @@ SCRIPT;
 
 HTML;
 
-    }
+	}
 }

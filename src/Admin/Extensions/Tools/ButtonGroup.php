@@ -6,9 +6,9 @@ use Encore\Admin\Grid\Tools\AbstractTool;
 
 class ButtonGroup extends AbstractTool
 {
-    public function render()
-    {
-        return <<<EOT
+	public function render()
+	{
+		return <<<EOT
 
 <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-default btn-sm active">
@@ -24,5 +24,5 @@ class ButtonGroup extends AbstractTool
 
 EOT;
 
-    }
+	}
 }

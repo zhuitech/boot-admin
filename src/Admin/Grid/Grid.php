@@ -6,32 +6,32 @@ use Illuminate\Support\Collection;
 
 class Grid extends \Encore\Admin\Grid
 {
-    protected $queriedCallbacks = [];
+	protected $queriedCallbacks = [];
 
-    /**
-     * @var Collection null
-     */
-    public $queriedCollection = null;
+	/**
+	 * @var Collection null
+	 */
+	public $queriedCollection = null;
 
-    public function queried(callable $callback)
-    {
-        $this->queriedCallbacks[] = $callback;
-        return $this;
-    }
+	public function queried(callable $callback)
+	{
+		$this->queriedCallbacks[] = $callback;
+		return $this;
+	}
 
-    protected function callQueriedCallback()
-    {
-        foreach ($this->queriedCallbacks as $callback) {
-            call_user_func($callback, $this);
-        }
-    }
+	protected function callQueriedCallback()
+	{
+		foreach ($this->queriedCallbacks as $callback) {
+			call_user_func($callback, $this);
+		}
+	}
 
-    protected function applyQuery()
-    {
-        $this->queriedCollection = parent::applyQuery();
+	protected function applyQuery()
+	{
+		$this->queriedCollection = parent::applyQuery();
 
-        $this->callQueriedCallback();
+		$this->callQueriedCallback();
 
-        return $this->queriedCollection;
-    }
+		return $this->queriedCollection;
+	}
 }

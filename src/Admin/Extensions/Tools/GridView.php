@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Request;
 
 class GridView extends AbstractTool
 {
-    public function script()
-    {
-        $url = Request::fullUrlWithQuery(['view' => '_view_']);
+	public function script()
+	{
+		$url = Request::fullUrlWithQuery(['view' => '_view_']);
 
-        return <<<EOT
+		return <<<EOT
 
 $('input:radio.grid-view').change(function () {
 
@@ -23,17 +23,17 @@ $('input:radio.grid-view').change(function () {
 });
 
 EOT;
-    }
+	}
 
-    public function render()
-    {
-        Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        $options = [
-            'card' => 'image',
-            'table' => 'list',
-        ];
+		$options = [
+			'card' => 'image',
+			'table' => 'list',
+		];
 
-        return view('admin.tools.grid-view', compact('options'));
-    }
+		return view('admin.tools.grid-view', compact('options'));
+	}
 }

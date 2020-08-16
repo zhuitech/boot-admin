@@ -8,22 +8,22 @@ use Illuminate\Support\Facades\Request;
 
 class RefreshTimer extends AbstractTool
 {
-    protected $timeout;
+	protected $timeout;
 
-    public function __construct($timeout)
-    {
-        $this->timeout = $timeout;
-    }
-    
-    public function render()
-    {
-        $state = Request::get('_timer', 0);
+	public function __construct($timeout)
+	{
+		$this->timeout = $timeout;
+	}
 
-        $icon = $state ? 'pause' : 'play';
+	public function render()
+	{
+		$state = Request::get('_timer', 0);
 
-        Admin::script($this->script());
+		$icon = $state ? 'pause' : 'play';
 
-        return <<<EOT
+		Admin::script($this->script());
+
+		return <<<EOT
 
 <div class="btn-group">
     <a class="btn btn-sm btn-primary grid-refresh-start" data-state="$state">
@@ -32,15 +32,15 @@ class RefreshTimer extends AbstractTool
 </div>
 
 EOT;
-    }
+	}
 
-    protected function script()
-    {
-        $message = trans('admin::lang.refresh_succeeded');
+	protected function script()
+	{
+		$message = trans('admin::lang.refresh_succeeded');
 
-        $url = Request::fullUrlWithQuery(['_timer' => 1]);
+		$url = Request::fullUrlWithQuery(['_timer' => 1]);
 
-        return <<<EOT
+		return <<<EOT
 
 (function () {
     var start = function () {
@@ -81,5 +81,5 @@ EOT;
 
 EOT;
 
-    }
+	}
 }
