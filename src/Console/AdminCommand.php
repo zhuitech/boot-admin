@@ -65,7 +65,8 @@ class AdminCommand extends Command
 /auth/setting
 /login
 /logout
-/_handle_action_',
+/_handle_action_
+/svc/_handle_action_',
 				], [
 					'name' => '授权管理',
 					'slug' => 'admin.auth',

@@ -41,7 +41,7 @@ class ExportMenuCommand extends Command
 	private function filter($data)
 	{
 		foreach ($data as $i => $item) {
-			$data[$i] = Arr::only(array_filter($item), ['title', 'icon', 'uri']);
+			$data[$i] = Arr::only(array_filter($item), ['title', 'icon', 'uri', 'blank']);
 
 			if (isset($item['children'])) {
 				$data[$i]['children'] = $this->filter($item['children']);
