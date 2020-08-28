@@ -2,11 +2,13 @@
 
 namespace ZhuiTech\BootAdmin\Console;
 
+use Artisan;
 use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Auth\Database\Permission;
 use Encore\Admin\Auth\Database\Role;
 use Illuminate\Console\Command;
 use ZhuiTech\BootAdmin\Admin\Extension;
+use ZhuiTech\BootAdmin\Services\BootAdmin;
 
 class AdminCommand extends Command
 {
@@ -46,8 +48,12 @@ class AdminCommand extends Command
 		$this->permissions();
 		$this->roles();
 		$this->users();
+		$this->import();
 	}
 
+	/**
+	 * 导入权限
+	 */
 	private function permissions()
 	{
 		if (!Permission::where(['slug' => '*'])->first()) {
@@ -84,6 +90,9 @@ class AdminCommand extends Command
 		}
 	}
 
+	/**
+	 * 导入角色
+	 */
 	private function roles()
 	{
 		if (!Role::where(['slug' => 'administrator'])->first()) {
@@ -114,6 +123,9 @@ class AdminCommand extends Command
 		}
 	}
 
+	/**
+	 * 导入用户
+	 */
 	private function users()
 	{
 		if (!Administrator::where(['username' => 'admin'])->first()) {
@@ -144,6 +156,9 @@ class AdminCommand extends Command
 		}
 	}
 
+	/**
+	 * 导入菜单
+	 */
 	private function menus()
 	{
 		$menus = [
@@ -247,5 +262,16 @@ class AdminCommand extends Command
 			],
 		];
 		Extension::createMenuTree($menus);
+	}
+
+	/**
+	 * 导入模块
+	 */
+	private function import()
+	{
+		$extensions = BootAdmin::extensions();
+		foreach ($extensions as $key => $extension) {
+			Artisan::call("admin:import $key");
+		}
 	}
 }

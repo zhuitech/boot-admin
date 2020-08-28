@@ -16,7 +16,7 @@ class ServiceCommand extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature = 'zhuitech:svc-link';
+	protected $signature = 'zhuitech:service';
 
 	/**
 	 * The console command description.

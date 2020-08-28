@@ -2,6 +2,7 @@
     "name": "zhuitech/boot-admin",
     "description": "后台增强",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Andrew Zhou",
@@ -9,7 +10,7 @@
         }
     ],
     "require": {
-        "encore/laravel-admin": "^1.7",
+        "encore/laravel-admin": "1.8.*",
         "laravel-admin-ext/helpers": "~1.1",
         "laravel-admin-ext/scheduling": "~1.0",
         "laravel-admin-ext/log-viewer": "~1.0",

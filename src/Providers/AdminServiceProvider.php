@@ -13,7 +13,6 @@ use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
-use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
@@ -52,7 +51,6 @@ class AdminServiceProvider extends AbstractServiceProvider
 	public function boot()
 	{
 		app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views');
-		$this->loadMigrations();
 		$this->loadRoutes();
 
 		if ($this->app->runningInConsole()) {
@@ -67,6 +65,8 @@ class AdminServiceProvider extends AbstractServiceProvider
 		}
 
 		$this->configAdmin();
+
+		$this->loadMigrations();
 
 		parent::boot();
 	}

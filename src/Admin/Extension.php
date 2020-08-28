@@ -82,7 +82,7 @@ class Extension extends \Encore\Admin\Extension
 				'parent_id' => 0,
 				'order' => $order,
 				'title' => $root['title'] ?? '',
-				'icon' => $root['icon'] ?? '',
+				'icon' => $root['icon'] ?? 'fa-circle-o',
 				'uri' => $root['uri'] ?? '',
 			]);
 		}
@@ -95,7 +95,7 @@ class Extension extends \Encore\Admin\Extension
 					'parent_id' => $rootMenu->id,
 					'order' => $order,
 					'title' => $parent['title'] ?? '',
-					'icon' => $parent['icon'] ?? '',
+					'icon' => $parent['icon'] ?? 'fa-circle-o',
 					'uri' => $parent['uri'] ?? '',
 				]);
 
@@ -110,7 +110,7 @@ class Extension extends \Encore\Admin\Extension
 						'parent_id' => $parentMenu->id,
 						'order' => $order,
 						'title' => $child['title'] ?? '',
-						'icon' => $child['icon'] ?? '',
+						'icon' => $child['icon'] ?? 'fa-circle-o',
 						'uri' => $child['uri'] ?? '',
 					]);
 
