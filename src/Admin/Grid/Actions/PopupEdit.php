@@ -46,7 +46,7 @@ class PopupEdit extends RowAction
 
 	public function render()
 	{
-		$url= $this->url ? magic_replace($this->url, ['key' => $this->getKey()]) : "{$this->getResource()}/{$this->getKey()}/edit";
+		$url = $this->url ? magic_replace($this->url, ['key' => $this->getKey()]) : "{$this->getResource()}/{$this->getKey()}/edit";
 
 		$this->attribute('data-url', $url);
 		return parent::render();

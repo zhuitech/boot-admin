@@ -12,18 +12,18 @@ use Encore\Admin\Grid\Displayers\AbstractDisplayer;
  */
 class Yuan extends AbstractDisplayer
 {
-    /**
-     * Display method.
-     *
-     * @return mixed
-     */
-    public function display()
-    {
-        return self::render($this->value);
-    }
-    
-    public static function render($value)
-    {
-        return '￥' . yuan($value); 
-    }
+	/**
+	 * Display method.
+	 *
+	 * @return mixed
+	 */
+	public function display()
+	{
+		return self::render($this->value);
+	}
+
+	public static function render($value)
+	{
+		return '￥' . yuan($value);
+	}
 }

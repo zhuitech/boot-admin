@@ -37,7 +37,7 @@ class PopupCreate extends AbstractTool
 	public function render()
 	{
 		$new = trans('admin.new');
-		$url= $this->url ?? $this->grid->getCreateUrl();
+		$url = $this->url ?? $this->grid->getCreateUrl();
 
 		return <<<EOT
 <div class="btn-group pull-right grid-create-btn" style="margin-right: 10px">

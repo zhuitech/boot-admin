@@ -6,9 +6,9 @@ use Illuminate\Contracts\Support\Renderable;
 
 class Dropdown implements Renderable
 {
-    public function render()
-    {
-        return <<<HTML
+	public function render()
+	{
+		return <<<HTML
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
         <i class="fa fa-th"></i>
@@ -50,5 +50,5 @@ class Dropdown implements Renderable
 </li>
 HTML;
 
-    }
+	}
 }

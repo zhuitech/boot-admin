@@ -2,16 +2,18 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
+use AdminMenu;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Grid\Displayers\DropdownActions;
+use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Encore\Admin\Layout\Content;
-use Illuminate\Database\Eloquent\Model;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
-use Encore\Admin\Grid\Displayers\DropdownActions;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
@@ -30,7 +32,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 * 更新
 	 *
 	 * @param int $id
-	 * @return \Illuminate\Http\Response
+	 * @return Response
 	 */
 	public function update($id)
 	{
@@ -42,7 +44,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 * 删除
 	 *
 	 * @param int $id
-	 * @return \Illuminate\Http\Response
+	 * @return Response
 	 */
 	public function destroy($id)
 	{
@@ -114,13 +116,13 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$path = Str::replaceFirst(admin_base_path(), '', request()->getPathInfo());
 
 		// 一级
-		$top = \AdminMenu::getCurrentTopMenu();
+		$top = AdminMenu::getCurrentTopMenu();
 		if (!empty($top)) {
 			array_push($breadcrumbs, ['text' => $top['title'], 'url' => $top['uri']]);
 		}
 
 		// 二级：菜单树中最近菜单项
-		$node = \AdminMenu::getCurrentNode();
+		$node = AdminMenu::getCurrentNode();
 		if (!empty($node)) {
 			array_push($breadcrumbs, ['text' => $node['title'], 'url' => $node['uri']]);
 
@@ -246,13 +248,13 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$this->configFormTools($form->builder()->getTools());
 		$this->configFormFooter($form->builder()->getFooter());
 
-		$form->tools(function (Form\Tools $tools) use ($options)  {
+		$form->tools(function (Form\Tools $tools) use ($options) {
 			if (isset($options['toolsCallback'])) {
 				$options['toolsCallback']($tools);
 			}
 		});
 
-		$form->footer(function (Form\Footer $footer) use ($options)  {
+		$form->footer(function (Form\Footer $footer) use ($options) {
 			if (isset($options['footerCallback'])) {
 				$options['footerCallback']($footer);
 			}

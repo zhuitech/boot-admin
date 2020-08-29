@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Request;
 
 class Trashed extends AbstractTool
 {
-    protected function script()
-    {
-        $url  = Request::fullUrlWithQuery(['trashed' => '_trashed_']);
+	protected function script()
+	{
+		$url = Request::fullUrlWithQuery(['trashed' => '_trashed_']);
 
-        return <<<EOT
+		return <<<EOT
 
 $('.grid-status').click(function () {
     var status = $(this).find('input')[0].checked ? 0 : 1;
@@ -21,16 +21,16 @@ $('.grid-status').click(function () {
 
 EOT;
 
-    }
+	}
 
-    public function render()
-    {
-        Admin::script($this->script());
+	public function render()
+	{
+		Admin::script($this->script());
 
-        $trashed = (Request::get('trashed') == 1) ? 'active' : '';
-        $checked = (Request::get('trashed') == 1) ? 'checked' : '';
+		$trashed = (Request::get('trashed') == 1) ? 'active' : '';
+		$checked = (Request::get('trashed') == 1) ? 'checked' : '';
 
-        return <<<EOT
+		return <<<EOT
 
 <div class="btn-group" data-toggle="buttons">
     <label class="btn btn-twitter btn-sm grid-status $trashed">
@@ -39,5 +39,5 @@ EOT;
 </div>
 
 EOT;
-    }
+	}
 }

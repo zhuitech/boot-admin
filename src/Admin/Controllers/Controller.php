@@ -9,12 +9,12 @@ use Illuminate\Routing\Controller as BaseController;
 
 abstract class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function ajaxJson($status = true, $data = [], $code = 200, $message = '')
-    {
-        return response()->json(
-            ['status' => $status, 'code' => $code, 'message' => $message, 'data' => $data]
-        );
-    }
+	public function ajaxJson($status = true, $data = [], $code = 200, $message = '')
+	{
+		return response()->json(
+			['status' => $status, 'code' => $code, 'message' => $message, 'data' => $data]
+		);
+	}
 }

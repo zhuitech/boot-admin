@@ -2,27 +2,28 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Extensions\Actions;
 
+use Artisan;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
 
 class ClearCache extends Action
 {
-    protected $selector = '.clear-cache';
+	protected $selector = '.clear-cache';
 
-    public function handle(Request $request)
-    {
-        \Artisan::call('cache:clear');
-        return $this->response()->success('清理完成')->refresh();
-    }
+	public function handle(Request $request)
+	{
+		Artisan::call('cache:clear');
+		return $this->response()->success('清理完成')->refresh();
+	}
 
-    public function dialog()
-    {
-        $this->confirm('确认清除缓存');
-    }
+	public function dialog()
+	{
+		$this->confirm('确认清除缓存');
+	}
 
-    public function html()
-    {
-        return <<<HTML
+	public function html()
+	{
+		return <<<HTML
 <li>
     <a class="clear-cache" href="#">
       <i class="fa fa-trash"></i>
@@ -30,5 +31,5 @@ class ClearCache extends Action
     </a>
 </li>
 HTML;
-    }
+	}
 }

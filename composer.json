@@ -1,35 +1,37 @@
 {
-    "name": "zhuitech/boot-admin",
-    "description": "后台管理功能增强",
-    "type": "library",
-    "authors": [
-        {
-            "name": "Andrew Zhou",
-            "email": "andrew@zhuitech.com"
-        }
-    ],
-    "require": {
-        "encore/laravel-admin": "^1.7",
-        "laravel-admin-ext/helpers": "~1.1",
-        "laravel-admin-ext/scheduling": "~1.0",
-        "laravel-admin-ext/log-viewer": "~1.0",
-        "laravel-admin-ext/redis-manager": "~1.1",
-        "laravel-admin-ext/backup": "~1.0",
-        "laravel-admin-ext/media-manager": "~1.0",
-        "laravel-admin-ext/chartjs": "~1.0",
-        "dianwoung/large-file-upload": "^0.0.3",
-        "ghost/ckeditor": "^1.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "ZhuiTech\\BootAdmin\\": "src"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
-            ]
-        }
+  "name": "zhuitech/boot-admin",
+  "description": "后台增强",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andrew Zhou",
+      "email": "andrew@zhuitech.com"
     }
+  ],
+  "require": {
+    "encore/laravel-admin": "1.8.*",
+    "laravel-admin-ext/helpers": "~1.1",
+    "laravel-admin-ext/scheduling": "~1.0",
+    "laravel-admin-ext/log-viewer": "~1.0",
+    "laravel-admin-ext/redis-manager": "~1.1",
+    "laravel-admin-ext/backup": "~1.0",
+    "laravel-admin-ext/media-manager": "~1.0",
+    "laravel-admin-ext/chartjs": "~1.0",
+    "dianwoung/large-file-upload": "^0.0.3",
+    "ghost/ckeditor": "^1.0",
+    "laravel/horizon": "^3.7"
+  },
+  "autoload": {
+    "psr-4": {
+      "ZhuiTech\\BootAdmin\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
+      ]
+    }
+  }
 }

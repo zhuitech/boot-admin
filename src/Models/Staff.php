@@ -2,8 +2,16 @@
 
 namespace ZhuiTech\BootAdmin\Models;
 
+use Eloquent;
 use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Auth\Database\Permission;
+use Encore\Admin\Auth\Database\Role;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
+use Laravel\Passport\Client;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Token;
 
 /**
  * ZhuiTech\BootAdmin\Models\Staff
@@ -16,30 +24,30 @@ use Laravel\Passport\HasApiTokens;
  * @property string|null $mobile
  * @property string $avatar
  * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $status
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
- * @property-read \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Permission[] $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection|\Encore\Admin\Auth\Database\Role[] $roles
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff query()
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereMobile($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\ZhuiTech\BootAdmin\Models\Staff whereUsername($value)
- * @mixin \Eloquent
+ * @property-read Collection|Client[] $clients
+ * @property-read Collection|Permission[] $permissions
+ * @property-read Collection|Role[] $roles
+ * @property-read Collection|Token[] $tokens
+ * @method static Builder|Staff newModelQuery()
+ * @method static Builder|Staff newQuery()
+ * @method static Builder|Staff query()
+ * @method static Builder|Staff whereAvatar($value)
+ * @method static Builder|Staff whereCreatedAt($value)
+ * @method static Builder|Staff whereEmail($value)
+ * @method static Builder|Staff whereId($value)
+ * @method static Builder|Staff whereMobile($value)
+ * @method static Builder|Staff whereName($value)
+ * @method static Builder|Staff wherePassword($value)
+ * @method static Builder|Staff whereRememberToken($value)
+ * @method static Builder|Staff whereStatus($value)
+ * @method static Builder|Staff whereUpdatedAt($value)
+ * @method static Builder|Staff whereUsername($value)
+ * @mixin Eloquent
  */
 class Staff extends Administrator
 {
-    use HasApiTokens;
+	use HasApiTokens;
 }

@@ -4,9 +4,9 @@ namespace ZhuiTech\BootAdmin\Admin\Extensions\Nav;
 
 class Links
 {
-    public function __toString()
-    {
-        return <<<HTML
+	public function __toString()
+	{
+		return <<<HTML
 <li>
     <a href="#">
       <i class="fa fa-envelope-o"></i>
@@ -29,5 +29,5 @@ class Links
 </li>
 
 HTML;
-    }
+	}
 }
