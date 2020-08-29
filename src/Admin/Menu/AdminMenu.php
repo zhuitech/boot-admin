@@ -34,7 +34,7 @@ class AdminMenu
 
 		$currentTopMenu = $this->currentTopMenu;
 		$topMenus = $topMenus->map(function ($value, $key) use ($currentTopMenu) {
-			if ($currentTopMenu['id'] == $value['id']) {
+			if ($currentTopMenu && $currentTopMenu['id'] == $value['id']) {
 				$value['class'] = 'active';
 			} else {
 				$value['class'] = '';
@@ -53,7 +53,7 @@ class AdminMenu
 	 */
 	public function sideMenu()
 	{
-		$topMenuId = $this->currentTopMenu['id'];
+		$topMenuId = $this->currentTopMenu['id'] ?? 0;
 		return $this->dataMenu->subTree($this->allNodes, $topMenuId);
 	}
 

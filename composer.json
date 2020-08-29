@@ -26,12 +26,5 @@
     "psr-4": {
       "ZhuiTech\\BootAdmin\\": "src"
     }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "ZhuiTech\\BootAdmin\\Providers\\AdminServiceProvider"
-      ]
-    }
   }
 }

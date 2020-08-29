@@ -218,19 +218,24 @@ class AdminCommand extends Command
 					'icon' => 'fa-wrench',
 					'children' => [
 						[
-							'title' => '系统日志',
-							'icon' => 'fa-history',
-							'uri' => '/logs',
-						],
-						[
 							'title' => '计划任务',
 							'icon' => 'fa-clock-o',
 							'uri' => '/scheduling',
 						],
 						[
+							'title' => '队列',
+							'icon' => 'fa-tasks',
+							'uri' => '/helpers/horizon',
+						],
+						[
 							'title' => '文件管理',
 							'icon' => 'fa-file',
 							'uri' => '/media',
+						],
+						[
+							'title' => '系统日志',
+							'icon' => 'fa-history',
+							'uri' => '/logs',
 						],
 						[
 							'title' => '命令行',

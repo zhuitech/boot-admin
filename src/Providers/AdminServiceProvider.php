@@ -43,6 +43,10 @@ class AdminServiceProvider extends AbstractServiceProvider
 		'AdminMenu' => AdminMenuFacade::class
 	];
 
+	protected $providers = [
+		HorizonServiceProvider::class
+	];
+
 	/**
 	 * Bootstrap the application services.
 	 *
@@ -51,6 +55,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 	public function boot()
 	{
 		app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views');
+
 		$this->loadRoutes();
 
 		if ($this->app->runningInConsole()) {
@@ -59,13 +64,13 @@ class AdminServiceProvider extends AbstractServiceProvider
 			$this->publishes([base_path('vendor/dianwoung/large-file-upload/resources/assets') => public_path('vendor/laravel-admin-ext/large-file-upload')], 'public');
 			$this->publishes([base_path('vendor/peinhu/aetherupload-laravel/assets') => public_path('vendor/aetherupload/js')], 'public');
 			$this->publishes([base_path('vendor/ghost/ckeditor/resources/assets') => public_path('vendor/ghost/ckeditor')], 'public');
+			$this->publishes([base_path('vendor/laravel/horizon/public') => public_path('vendor/horizon')], 'public');
 
 			$this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
 			$this->publishes([__DIR__ . '/../../resources/laravel-admin' => public_path('vendor/laravel-admin')], 'public');
 		}
 
 		$this->configAdmin();
-
 		$this->loadMigrations();
 
 		parent::boot();
@@ -80,6 +85,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 	{
 		$this->mergeConfig();
 		$this->configStuff();
+		$this->configHorizon();
 
 		parent::register();
 	}
@@ -109,6 +115,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Show::extend('array', JsonArray::class);
 		Show::extend('timestamp', \ZhuiTech\BootAdmin\Admin\Show\Timestamp::class);
 
+		// 后台导航条
 		Admin::navbar(function (Navbar $navbar) {
 			$navbar->left(view('admin::partials.topbar-left'));
 			$navbar->right(view('admin::partials.topbar-right'));
@@ -142,5 +149,14 @@ class AdminServiceProvider extends AbstractServiceProvider
 			],
 		];
 		config(Arr::dot($auth, 'auth.'));
+	}
+
+	private function configHorizon()
+	{
+		$horizon = [
+			'path' => config('admin.route.prefix') . '/horizon',
+			'middleware' => config('admin.route.middleware'),
+		];
+		config(Arr::dot($horizon, 'horizon.'));
 	}
 }
