@@ -79,7 +79,7 @@
 					@endif
 
 					<input type="text" class="form-control" placeholder="验证码" name="code" value="{{ old('code') }}"
-					       style="width: 220px; display: inline-block;">
+					       style="width: 100px; display: inline-block;vertical-align: middle">
 					<button id="send-verify" type="button" class="btn btn-default btn-flat" data-target="login" data-status="0">发送验证码</button>
 				</div>
 			@endif

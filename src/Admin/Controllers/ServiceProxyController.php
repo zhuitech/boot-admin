@@ -8,12 +8,29 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use ZhuiTech\BootLaravel\Helpers\ProxyClient;
 use ZhuiTech\BootLaravel\Models\User;
 
 class ServiceProxyController extends AdminController
 {
+	protected $noPjax = [
+		'admin/svc/horizon*'
+	];
+
+	public function __construct()
+	{
+		if (env('NO_PJAX')) {
+			$this->noPjax = array_merge($this->noPjax, explode(',', env('NO_PJAX')));
+		}
+	}
+
+	/**
+	 * 中台首页
+	 * @param Content $content
+	 * @return Content
+	 */
 	public function index(Content $content)
 	{
 		return $content
@@ -39,7 +56,8 @@ class ServiceProxyController extends AdminController
 		$response = ProxyClient::server('service')->as($user)->pass();
 
 		// 把直接访问svc页面的请求通过顶级菜单转发
-		if ($request->method() == 'GET' && !$request->ajax() && $response->getStatusCode() == 200) {
+		if ($request->method() == 'GET' && $response->getStatusCode() == 200
+			&& !$request->ajax() && $this->pjax($request)) {
 			$top = admin_url(with(AdminMenu::getCurrentTopMenu())['uri']);
 			$current = request()->getPathInfo();
 			if ($top != $current) {
@@ -54,5 +72,20 @@ class ServiceProxyController extends AdminController
 		$content = preg_replace('/_token:\'(\w|\d)+\'/i', '_token:\'' . csrf_token() . '\'', $content);
 
 		return response($content, $response->getStatusCode(), $response->getHeaders());
+	}
+
+	/**
+	 * 是否需要PJAX
+	 * @param Request $request
+	 * @return bool
+	 */
+	private function pjax(Request $request)
+	{
+		foreach ($this->noPjax as $pattern) {
+			if ($request->is($pattern)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

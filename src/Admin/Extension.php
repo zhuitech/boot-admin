@@ -85,6 +85,8 @@ class Extension extends \Encore\Admin\Extension
 				'icon' => $root['icon'] ?? 'fa-circle-o',
 				'uri' => $root['uri'] ?? '',
 			]);
+			$rootMenu->blank = $root['blank'] ?? 0;
+			$rootMenu->save();
 		}
 
 		foreach ($root['children'] ?? [] as $parent) {
@@ -98,6 +100,8 @@ class Extension extends \Encore\Admin\Extension
 					'icon' => $parent['icon'] ?? 'fa-circle-o',
 					'uri' => $parent['uri'] ?? '',
 				]);
+				$parentMenu->blank = $parent['blank'] ?? 0;
+				$parentMenu->save();
 
 				$output->writeln("<info>菜单[{$parent['title']}]创建成功</info>");
 			}
@@ -106,13 +110,15 @@ class Extension extends \Encore\Admin\Extension
 			foreach ($parent['children'] ?? [] as $child) {
 				if (empty($childMenu = $menuModel::where(['title' => $child['title'] ?? '', 'parent_id' => $parentMenu->id])->first())) {
 					$order = $menuModel::where('parent_id', $parentMenu->id)->max('order') + 1;
-					$menuModel::create([
+					$childMenu = $menuModel::create([
 						'parent_id' => $parentMenu->id,
 						'order' => $order,
 						'title' => $child['title'] ?? '',
 						'icon' => $child['icon'] ?? 'fa-circle-o',
 						'uri' => $child['uri'] ?? '',
 					]);
+					$childMenu->blank = $child['blank'] ?? 0;
+					$childMenu->save();
 
 					$output->writeln("<info>菜单[{$child['title']}]创建成功</info>");
 				}

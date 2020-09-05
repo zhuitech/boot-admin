@@ -24,17 +24,10 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
         // Horizon::night();
     }
 
-    /**
-     * Register the Horizon gate.
-     *
-     * This gate determines who can access Horizon in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
+    protected function authorization()
     {
-        Gate::define('viewHorizon', function ($user) {
-            return true;
-        });
+	    Horizon::auth(function ($request) {
+	    	return true;
+	    });
     }
 }

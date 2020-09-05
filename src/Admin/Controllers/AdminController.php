@@ -155,7 +155,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$model = $grid->model();
 
 		switch ($mode) {
-			case 'editable':
+			case 'editable': // 允许增删改
 				$grid->setActionClass(DropdownActions::class)
 					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
 						$actions->disableView();
@@ -165,7 +165,30 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 						}
 					})
 					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
-						//$batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
+						if (isset($options['batchCallback'])) {
+							$options['batchCallback']($batch);
+						}
+					})->filter(function (Grid\Filter $filter) use ($options) {
+						$filter->disableIdFilter();
+
+						if (isset($options['filterCallback'])) {
+							$options['filterCallback']($filter);
+						}
+					});
+				break;
+
+			case 'editonly': // 只许编辑
+				$grid->setActionClass(DropdownActions::class)
+					->disableCreateButton()
+					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
+						$actions->disableDelete()->disableView();
+
+						if (isset($options['actionsCallback'])) {
+							$options['actionsCallback']($actions);
+						}
+					})
+					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
+						$batch->disableDelete();
 
 						if (isset($options['batchCallback'])) {
 							$options['batchCallback']($batch);
@@ -179,8 +202,9 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					});
 				break;
 
-			case 'readonly':
-				$grid->setActionClass(DropdownActions::class)->disableCreateButton()
+			case 'readonly': // 只许查看
+				$grid->setActionClass(DropdownActions::class)
+					->disableCreateButton()
 					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
 						$actions->disableDelete()->disableEdit();
 
@@ -203,7 +227,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					});
 				break;
 
-			case 'removable':
+			case 'removable': // 只许删除
 				$grid->setActionClass(DropdownActions::class)->disableCreateButton()
 					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
 						$actions->disableEdit()->disableView();

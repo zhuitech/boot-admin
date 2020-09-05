@@ -132,9 +132,10 @@ class AdminCommand extends Command
 			$user = Administrator::create([
 				'username' => 'admin',
 				'password' => bcrypt('letmein2019'),
-				'name' => '系统管理员',
-				'mobile' => '18017250227'
+				'name' => '系统管理员'
 			]);
+			$user->mobile = '18017250227';
+			$user->save();
 
 			// add role to user.
 			$user->roles()->save(Role::where(['slug' => 'administrator'])->first());
@@ -223,19 +224,19 @@ class AdminCommand extends Command
 							'uri' => '/scheduling',
 						],
 						[
-							'title' => '队列',
+							'title' => '队列任务',
 							'icon' => 'fa-tasks',
 							'uri' => '/helpers/horizon',
-						],
-						[
-							'title' => '文件管理',
-							'icon' => 'fa-file',
-							'uri' => '/media',
 						],
 						[
 							'title' => '系统日志',
 							'icon' => 'fa-history',
 							'uri' => '/logs',
+						],
+						[
+							'title' => '文件管理',
+							'icon' => 'fa-file',
+							'uri' => '/media',
 						],
 						[
 							'title' => '命令行',
