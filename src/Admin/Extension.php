@@ -29,9 +29,15 @@ class Extension extends \Encore\Admin\Extension
 			$output = new ConsoleOutput();
 
 			// 菜单
-			$menu = $extension->menu();
-			if ($menu) {
-				static::createMenuTree($menu);
+			$menus = $extension->menu();
+			if ($menus) {
+				if (isset($menus['title'])) {
+					$menus = [$menus];
+				}
+
+				foreach ($menus as $menu) {
+					static::createMenuTree($menu);
+				}
 			}
 
 			// 权限

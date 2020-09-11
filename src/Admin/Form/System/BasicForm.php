@@ -7,7 +7,7 @@ use ZhuiTech\BootLaravel\Helpers\FileHelper;
 
 class BasicForm extends SettingForm
 {
-	public $title = '后台设置';
+	public $title = '基础设置';
 
 	public function form()
 	{
@@ -27,6 +27,6 @@ class BasicForm extends SettingForm
 		$skins = array_combine($skins, $skins);
 		$this->select('admin.skin', '显示主题')->options($skins)->required()->help('设置后台显示样式。');
 
-		$this->text('backend.copyright', '版权声明')->help('显示在页面底部的版权信息说明');
+		$this->text('boot-admin.copyright', '版权声明')->help('显示在页面底部的版权信息说明');
 	}
 }

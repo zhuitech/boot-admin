@@ -9,7 +9,7 @@ class AdminMenu
 {
 	private $dataMenu;
 	private $allNodes;
-	private $collectNodes;
+	private $allNodesCollection;
 	private $currentTopMenu;
 	private $currentNode;
 
@@ -17,7 +17,7 @@ class AdminMenu
 	{
 		$this->dataMenu = $menu;
 		$this->allNodes = $this->dataMenu->allNodes();
-		$this->collectNodes = collect($this->allNodes);
+		$this->allNodesCollection = collect($this->allNodes);
 		$this->currentTopMenu = $this->getCurrentTopMenu();
 	}
 
@@ -28,7 +28,7 @@ class AdminMenu
 	 */
 	public function topMenu()
 	{
-		$topMenus = $this->collectNodes->filter(function ($value, $key) {
+		$topMenus = $this->allNodesCollection->filter(function ($value, $key) {
 			return 0 == $value['parent_id'];
 		});
 
@@ -65,16 +65,28 @@ class AdminMenu
 	{
 		if (empty($this->currentNode)) {
 			$prefix = trim(config('admin.route.prefix'), '/');
-			$currentMenuUri = str_replace($prefix, '', request()->path());
+			$currentUri = str_replace($prefix, '', request()->path());
+			$currentUriWithQuery = trim("{$currentUri}?" . request()->getQueryString(), '/');
 
 			$currentNode = null;
-			$slices = explode('/', trim($currentMenuUri, '/'));
+			$slices = explode('/', trim($currentUri, '/'));
+
 			while (empty($currentNode) && count($slices) > 0) {
-				$currentNode = $this->collectNodes->filter(function ($value, $key) use ($currentMenuUri, $slices) {
-					return trim($value['uri'], '/') == implode('/', $slices);
-				})->first();
+				foreach ($this->allNodesCollection as $item) {
+					if (trim($item['uri'], '/') == $currentUriWithQuery // 带参数匹配
+						|| trim(explode('?', $item['uri'])[0], '/') == implode('/', $slices) // 去参数匹配
+					) {
+						$currentNode = $item;
+						break;
+					}
+				}
+
+				if ($currentNode) {
+					break;
+				}
+
 				array_pop($slices);
-			}
+			};
 
 			$this->currentNode = $currentNode;
 		}
@@ -104,7 +116,7 @@ class AdminMenu
 			return $currentNode;
 		}
 
-		$currentNode = $this->collectNodes->filter(function ($value, $key) use ($currentNode) {
+		$currentNode = $this->allNodesCollection->filter(function ($value, $key) use ($currentNode) {
 			return $value['id'] == $currentNode['parent_id'];
 		})->first();
 

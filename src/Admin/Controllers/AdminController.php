@@ -151,9 +151,6 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 */
 	protected function configGrid(Grid $grid, $mode = 'editable', $options = [])
 	{
-		/* @var Model $model */
-		$model = $grid->model();
-
 		switch ($mode) {
 			case 'editable': // 允许增删改
 				$grid->setActionClass(DropdownActions::class)
@@ -253,8 +250,9 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		}
 
 		// 默认排序
-		if (empty($model->orders)) {
-			$model->orderBy('created_at', 'desc');
+		if (empty($grid->model()->orders)) {
+			$key = $grid->model()->getOriginalModel()->getKeyName();
+			$grid->model()->orderBy($key, 'asc');
 		}
 
 		return $grid;

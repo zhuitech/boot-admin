@@ -14,5 +14,5 @@
 
     </div>
     <!-- Default to the left -->
-    <strong>{!! config('backend.copyright') !!}</strong>
+    <strong>{!! config('boot-admin.copyright') !!}</strong>
 </footer>

@@ -53,7 +53,9 @@ class SettingForm extends Form
 			}
 
 			// 放入修改列表
-			$data[$key] = $value;
+			if (!empty($key)){
+				$data[$key] = $value;
+			}
 		}
 
 		// 提交修改

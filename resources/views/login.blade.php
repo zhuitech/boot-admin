@@ -69,7 +69,7 @@
 				<span class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>
 
-			@if(config('backend.sms_login'))
+			@if(config('boot-admin.sms_login'))
 				<div class="form-group has-feedback {!! !$errors->has('code') ?: 'has-error' !!}">
 
 					@if($errors->has('code'))
@@ -144,7 +144,7 @@
 	window._token = "{{ csrf_token() }}";
 	var postUrl = '{{env('APP_URL')}}/admin/auth/mobile';
 
-	@if(config('backend.sms_login'))
+	@if(config('boot-admin.sms_login'))
 	$(document).ready(function () {
 		// 发送验证码
 		$('#send-verify').on('click', function () {

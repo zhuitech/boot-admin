@@ -21,8 +21,13 @@ class LargeFile extends AbstractDisplayer
 	 */
 	public function display()
 	{
-		if ($this->value) {
-			$src = storage_url(large_url($this->value));
+		return static::render($this->value);
+	}
+
+	public static function render($value)
+	{
+		if ($value) {
+			$src = storage_url(large_url($value));
 			$name = basename($src);
 
 			return <<<HTML

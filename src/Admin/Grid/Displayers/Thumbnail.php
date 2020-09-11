@@ -22,8 +22,13 @@ class Thumbnail extends AbstractDisplayer
 	 */
 	public function display($width = 200, $height = 200)
 	{
-		if ($this->value) {
-			$url = storage_url($this->value);
+		return static::render($this->value, $width, $height);
+	}
+
+	public static function render($value, $width = 200, $height = 200)
+	{
+		if ($value) {
+			$url = storage_url($value);
 			$src = Croppa::url($url, $width, $height);
 			return <<<EOT
         <a href="{$url}" target="_blank"><img src="{$src}" class="img img-thumbnail" /></a>
