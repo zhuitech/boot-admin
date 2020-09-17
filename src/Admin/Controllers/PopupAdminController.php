@@ -30,54 +30,6 @@ class PopupAdminController extends AdminController
 		return $this->dialog($form);
 	}
 
-	protected function configGrid(Grid $grid, $mode = 'editable', $options = [])
-	{
-		$grid->setActionClass(DropdownActions::class);
-
-		switch ($mode) {
-			case 'editable':
-				$grid->actions(function (Grid\Displayers\DropdownActions $actions) use ($options) {
-					$actions->disableView()->disableEdit();
-					$actions->add(new PopupEdit($options['edit'] ?? null));
-
-					if (isset($options['actionsCallback'])) {
-						$options['actionsCallback']($actions);
-					}
-				});
-
-				$grid->disableCreateButton()
-					->tools(function (Grid\Tools $tools) use ($grid, $options) {
-						$tools->append(new PopupCreate($grid, $options['create'] ?? null));
-
-						if (isset($options['toolsCallback'])) {
-							$options['toolsCallback']($tools);
-						}
-					});
-				break;
-
-			case 'readonly':
-				$grid->actions(function (Grid\Displayers\DropdownActions $actions) use ($options) {
-					$actions->disableView()->disableEdit()->disableDelete();
-				});
-
-				$grid->disableCreateButton();
-				break;
-		}
-
-		$grid->disableBatchActions()->disableColumnSelector()->disableExport()->disableFilter()->disablePagination();
-		return $grid;
-	}
-
-	protected function configFormFooter(Form\Footer $footer)
-	{
-		return parent::configFormFooter($footer)->disableReset()->disableSubmit();
-	}
-
-	protected function configFormTools(Form\Tools $tools)
-	{
-		return parent::configFormTools($tools)->disableDelete()->disableList();
-	}
-
 	protected function dialog($form)
 	{
 		$title = $this->title();

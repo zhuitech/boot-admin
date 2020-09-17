@@ -8,15 +8,35 @@ use Encore\Admin\Grid;
 use Encore\Admin\Grid\Displayers\DropdownActions;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
+use ZhuiTech\BootAdmin\Admin\Grid\Actions\PopupEdit;
+use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
 {
+	/**
+	 * 定义扩展点
+	 * @var null
+	 */
+	protected $extension = null;
+
+	/**
+	 * 获取扩展模块
+	 * @return AdminControllerExtender[]
+	 */
+	protected function getExtensions()
+	{
+		if ($this->extension) {
+			return app()->tagged($this->extension);
+		}
+
+		return [];
+	}
+
 	/**
 	 * 获取资源ID
 	 *
@@ -108,6 +128,9 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 * 设置内容
 	 *
 	 * @param Content $content
+	 * @param null $title
+	 * @param null $description
+	 * @param null $action
 	 * @return Content
 	 */
 	protected function configContent(Content $content, $title = null, $description = null, $action = null)
@@ -151,102 +174,136 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 */
 	protected function configGrid(Grid $grid, $mode = 'editable', $options = [])
 	{
+		$extensions = $this->getExtensions();
+		$grid->setActionClass(DropdownActions::class)
+			->actions(function (Grid\Displayers\Actions $actions) use ($options, $mode, $extensions) {
+				switch ($mode) {
+					case 'editable': // 允许增删改
+						$actions->disableView();
+						break;
+					case 'editonly': // 只许编辑
+						$actions->disableDelete()->disableView();
+						break;
+					case 'readonly': // 只许查看
+						$actions->disableDelete()->disableEdit();
+						break;
+					case 'removable': // 只许删除
+						$actions->disableEdit()->disableView();
+						break;
+					case 'popup': // 弹出框模式
+						$actions->disableView()->disableEdit();
+						$actions->add(new PopupEdit($options['edit'] ?? null));
+						break;
+				}
+
+				if (isset($options['actionsCallback'])) {
+					$options['actionsCallback']($actions);
+				}
+
+				// 扩展
+				foreach ($extensions as $extension) {
+					$extension->gridActions($actions);
+				}
+			})
+			->batchActions(function (Grid\Tools\BatchActions $batch) use ($options, $mode, $extensions) {
+				switch ($mode) {
+					case 'editable': // 允许增删改
+						break;
+					case 'editonly': // 只许编辑
+						$batch->disableDelete();
+						break;
+					case 'readonly': // 只许查看
+						$batch->disableDelete();
+						break;
+					case 'removable': // 只许删除
+						break;
+					case 'popup': // 弹出框模式
+						break;
+				}
+
+				if (isset($options['batchCallback'])) {
+					$options['batchCallback']($batch);
+				}
+
+				// 扩展
+				foreach ($extensions as $extension) {
+					$extension->gridBatchActions($batch);
+				}
+			})
+			->filter(function (Grid\Filter $filter) use ($options, $mode, $extensions) {
+				switch ($mode) {
+					case 'editable': // 允许增删改
+						$filter->disableIdFilter();
+						break;
+					case 'editonly': // 只许编辑
+						$filter->disableIdFilter();
+						break;
+					case 'readonly': // 只许查看
+						$filter->disableIdFilter();
+						break;
+					case 'removable': // 只许删除
+						$filter->disableIdFilter();
+						break;
+					case 'popup': // 弹出框模式
+						$filter->disableIdFilter();
+						break;
+				}
+
+				if (isset($options['filterCallback'])) {
+					$options['filterCallback']($filter);
+				}
+
+				// 扩展
+				foreach ($extensions as $extension) {
+					$extension->gridFilter($filter);
+				}
+			});
+
+		$grid->tools(function (Grid\Tools $tools) use ($options, $mode, $grid, $extensions) {
+			switch ($mode) {
+				case 'editable': // 允许增删改
+					break;
+				case 'editonly': // 只许编辑
+					break;
+				case 'readonly': // 只许查看
+					break;
+				case 'removable': // 只许删除
+					break;
+				case 'popup': // 弹出框模式
+					$tools->append(new PopupCreate($grid, $options['create'] ?? null));
+					break;
+			}
+
+			if (isset($options['toolsCallback'])) {
+				$options['toolsCallback']($tools);
+			}
+
+			// 扩展
+			foreach ($extensions as $extension) {
+				$extension->gridTools($tools);
+			}
+		});
+
 		switch ($mode) {
 			case 'editable': // 允许增删改
-				$grid->setActionClass(DropdownActions::class)
-					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
-						$actions->disableView();
-
-						if (isset($options['actionsCallback'])) {
-							$options['actionsCallback']($actions);
-						}
-					})
-					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
-						if (isset($options['batchCallback'])) {
-							$options['batchCallback']($batch);
-						}
-					})->filter(function (Grid\Filter $filter) use ($options) {
-						$filter->disableIdFilter();
-
-						if (isset($options['filterCallback'])) {
-							$options['filterCallback']($filter);
-						}
-					});
 				break;
-
 			case 'editonly': // 只许编辑
-				$grid->setActionClass(DropdownActions::class)
-					->disableCreateButton()
-					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
-						$actions->disableDelete()->disableView();
-
-						if (isset($options['actionsCallback'])) {
-							$options['actionsCallback']($actions);
-						}
-					})
-					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
-						$batch->disableDelete();
-
-						if (isset($options['batchCallback'])) {
-							$options['batchCallback']($batch);
-						}
-					})->filter(function (Grid\Filter $filter) use ($options) {
-						$filter->disableIdFilter();
-
-						if (isset($options['filterCallback'])) {
-							$options['filterCallback']($filter);
-						}
-					});
+				$grid->disableCreateButton();
 				break;
-
 			case 'readonly': // 只许查看
-				$grid->setActionClass(DropdownActions::class)
-					->disableCreateButton()
-					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
-						$actions->disableDelete()->disableEdit();
-
-						if (isset($options['actionsCallback'])) {
-							$options['actionsCallback']($actions);
-						}
-					})
-					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
-						$batch->disableDelete();
-
-						if (isset($options['batchCallback'])) {
-							$options['batchCallback']($batch);
-						}
-					})->filter(function (Grid\Filter $filter) use ($options) {
-						$filter->disableIdFilter();
-
-						if (isset($options['filterCallback'])) {
-							$options['filterCallback']($filter);
-						}
-					});
+				$grid->disableCreateButton();
 				break;
-
 			case 'removable': // 只许删除
-				$grid->setActionClass(DropdownActions::class)->disableCreateButton()
-					->actions(function (Grid\Displayers\Actions $actions) use ($options) {
-						$actions->disableEdit()->disableView();
-
-						if (isset($options['actionsCallback'])) {
-							$options['actionsCallback']($actions);
-						}
-					})
-					->batchActions(function (Grid\Tools\BatchActions $batch) use ($options) {
-						//$batch->disableDelete()->add(new BatchDelete(trans('admin.batch_delete')));
-
-						if (isset($options['batchCallback'])) {
-							$options['batchCallback']($batch);
-						}
-					})->filter(function (Grid\Filter $filter) use ($options) {
-						$filter->disableIdFilter();
-
-						if (isset($options['filterCallback'])) {
-							$options['filterCallback']($filter);
-						}
-					});
+				$grid->disableCreateButton();
 				break;
+			case 'popup':
+				$grid->disableCreateButton();
+				break;
+		}
+
+		// 扩展
+		foreach ($extensions as $extension) {
+			$extension->grid($grid);
 		}
 
 		// 默认排序
@@ -262,45 +319,60 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 * 设置表单
 	 *
 	 * @param Form $form
+	 * @param string $mode
 	 * @param array $options
 	 * @return Form
 	 */
-	protected function configForm(Form $form, $options = [])
+	protected function configForm(Form $form, $mode = 'page', $options = [])
 	{
-		$this->configFormTools($form->builder()->getTools());
-		$this->configFormFooter($form->builder()->getFooter());
+		$extensions = $this->getExtensions();
+		$form->tools(function (Form\Tools $tools) use ($options, $mode, $extensions) {
+			switch ($mode) {
+				case 'page':
+					$tools->disableView();
+					break;
+				case 'popup':
+					$tools->disableView()->disableDelete()->disableList();
+					break;
+			}
 
-		$form->tools(function (Form\Tools $tools) use ($options) {
 			if (isset($options['toolsCallback'])) {
 				$options['toolsCallback']($tools);
 			}
-		});
 
-		$form->footer(function (Form\Footer $footer) use ($options) {
-			if (isset($options['footerCallback'])) {
-				$options['footerCallback']($footer);
+			// 扩展
+			foreach ($extensions as $extension) {
+				$extension->formTools($tools);
 			}
 		});
 
+		$form->footer(function (Form\Footer $footer) use ($options, $mode, $extensions) {
+			switch ($mode) {
+				case 'page':
+					$footer->disableViewCheck()->disableEditingCheck()->disableCreatingCheck();
+					break;
+
+				case 'popup':
+					$footer->disableViewCheck()->disableEditingCheck()->disableCreatingCheck()->disableReset()->disableSubmit();
+					break;
+			}
+
+			if (isset($options['footerCallback'])) {
+				$options['footerCallback']($footer);
+			}
+
+			// 扩展
+			foreach ($extensions as $extension) {
+				$extension->formFooter($footer);
+			}
+		});
+
+		// 扩展
+		foreach ($extensions as $extension) {
+			$extension->form($form);
+		}
+
 		return $form;
-	}
-
-	/**
-	 * @param Form\Footer $footer
-	 * @return Form\Footer
-	 */
-	protected function configFormFooter(Form\Footer $footer)
-	{
-		return $footer->disableViewCheck()->disableEditingCheck()->disableCreatingCheck();
-	}
-
-	/**
-	 * @param Form\Tools $tools
-	 * @return Form\Tools
-	 */
-	protected function configFormTools(Form\Tools $tools)
-	{
-		return $tools->disableView();
 	}
 
 	/**
@@ -308,28 +380,45 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	 *
 	 * @param Show $show
 	 * @param string $mode
+	 * @param array $options
 	 * @return Show
 	 */
-	protected function configShow(Show $show, $mode = 'box')
+	protected function configShow(Show $show, $mode = 'box', $options = [])
 	{
+		$extensions = $this->getExtensions();
+		$show->panel()->tools(function (Show\Tools $tools) use ($options, $mode, $extensions) {
+			switch ($mode) {
+				case 'box':
+					$tools->disableEdit()->disableList()->disableDelete();
+					break;
+				case 'readonly':
+					$tools->disableEdit()->disableDelete();
+					break;
+			}
+
+			if (isset($options['toolsCallback'])) {
+				$options['toolsCallback']($tools);
+			}
+
+			// 扩展
+			foreach ($extensions as $extension) {
+				$extension->showTools($tools);
+			}
+		});
+
 		switch ($mode) {
 			case 'box':
 				$show->panel()->title('');
-				$show->panel()->tools(function (Show\Tools $tools) {
-					$tools->disableEdit();
-					$tools->disableList();
-					$tools->disableDelete();
-				});
 				break;
-
 			case 'readonly':
-				$show->panel()->tools(function (Show\Tools $tools) {
-					$tools->disableEdit();
-					$tools->disableDelete();
-				});
 				$show->field('created_at', '创建时间');
 				$show->field('updated_at', '更新时间');
 				break;
+		}
+
+		// 扩展
+		foreach ($extensions as $extension) {
+			$extension->show($show);
 		}
 
 		return $show;

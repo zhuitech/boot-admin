@@ -1,6 +1,6 @@
 <?php
 
-namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
+namespace ZhuiTech\BootAdmin\Admin\Grid\Actions;
 
 use Encore\Admin\Grid\Displayers\Actions;
 

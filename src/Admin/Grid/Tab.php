@@ -3,6 +3,7 @@
 namespace ZhuiTech\BootAdmin\Admin\Grid;
 
 use Encore\Admin\Grid;
+use Illuminate\Support\Arr;
 
 class Tab extends \Encore\Admin\Widgets\Tab
 {
@@ -21,7 +22,7 @@ class Tab extends \Encore\Admin\Widgets\Tab
 		if ($all) {
 			$options = ['' => '全部'] + $options;
 		}
-		$current = request($field, array_first(array_keys($options)));
+		$current = request($field, Arr::first(array_keys($options)));
 
 		if (empty($filter)) {
 			$filter = function ($query, $field, $key) {
