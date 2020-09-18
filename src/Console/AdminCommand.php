@@ -142,19 +142,6 @@ class AdminCommand extends Command
 
 			$this->line("<info>User admin insert successfully.</info>");
 		}
-
-		if (!Administrator::where(['username' => 'manager'])->first()) {
-			$user = Administrator::create([
-				'username' => 'manager',
-				'password' => bcrypt('letmein2019'),
-				'name' => '普通管理员',
-			]);
-
-			// add role to user.
-			$user->roles()->save(Role::where(['slug' => 'manager'])->first());
-
-			$this->line("<info>User manager insert successfully.</info>");
-		}
 	}
 
 	/**
