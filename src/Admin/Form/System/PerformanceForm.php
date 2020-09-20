@@ -3,11 +3,12 @@
 namespace ZhuiTech\BootAdmin\Admin\Form\System;
 
 use ZhuiTech\BootAdmin\Admin\Form\SettingForm;
-use ZhuiTech\BootLaravel\Helpers\FileHelper;
 
 class PerformanceForm extends SettingForm
 {
 	public $title = '性能设置';
+
+	protected $syncService = true;
 
 	public function form()
 	{
