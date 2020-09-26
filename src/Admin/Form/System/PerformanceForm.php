@@ -16,5 +16,6 @@ class PerformanceForm extends SettingForm
 		$this->text('boot-admin.cdn_url', 'CDN地址')->help('包含http(s)://前缀，后面不要带斜杠');
 		$this->text('boot-admin.cdn_replace_url', 'CDN替换地址')->help('要被CDN替换掉的地址前缀，包含http(s)://前缀，后面不要带斜杠');
 		$this->number('boot-admin.concurrent_request_limit', '并发请求用户数')->help('在登录、下单、秒杀等环节，限制最大并发请求的用户数，0为不限制');
+		$this->switch('boot-laravel.pressure_test', '压测模式')->help('开启后，禁用流控设置');
 	}
 }
