@@ -20,12 +20,18 @@ class Route extends RowAction
 {
 	private $route;
 	private $resourceKey;
+	
+	/**
+	 * @var bool
+	 */
+	private $pjax;
 
-	public function __construct($route, $name = '跳转', $resourceKey = 'id')
+	public function __construct($route, $name = '跳转', $resourceKey = 'id', $pjax = true)
 	{
 		$this->route = $route;
 		$this->name = $name;
 		$this->resourceKey = $resourceKey;
+		$this->pjax = $pjax;
 
 		parent::__construct();
 	}
@@ -33,5 +39,15 @@ class Route extends RowAction
 	public function href()
 	{
 		return route($this->route, [$this->resourceKey => $this->getKey()]);
+	}
+
+	public function render()
+	{
+		if ($href = $this->href()) {
+			$pjax = $this->pjax ? '' : 'no-pjax';
+			return "<a href='{$href}' {$pjax}>{$this->name()}</a>";
+		}
+
+		return parent::render();
 	}
 }
