@@ -58,11 +58,12 @@ class ServiceProxyController extends AdminController
 		// 把直接访问svc页面的请求通过顶级菜单转发
 		if ($request->method() == 'GET' && $response->getStatusCode() == 200
 			&& !$request->ajax() && $this->pjax($request)) {
-			$top = admin_url(with(AdminMenu::getCurrentTopMenu())['uri']);
 			$current = request()->getPathInfo();
-			if ($top != $current) {
+			$top = AdminMenu::getCurrentTopMenu();
+
+			if ($top && ($topUri = admin_url($top['uri'])) && $topUri != $current) {
 				// 通过当前顶级菜单做pjax跳转
-				return redirect($top . '?' . http_build_query(['load' => $current]));
+				return redirect($topUri . '?' . http_build_query(['load' => $current]));
 			}
 		}
 

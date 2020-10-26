@@ -196,7 +196,7 @@ class AdminCommand extends Command
 					'children' => [
 						[
 							'title' => '系统设置',
-							'uri' => '/setting/system',
+							'uri' => '/settings/system',
 						],
 					],
 				],

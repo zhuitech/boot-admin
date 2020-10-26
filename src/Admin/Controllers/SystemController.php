@@ -11,7 +11,7 @@ use ZhuiTech\BootAdmin\Admin\Form\System\SecurityForm;
 
 class SystemController extends AdminController
 {
-	public function systemSetting(Content $content)
+	public function settings(Content $content)
 	{
 		$this->configContent($content, '系统设置');
 

@@ -13,12 +13,14 @@ use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
+use ZhuiTech\BootAdmin\Admin\Form\Fields\KeyValue;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\LargeFile;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Format;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Route;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Thumbnail;
@@ -108,10 +110,12 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Column::extend('call', Call::class);
 		Column::extend('largefile', LargeFile::class);
 		Column::extend('route', Route::class);
+		Column::extend('format', Format::class);
 
 		//Form::extend('editor', CKEditor::class);
 		Form::extend('editor', \ghost\CKEditor\CKEditor::class);
 		Form::extend('largefile', LargeFileField::class);
+		Form::extend('keyValue', KeyValue::class);
 
 		Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
 		Show::extend('array', JsonArray::class);
@@ -122,7 +126,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 			$navbar->left(view('admin::partials.topbar-left'));
 			$navbar->right(view('admin::partials.topbar-right'));
 
-			$navbar->right(Link::make('设置', 'setting/system', 'fa-cog'));
+			$navbar->right(Link::make('设置', 'settings/system', 'fa-cog'));
 			$navbar->right(new ClearCache());
 			$navbar->right(new Fullscreen());
 			$navbar->right(new AutoRefresh());
