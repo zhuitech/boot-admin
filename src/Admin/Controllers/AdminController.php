@@ -175,7 +175,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 	protected function configGrid(Grid $grid, $mode = 'editable', $options = [])
 	{
 		$extensions = $this->getExtensions();
-		$grid->setActionClass(DropdownActions::class)
+		$grid->setActionClass(DropdownActions::class)->disableExport()
 			->actions(function (Grid\Displayers\Actions $actions) use ($options, $mode, $extensions) {
 				switch ($mode) {
 					case 'editable': // 允许增删改
