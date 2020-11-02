@@ -13,7 +13,7 @@ class BootAdmin
 	{
 		$extensions = [];
 		$modules = config('boot-laravel.modules');
-		$load_modules = explode(',', config('boot-laravel.load_modules'));
+		$load_modules = array_filter(explode(',', config('boot-laravel.load_modules')));
 
 		foreach ($modules as $name => $module) {
 			if (in_array($name, $load_modules) || empty($load_modules)) {
