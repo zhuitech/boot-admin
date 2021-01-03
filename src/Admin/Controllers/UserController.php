@@ -18,9 +18,9 @@ class UserController extends \Encore\Admin\Controllers\UserController
 			->creationRules(['required', "unique:{$connection}.{$userTable},mobile"])
 			->updateRules(['required', "unique:{$connection}.{$userTable},mobile,{{id}}"]);
 
-		$form->email('email', '邮箱')
-			->creationRules(['required', "unique:{$connection}.{$userTable},email"])
-			->updateRules(['required', "unique:{$connection}.{$userTable},email,{{id}}"]);
+//		$form->email('email', '邮箱')
+//			->creationRules(['required', "unique:{$connection}.{$userTable},email"])
+//			->updateRules(['required', "unique:{$connection}.{$userTable},email,{{id}}"]);
 
 		$form->builder()->field('avatar')->dir(FileHelper::dir('avatar'));
 
@@ -36,7 +36,7 @@ class UserController extends \Encore\Admin\Controllers\UserController
 		$grid->column('id', 'ID')->sortable();
 		$grid->column('username', trans('admin.username'));
 		$grid->column('name', trans('admin.name'));
-		$grid->column('email', '邮箱');
+//		$grid->column('email', '邮箱');
 		$grid->column('mobile', '手机');
 		$grid->column('roles', trans('admin.roles'))->pluck('name')->label();
 		$grid->column('created_at', trans('admin.created_at'));

@@ -2,10 +2,10 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Tools;
 
-use Arr;
 use Encore\Admin\Grid;
 use Encore\Admin\Grid\Tools\AbstractTool;
-use Str;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class CreateButton extends AbstractTool
 {
@@ -15,13 +15,20 @@ class CreateButton extends AbstractTool
 	protected $grid;
 
 	/**
+	 * @var bool
+	 */
+	private $pjax;
+
+	/**
 	 * Create a new CreateButton instance.
 	 *
 	 * @param Grid $grid
+	 * @param bool $pjax
 	 */
-	public function __construct(Grid $grid)
+	public function __construct(Grid $grid, $pjax = true)
 	{
 		$this->grid = $grid;
+		$this->pjax = $pjax;
 	}
 
 	/**
@@ -36,11 +43,12 @@ class CreateButton extends AbstractTool
 		$url = $this->grid->getCreateUrl();
 		$query = Arr::except(request()->query(), ['_pjax']);
 		$url .= (Str::contains($url, '?') ? '' : '?') . http_build_query($query);
+		$pjax = $this->pjax ? '' : 'no-pjax';
 
 		return <<<EOT
 
 <div class="btn-group pull-right grid-create-btn" style="margin-right: 10px">
-    <a href="{$url}" class="btn btn-sm btn-success" title="{$new}">
+    <a href="{$url}" class="btn btn-sm btn-success" title="{$new}" {$pjax}>
         <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;&nbsp;{$new}</span>
     </a>
 </div>

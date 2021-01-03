@@ -25,7 +25,7 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
 		$username = !$this->isMail(request($this->username())) ? 'username' : 'email';
 		$credentials = $request->only([$this->username(), 'password', 'code']);
 
-		if (config('backend.sms_login')) {
+		if (config('boot-admin.sms_login')) {
 			$admin = Administrator::where("$username", request('username'))->where('status', 1)->first();
 			if (!$admin or !$admin->mobile) {
 				return redirect()->back()->withInput()->withErrors(['username' => '账号不存在或未绑定手机']);

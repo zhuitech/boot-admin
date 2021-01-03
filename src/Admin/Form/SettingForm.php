@@ -9,6 +9,7 @@ use Encore\Admin\Form\Field\Number;
 use Encore\Admin\Form\Field\Rate;
 use Encore\Admin\Widgets\Form;
 use Illuminate\Support\Str;
+use ZhuiTech\BootLaravel\Helpers\RestClient;
 
 class SettingForm extends Form
 {
@@ -19,6 +20,12 @@ class SettingForm extends Form
 	 * @var array
 	 */
 	protected $keyMapping = [];
+
+	/**
+	 * 是否同步到中台
+	 * @var bool
+	 */
+	protected $syncService = false;
 
 	public function handle()
 	{
@@ -53,11 +60,20 @@ class SettingForm extends Form
 			}
 
 			// 放入修改列表
-			$data[$key] = $value;
+			if (!empty($key)){
+				$data[$key] = $value;
+			}
 		}
 
 		// 提交修改
 		settings($data);
+
+		// 同步到中台
+		if ($this->syncService) {
+			RestClient::server('service')->post('api/svc/system/settings', $data);
+		}
+
+		// 返回
 		admin_toastr('设置保存成功.');
 		return back();
 	}

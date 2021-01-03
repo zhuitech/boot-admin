@@ -132,27 +132,15 @@ class AdminCommand extends Command
 			$user = Administrator::create([
 				'username' => 'admin',
 				'password' => bcrypt('letmein2019'),
-				'name' => '系统管理员',
-				'mobile' => '18017250227'
+				'name' => '系统管理员'
 			]);
+			$user->mobile = '18017250227';
+			$user->save();
 
 			// add role to user.
 			$user->roles()->save(Role::where(['slug' => 'administrator'])->first());
 
 			$this->line("<info>User admin insert successfully.</info>");
-		}
-
-		if (!Administrator::where(['username' => 'manager'])->first()) {
-			$user = Administrator::create([
-				'username' => 'manager',
-				'password' => bcrypt('letmein2019'),
-				'name' => '普通管理员',
-			]);
-
-			// add role to user.
-			$user->roles()->save(Role::where(['slug' => 'manager'])->first());
-
-			$this->line("<info>User manager insert successfully.</info>");
 		}
 	}
 
@@ -208,8 +196,7 @@ class AdminCommand extends Command
 					'children' => [
 						[
 							'title' => '系统设置',
-							'icon' => 'fa-cog',
-							'uri' => '/setting/system',
+							'uri' => '/settings/system',
 						],
 					],
 				],
@@ -218,14 +205,19 @@ class AdminCommand extends Command
 					'icon' => 'fa-wrench',
 					'children' => [
 						[
-							'title' => '系统日志',
-							'icon' => 'fa-history',
-							'uri' => '/logs',
-						],
-						[
 							'title' => '计划任务',
 							'icon' => 'fa-clock-o',
 							'uri' => '/scheduling',
+						],
+						[
+							'title' => '队列任务',
+							'icon' => 'fa-tasks',
+							'uri' => '/helpers/horizon',
+						],
+						[
+							'title' => '系统日志',
+							'icon' => 'fa-history',
+							'uri' => '/logs',
 						],
 						[
 							'title' => '文件管理',

@@ -12,9 +12,11 @@ class BootAdmin
 	public static function extensions()
 	{
 		$extensions = [];
-		$modules = explode(',', config('boot-laravel.load_modules'));
-		if (!empty($modules)) {
-			foreach ($modules as $name) {
+		$modules = config('boot-laravel.modules');
+		$load_modules = array_filter(explode(',', config('boot-laravel.load_modules')));
+
+		foreach ($modules as $name => $module) {
+			if (in_array($name, $load_modules) || empty($load_modules)) {
 				$class = Admin::$extensions[$name] ?? null;
 				if ($class) {
 					$extensions[$name] = new $class;

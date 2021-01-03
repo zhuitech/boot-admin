@@ -2,9 +2,9 @@
     @if(!isset($item['children']))
         <li @if(($current = AdminMenu::getCurrentNode()) && $item['id'] == $current['id'])class="active"@endif>
             @if(url()->isValidUrl($item['uri']))
-                <a href="{{ $item['uri'] }}" target="_blank">
+		        <a href="{{ $item['uri'] }}" target="_blank">
             @else
-                 <a href="{{ admin_url($item['uri']) }}">
+				<a href="{{ admin_url($item['uri']) }}" {{$item['blank'] ? 'no-pjax' : ''}}>
             @endif
                 <i class="fa {{$item['icon']}}"></i>
                 @if (Lang::has($titleTranslation = 'admin.menu_titles.' . trim(str_replace(' ', '_', strtolower($item['title'])))))
