@@ -2,6 +2,7 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
+use Encore\Admin\Admin;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Tab;
 use ZhuiTech\BootAdmin\Admin\Form\System\BasicForm;
@@ -33,5 +34,12 @@ class SystemController extends AdminController
 	public function horizon(Content $content)
 	{
 		return $this->iframe($content, route('horizon.index'), '队列管理');
+	}
+
+	public function redirectTo(Content $content)
+	{
+		$url = request('target');
+		Admin::script("window.location.href = \"$url\";");
+		return $content->body('正在为您跳转...');
 	}
 }
