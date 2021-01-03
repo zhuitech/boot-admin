@@ -4,6 +4,7 @@ namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 use Exception;
+use Illuminate\Support\Facades\File;
 
 /**
  * 大文件
@@ -27,14 +28,19 @@ class LargeFile extends AbstractDisplayer
 	public static function render($value)
 	{
 		if ($value) {
-			$src = storage_url(large_url($value));
+			$src = storage_url(large_path($value));
 			$name = basename($src);
 
-			return <<<HTML
-<a href='$src' download='{$name}' target='_blank' class='text-muted'>
-    <i class="fa fa-download"></i> {$name}
-</a>
+			$ext = File::extension($name);
+			if ($ext == 'mp4') {
+				return <<<HTML
+<a href='$src' target='_blank' class='text-muted'><i class="fa fa-video-camera"></i></a>
 HTML;
+			} else {
+				return <<<HTML
+<a href='$src' download='{$name}' target='_blank' class='text-muted'><i class="fa fa-download"></i></a>
+HTML;
+			}
 		}
 	}
 }

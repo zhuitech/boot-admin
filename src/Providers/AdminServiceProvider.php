@@ -58,6 +58,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 	public function boot()
 	{
 		app('view')->prependNamespace('admin', __DIR__ . '/../../resources/views');
+		app('view')->prependNamespace('large-file-field', __DIR__ . '/../../resources/large-file-field');
 
 		$this->loadRoutes();
 

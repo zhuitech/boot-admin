@@ -2,6 +2,7 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
+use Encore\Admin\Admin;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Tab;
 use ZhuiTech\BootAdmin\Admin\Form\System\BasicForm;
@@ -38,5 +39,12 @@ class SystemController extends AdminController
 EOT;
 		$this->configContent($content, '队列管理');
 		return $content->body($html);
+	}
+
+	public function redirectTo(Content $content)
+	{
+		$url = request('target');
+		Admin::script("window.location.href = \"$url\";");
+		return $content->body('正在为您跳转...');
 	}
 }
