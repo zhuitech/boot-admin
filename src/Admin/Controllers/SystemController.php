@@ -32,11 +32,6 @@ class SystemController extends AdminController
 
 	public function horizon(Content $content)
 	{
-		$url = route('horizon.index');
-		$html = <<<EOT
-<iframe src="$url" style="height: calc(100vh - 180px); width: calc(100vw - 260px); border: none;"></iframe>
-EOT;
-		$this->configContent($content, '队列管理');
-		return $content->body($html);
+		return $this->iframe($content, route('horizon.index'), '队列管理');
 	}
 }

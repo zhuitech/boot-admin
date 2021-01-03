@@ -492,4 +492,13 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 
 		SwitchPanel::script($select_name, 'select');
 	}
+
+	public function iframe(Content $content, $url, $title)
+	{
+		$html = <<<EOT
+<iframe src="$url" style="height: calc(100vh - 180px); width: calc(100vw - 260px); border: none;"></iframe>
+EOT;
+		$this->configContent($content, $title);
+		return $content->body($html);
+	}
 }
