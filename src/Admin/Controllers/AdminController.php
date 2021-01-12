@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
 use ZhuiTech\BootAdmin\Admin\Grid\Actions\PopupEdit;
+use ZhuiTech\BootAdmin\Admin\Grid\Tools\CreateButton;
 use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
@@ -262,6 +263,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$grid->tools(function (Grid\Tools $tools) use ($options, $mode, $grid, $extensions) {
 			switch ($mode) {
 				case 'editable': // 允许增删改
+					$tools->append(new CreateButton($grid));
 					break;
 				case 'editonly': // 只许编辑
 					break;
@@ -286,6 +288,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 
 		switch ($mode) {
 			case 'editable': // 允许增删改
+				$grid->disableCreateButton();
 				break;
 			case 'editonly': // 只许编辑
 				$grid->disableCreateButton();
