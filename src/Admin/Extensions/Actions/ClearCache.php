@@ -23,9 +23,10 @@ class ClearCache extends Action
 
 	public function html()
 	{
+		$url = admin_base_path();
 		return <<<HTML
 <li>
-    <a class="clear-cache" href="#">
+    <a class="clear-cache" href="$url#">
       <i class="fa fa-trash"></i>
       <span>缓存</span>
     </a>
