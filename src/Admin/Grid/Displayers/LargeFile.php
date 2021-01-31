@@ -28,19 +28,7 @@ class LargeFile extends AbstractDisplayer
 	public static function render($value)
 	{
 		if ($value) {
-			$src = storage_url(large_path($value));
-			$name = basename($src);
-
-			$ext = File::extension($name);
-			if ($ext == 'mp4') {
-				return <<<HTML
-<a href='$src' target='_blank' class='text-muted'><i class="fa fa-video-camera"></i></a>
-HTML;
-			} else {
-				return <<<HTML
-<a href='$src' download='{$name}' target='_blank' class='text-muted'><i class="fa fa-download"></i></a>
-HTML;
-			}
+			return FileLink::render(large_path($value));
 		}
 	}
 }
