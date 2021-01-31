@@ -20,10 +20,10 @@
     <div id="down"></div>
 @stop
 
-<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/spin.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/boot-admin/libs/ladda/ladda.jquery.min.js") }}"></script>
-<script src="{{ admin_asset ("/vendor/boot-admin/libs/loader/jquery.loader.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/shop-admin/backend/libs/ladda/spin.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/shop-admin/backend/libs/ladda/ladda.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/shop-admin/backend/libs/ladda/ladda.jquery.min.js") }}"></script>
+<script src="{{ admin_asset ("/vendor/shop-admin/backend/libs/loader/jquery.loader.min.js") }}"></script>
 
 @section('footer')
     <button type="button" class="btn btn-link" data-dismiss="modal">关闭</button>
