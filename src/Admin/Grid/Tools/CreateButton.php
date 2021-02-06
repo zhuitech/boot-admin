@@ -47,11 +47,11 @@ class CreateButton extends AbstractTool
 
 		return <<<EOT
 
-<div class="btn-group pull-right grid-create-btn" style="margin-right: 10px">
-    <a href="{$url}" class="btn btn-sm btn-success" title="{$new}" {$pjax}>
-        <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;&nbsp;{$new}</span>
-    </a>
-</div>
+		<div class="btn-group" style="margin-right: 5px">
+		    <a href="{$url}" class="btn btn-sm btn-success" title="{$new}" {$pjax}>
+		        <i class="fa fa-plus"></i><span class="hidden-xs">&nbsp;&nbsp;{$new}</span>
+		    </a>
+		</div>
 
 EOT;
 	}

@@ -131,7 +131,7 @@ class AdminCommand extends Command
 		if (!Administrator::where(['username' => 'admin'])->first()) {
 			$user = Administrator::create([
 				'username' => 'admin',
-				'password' => bcrypt('letmein2019'),
+				'password' => bcrypt('ZhuiTech123'),
 				'name' => '系统管理员'
 			]);
 			$user->mobile = '18017250227';

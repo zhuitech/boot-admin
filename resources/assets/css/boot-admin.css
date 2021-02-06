@@ -1,0 +1,12 @@
+.wrap {
+    margin: 10px 0;
+}
+.wrap span{
+    display: inline-block;
+    vertical-align: middle;
+}
+.wrap img{
+    height: auto;
+    vertical-align: middle;
+    margin-right: 5px;
+}
