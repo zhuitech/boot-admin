@@ -32,7 +32,7 @@ use ZhuiTech\BootAdmin\Admin\Show\JsonArray;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\ExportMenuCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
-use ZhuiTech\BootAdmin\Models\Staff;
+use ZhuiTech\BootAdmin\Middleware\LogOperation;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
@@ -90,6 +90,9 @@ class AdminServiceProvider extends AbstractServiceProvider
 	{
 		$this->mergeConfig();
 		$this->configHorizon();
+
+		// 修复无法正确生成URL的问题
+		app('router')->aliasMiddleware('admin.log', LogOperation::class);
 
 		parent::register();
 	}

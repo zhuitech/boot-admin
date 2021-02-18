@@ -182,6 +182,12 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					case 'editable': // 允许增删改
 						$actions->disableView();
 						break;
+					case 'nocreate': // 不许新增
+						$actions->disableView();
+						break;
+                    case 'noedit': // 不许编辑
+                        $actions->disableEdit()->disableView();
+                        break;
 					case 'editonly': // 只许编辑
 						$actions->disableDelete()->disableView();
 						break;
@@ -210,6 +216,10 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 				switch ($mode) {
 					case 'editable': // 允许增删改
 						break;
+					case 'nocreate': // 不许新增
+						break;
+                    case 'noedit': // 不许编辑
+                        break;
 					case 'editonly': // 只许编辑
 						$batch->disableDelete();
 						break;
@@ -236,6 +246,12 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					case 'editable': // 允许增删改
 						$filter->disableIdFilter();
 						break;
+					case 'nocreate': // 不许新增
+						$filter->disableIdFilter();
+						break;
+                    case 'noedit': // 不许编辑
+                        $filter->disableIdFilter();
+                        break;
 					case 'editonly': // 只许编辑
 						$filter->disableIdFilter();
 						break;
@@ -265,6 +281,11 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 				case 'editable': // 允许增删改
 					$tools->append(new CreateButton($grid));
 					break;
+				case 'nocreate': // 不许新增
+					break;
+                case 'noedit': // 不许编辑
+                    $tools->append(new CreateButton($grid));
+                    break;
 				case 'editonly': // 只许编辑
 					break;
 				case 'readonly': // 只许查看
@@ -290,6 +311,12 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 			case 'editable': // 允许增删改
 				$grid->disableCreateButton();
 				break;
+			case 'nocreate': // 不许新增
+				$grid->disableCreateButton();
+				break;
+            case 'noedit': // 不许编辑
+                $grid->disableCreateButton();
+                break;
 			case 'editonly': // 只许编辑
 				$grid->disableCreateButton();
 				break;
@@ -312,7 +339,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		// 默认排序
 		if (empty($grid->model()->orders)) {
 			$key = $grid->model()->getOriginalModel()->getKeyName();
-			$grid->model()->orderBy($key, 'asc');
+			$grid->model()->orderBy($key, 'desc');
 		}
 
 		return $grid;

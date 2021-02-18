@@ -18,11 +18,25 @@ class Thumbnail extends AbstractDisplayer
 	 *
 	 * @param int $width
 	 * @param int $height
+	 * @param int $limit
 	 * @return mixed
 	 */
-	public function display($width = 200, $height = 200)
+	public function display($width = 200, $height = 200, $limit = 3)
 	{
-		return static::render($this->value, $width, $height);
+		if (empty($this->value)) {
+			return static::render($this->value, $width, $height);
+		}
+
+		$values = $this->value;
+		if (!is_array($values)) {
+			$values = [$values];
+		}
+
+		$html = '';
+		foreach (array_slice($values, 0, $limit) as $value) {
+			$html .= static::render($value, $width, $height);
+		}
+		return $html;
 	}
 
 	public static function render($value, $width = 200, $height = 200)
