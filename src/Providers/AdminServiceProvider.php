@@ -19,6 +19,7 @@ use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Format;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\FileLink;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\LargeFile;
@@ -36,6 +37,7 @@ use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Events\LargeFileUploaded;
 use ZhuiTech\BootAdmin\Listeners\SaveLargeFile;
 use ZhuiTech\BootAdmin\Models\Staff;
+use ZhuiTech\BootAdmin\Middleware\LogOperation;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
 class AdminServiceProvider extends AbstractServiceProvider
@@ -78,9 +80,9 @@ class AdminServiceProvider extends AbstractServiceProvider
 			$this->publishes([__DIR__ . '/../../resources/assets' => public_path('vendor/boot-admin')], 'public');
 			$this->publishes([__DIR__ . '/../../resources/laravel-admin' => public_path('vendor/laravel-admin')], 'public');
 		}
+		$this->loadMigrations();
 
 		$this->configAdmin();
-		$this->loadMigrations();
 
 		Event::listen(LargeFileUploaded::class, SaveLargeFile::class);
 
@@ -95,8 +97,10 @@ class AdminServiceProvider extends AbstractServiceProvider
 	public function register()
 	{
 		$this->mergeConfig();
-		$this->configStuff();
 		$this->configHorizon();
+
+		// 修复无法正确生成URL的问题
+		app('router')->aliasMiddleware('admin.log', LogOperation::class);
 
 		parent::register();
 	}
@@ -119,6 +123,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Column::extend('largefile', LargeFile::class);
 		Column::extend('route', Route::class);
 		Column::extend('format', Format::class);
+		Column::extend('filelink', FileLink::class);
 
 		//Form::extend('editor', CKEditor::class);
 		Form::extend('editor', \ghost\CKEditor\CKEditor::class);
@@ -139,30 +144,6 @@ class AdminServiceProvider extends AbstractServiceProvider
 			$navbar->right(new Fullscreen());
 			$navbar->right(new AutoRefresh());
 		});
-	}
-
-	/**
-	 * 配置员工
-	 */
-	private function configStuff()
-	{
-		// 员工
-		$auth = [
-			'guards' => [
-				'staff' => [
-					'driver' => 'passport',
-					'provider' => 'staff',
-					'hash' => false,
-				],
-			],
-			'providers' => [
-				'staff' => [
-					'driver' => 'eloquent',
-					'model' => Staff::class,
-				],
-			],
-		];
-		config(Arr::dot($auth, 'auth.'));
 	}
 
 	private function configHorizon()

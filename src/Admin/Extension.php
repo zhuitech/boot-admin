@@ -17,6 +17,8 @@ class Extension extends \Encore\Admin\Extension
 
 	public $settings = [];
 
+	public $permissions = [];
+
 	/**
 	 * 导入模块
 	 * @throws Throwable
@@ -41,10 +43,8 @@ class Extension extends \Encore\Admin\Extension
 			}
 
 			// 权限
-			$permission = $extension->permission();
-			if ($permission) {
-				if ($extension->validatePermission($permission)) {
-					extract($permission);
+			if ($extension->permissions) {
+				foreach ($extension->permissions as $permission) {
 					static::createPermission($permission['name'], $permission['slug'], $permission['path']);
 				}
 			}
@@ -52,7 +52,7 @@ class Extension extends \Encore\Admin\Extension
 			// 数据
 			if ($extension->records) {
 				foreach ($extension->records as $table => $data) {
-					self::insertRecords($table, $data['fields'], $data['records']);
+					static::insertRecords($table, $data['fields'], $data['records']);
 				}
 			}
 
@@ -156,5 +156,24 @@ class Extension extends \Encore\Admin\Extension
 
 			$output->writeln("<info>成功向表[{$table}]插入{$count1}条数据</info>");
 		}
+	}
+
+	/**
+	 * 创建权限
+	 * @param $name
+	 * @param $slug
+	 * @param $path
+	 * @param array $methods
+	 */
+	public static function createPermission($name, $slug, $path, $methods = [])
+	{
+		$output = new ConsoleOutput();
+		$permissionModel = config('admin.database.permissions_model');
+		$permissionModel::updateOrCreate(['slug' => $slug,], [
+			'name' => $name,
+			'http_path' => '/' . trim($path, '/'),
+			'http_method' => $methods,
+		]);
+		$output->writeln("<info>权限[{$name}]更新成功</info>");
 	}
 }

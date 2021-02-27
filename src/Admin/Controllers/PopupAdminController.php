@@ -30,6 +30,12 @@ class PopupAdminController extends AdminController
 		return $this->dialog($form);
 	}
 
+	public function index(Content $content)
+	{
+		$grid = $this->grid()->render();
+		return $this->dialog($grid);
+	}
+
 	protected function dialog($form)
 	{
 		$title = $this->title();

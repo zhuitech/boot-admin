@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use ZhuiTech\BootAdmin\Admin\Form\ModelForm;
 use ZhuiTech\BootAdmin\Admin\Form\SwitchPanel;
 use ZhuiTech\BootAdmin\Admin\Grid\Actions\PopupEdit;
+use ZhuiTech\BootAdmin\Admin\Grid\Tools\CreateButton;
 use ZhuiTech\BootAdmin\Admin\Grid\Tools\PopupCreate;
 
 class AdminController extends \Encore\Admin\Controllers\AdminController
@@ -181,6 +182,12 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					case 'editable': // 允许增删改
 						$actions->disableView();
 						break;
+					case 'nocreate': // 不许新增
+						$actions->disableView();
+						break;
+                    case 'noedit': // 不许编辑
+                        $actions->disableEdit()->disableView();
+                        break;
 					case 'editonly': // 只许编辑
 						$actions->disableDelete()->disableView();
 						break;
@@ -209,6 +216,10 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 				switch ($mode) {
 					case 'editable': // 允许增删改
 						break;
+					case 'nocreate': // 不许新增
+						break;
+                    case 'noedit': // 不许编辑
+                        break;
 					case 'editonly': // 只许编辑
 						$batch->disableDelete();
 						break;
@@ -235,6 +246,12 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 					case 'editable': // 允许增删改
 						$filter->disableIdFilter();
 						break;
+					case 'nocreate': // 不许新增
+						$filter->disableIdFilter();
+						break;
+                    case 'noedit': // 不许编辑
+                        $filter->disableIdFilter();
+                        break;
 					case 'editonly': // 只许编辑
 						$filter->disableIdFilter();
 						break;
@@ -262,7 +279,13 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$grid->tools(function (Grid\Tools $tools) use ($options, $mode, $grid, $extensions) {
 			switch ($mode) {
 				case 'editable': // 允许增删改
+					$tools->append(new CreateButton($grid));
 					break;
+				case 'nocreate': // 不许新增
+					break;
+                case 'noedit': // 不许编辑
+                    $tools->append(new CreateButton($grid));
+                    break;
 				case 'editonly': // 只许编辑
 					break;
 				case 'readonly': // 只许查看
@@ -286,7 +309,14 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 
 		switch ($mode) {
 			case 'editable': // 允许增删改
+				$grid->disableCreateButton();
 				break;
+			case 'nocreate': // 不许新增
+				$grid->disableCreateButton();
+				break;
+            case 'noedit': // 不许编辑
+                $grid->disableCreateButton();
+                break;
 			case 'editonly': // 只许编辑
 				$grid->disableCreateButton();
 				break;
@@ -309,7 +339,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		// 默认排序
 		if (empty($grid->model()->orders)) {
 			$key = $grid->model()->getOriginalModel()->getKeyName();
-			$grid->model()->orderBy($key, 'asc');
+			$grid->model()->orderBy($key, 'desc');
 		}
 
 		return $grid;
@@ -491,5 +521,14 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		});
 
 		SwitchPanel::script($select_name, 'select');
+	}
+
+	public function iframe(Content $content, $url, $title)
+	{
+		$html = <<<EOT
+<iframe src="$url" style="height: calc(100vh - 180px); width: calc(100vw - 260px); border: none;"></iframe>
+EOT;
+		$this->configContent($content, $title);
+		return $content->body($html);
 	}
 }
