@@ -9,6 +9,7 @@ use Encore\Admin\Show;
 use Encore\Admin\Widgets\Navbar;
 use Encore\Admin\Widgets\Navbar\Fullscreen;
 use Encore\LargeFileUpload\LargeFileField;
+use Event;
 use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
@@ -17,10 +18,10 @@ use ZhuiTech\BootAdmin\Admin\Form\Fields\KeyValue;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Format;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\LargeFile;
-use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Format;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Route;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Thumbnail;
@@ -30,7 +31,10 @@ use ZhuiTech\BootAdmin\Admin\Menu\AdminMenuFacade;
 use ZhuiTech\BootAdmin\Admin\Show\JsonArray;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\ExportMenuCommand;
+use ZhuiTech\BootAdmin\Console\LargeFileInstall;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
+use ZhuiTech\BootAdmin\Events\LargeFileUploaded;
+use ZhuiTech\BootAdmin\Listeners\SaveLargeFile;
 use ZhuiTech\BootAdmin\Models\Staff;
 use ZhuiTech\BootLaravel\Providers\AbstractServiceProvider;
 
@@ -40,6 +44,7 @@ class AdminServiceProvider extends AbstractServiceProvider
 		AdminCommand::class,
 		ServiceCommand::class,
 		ExportMenuCommand::class,
+		LargeFileInstall::class,
 	];
 
 	protected $facades = [
@@ -76,6 +81,8 @@ class AdminServiceProvider extends AbstractServiceProvider
 
 		$this->configAdmin();
 		$this->loadMigrations();
+
+		Event::listen(LargeFileUploaded::class, SaveLargeFile::class);
 
 		parent::boot();
 	}
