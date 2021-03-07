@@ -1,6 +1,6 @@
 <?php
 
-namespace ZhuiTech\BootAdmin\Admin\Grid\Tools;
+namespace ZhuiTech\BootAdmin\Admin\Actions;
 
 use Admin;
 use Encore\Admin\Actions\Action;

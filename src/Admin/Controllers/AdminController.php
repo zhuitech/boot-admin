@@ -279,12 +279,16 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 		$grid->tools(function (Grid\Tools $tools) use ($options, $mode, $grid, $extensions) {
 			switch ($mode) {
 				case 'editable': // 允许增删改
-					$tools->append(new CreateButton($grid));
+					if ($grid->showCreateBtn()) {
+						$tools->append(new CreateButton($grid));
+					}
 					break;
 				case 'nocreate': // 不许新增
 					break;
                 case 'noedit': // 不许编辑
-                    $tools->append(new CreateButton($grid));
+	                if ($grid->showCreateBtn()) {
+		                $tools->append(new CreateButton($grid));
+	                }
                     break;
 				case 'editonly': // 只许编辑
 					break;
@@ -293,7 +297,9 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 				case 'removable': // 只许删除
 					break;
 				case 'popup': // 弹出框模式
-					$tools->append(new PopupCreate($grid, $options['create'] ?? null));
+					if ($grid->showCreateBtn()) {
+						$tools->append(new PopupCreate($grid, $options['create'] ?? null));
+					}
 					break;
 			}
 
@@ -307,29 +313,7 @@ class AdminController extends \Encore\Admin\Controllers\AdminController
 			}
 		});
 
-		switch ($mode) {
-			case 'editable': // 允许增删改
-				$grid->disableCreateButton();
-				break;
-			case 'nocreate': // 不许新增
-				$grid->disableCreateButton();
-				break;
-            case 'noedit': // 不许编辑
-                $grid->disableCreateButton();
-                break;
-			case 'editonly': // 只许编辑
-				$grid->disableCreateButton();
-				break;
-			case 'readonly': // 只许查看
-				$grid->disableCreateButton();
-				break;
-			case 'removable': // 只许删除
-				$grid->disableCreateButton();
-				break;
-			case 'popup':
-				$grid->disableCreateButton();
-				break;
-		}
+		$grid->disableCreateButton();
 
 		// 扩展
 		foreach ($extensions as $extension) {
