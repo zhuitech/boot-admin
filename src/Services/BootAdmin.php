@@ -26,4 +26,19 @@ class BootAdmin
 
 		return $extensions;
 	}
+
+	public static function imageText($image, $lines)
+	{
+		$text = implode('<br>', $lines);
+		return <<<HTML
+<div class="wrap">{$image} <span>{$text}</span></div>
+HTML;
+	}
+
+	public static function link($url, $text, $icon = 'check', $target = '_blank')
+	{
+		return <<<HTML
+<a href="{$url}" target="{$target}"><i class="fa fa-{$icon}"></i> {$text}</a>
+HTML;
+	}
 }

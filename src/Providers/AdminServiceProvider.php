@@ -15,6 +15,7 @@ use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\AutoRefresh;
 use ZhuiTech\BootAdmin\Admin\Extensions\Nav\Link;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\KeyValue;
+use ZhuiTech\BootAdmin\Admin\Form\Fields\Selector;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
@@ -125,10 +126,10 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Column::extend('format', Format::class);
 		Column::extend('filelink', FileLink::class);
 
-		//Form::extend('editor', CKEditor::class);
 		Form::extend('editor', \ghost\CKEditor\CKEditor::class);
 		Form::extend('largefile', LargeFileField::class);
 		Form::extend('keyValue', KeyValue::class);
+		Form::extend('selector', Selector::class);
 
 		Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
 		Show::extend('array', JsonArray::class);
