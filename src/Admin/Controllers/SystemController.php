@@ -7,6 +7,7 @@ use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Tab;
 use ZhuiTech\BootAdmin\Admin\Form\System\BasicForm;
 use ZhuiTech\BootAdmin\Admin\Form\System\ConvertForm;
+use ZhuiTech\BootAdmin\Admin\Form\System\MiscForm;
 use ZhuiTech\BootAdmin\Admin\Form\System\PerformanceForm;
 use ZhuiTech\BootAdmin\Admin\Form\System\SecurityForm;
 
@@ -20,6 +21,7 @@ class SystemController extends AdminController
 			'basic' => BasicForm::class,
 			'performance' => PerformanceForm::class,
 			'security' => SecurityForm::class,
+			'misc' => MiscForm::class,
 		];
 
 		return $content->body(Tab::forms($forms));
