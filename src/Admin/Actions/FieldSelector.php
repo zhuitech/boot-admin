@@ -24,14 +24,17 @@ class FieldSelector extends SelectorAction
 
 	protected $modalAlias;
 
-	public function __construct($target = '#selected-contents', $type_field = 'content_type', $id_field = 'content_id')
+	public function __construct()
 	{
-		$this->target = $target;
-		$this->typeField = $type_field;
-		$this->idField = $id_field;
 		$this->modalAlias = BootLaravel::morphAlias($this->model);
-
 		parent::__construct();
+	}
+
+	public function fields($typeField, $idField)
+	{
+		$this->typeField = $typeField;
+		$this->idField = $idField;
+		return $this;
 	}
 
 	public function actionScript()

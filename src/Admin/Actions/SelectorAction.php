@@ -32,6 +32,11 @@ class SelectorAction extends Action
 	 */
 	protected $target;
 
+	public function target($target)
+	{
+		$this->target = $target;
+	}
+
 	public function html()
 	{
 		$class = $this->getElementClass();
