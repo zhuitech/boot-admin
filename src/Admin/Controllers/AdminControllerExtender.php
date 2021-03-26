@@ -18,7 +18,7 @@ interface AdminControllerExtender
 
 	public function gridFilter(Grid\Filter $filter);
 
-	public function form(Form $form);
+	public function form(Form $form, $section = null);
 
 	public function formTools(Form\Tools $tools);
 
