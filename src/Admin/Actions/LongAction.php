@@ -43,6 +43,9 @@ class LongAction extends Action
 				        nextProcess(value, target).then(nextResolver).catch(actionCatcher);
 					},
                 });
+            } else {
+                Swal.close();
+                actionResolver(data);
             }
         };
 				        
@@ -103,12 +106,16 @@ SCRIPT;
 			];
 		}
 
-		if ($next['page'] < $next['total']) {
-			$this->next($next);
-			$next['page'] += 1;
-			return $this->response()->next($next);
-		} else {
-			return $this->last();
+		try {
+			if ($next['page'] < $next['total']) {
+				$this->next($next);
+				$next['page'] += 1;
+				return $this->response()->next($next);
+			} else {
+				return $this->last();
+			}
+		} catch (\Exception $exception) {
+			return $this->response()->error($exception->getMessage())->refresh();
 		}
 	}
 

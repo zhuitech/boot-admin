@@ -20,7 +20,7 @@
     "laravel-admin-ext/chartjs": "~1.0",
     "dianwoung/large-file-upload": "^0.0.3",
     "ghost/ckeditor": "^1.0",
-    "laravel/horizon": "^5.4"
+    "laravel/horizon": "^3.7"
   },
   "autoload": {
     "psr-4": {
