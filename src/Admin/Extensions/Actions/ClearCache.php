@@ -5,6 +5,7 @@ namespace ZhuiTech\BootAdmin\Admin\Extensions\Actions;
 use Artisan;
 use Encore\Admin\Actions\Action;
 use Illuminate\Http\Request;
+use ZhuiTech\BootLaravel\Helpers\RestClient;
 
 class ClearCache extends Action
 {
@@ -13,6 +14,8 @@ class ClearCache extends Action
 	public function handle(Request $request)
 	{
 		Artisan::call('cache:clear');
+		RestClient::server('service')->post('api/svc/system/clear-cache');
+
 		return $this->response()->success('清理完成')->refresh();
 	}
 
@@ -23,10 +26,9 @@ class ClearCache extends Action
 
 	public function html()
 	{
-		$url = admin_base_path();
 		return <<<HTML
 <li>
-    <a class="clear-cache" href="$url#">
+    <a class="clear-cache" href="#">
       <i class="fa fa-trash"></i>
       <span>缓存</span>
     </a>
