@@ -2,6 +2,7 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
+use Artisan;
 use Encore\Admin\Admin;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Widgets\Tab;

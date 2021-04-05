@@ -18,11 +18,11 @@ class Route extends AbstractDisplayer
 	 *
 	 * @param string $route
 	 * @param array $map
+	 * @param array $query
 	 * @return mixed
 	 */
-	public function display($route = '', $map = [])
+	public function display($route = '', $map = [], $query = [])
 	{
-		$query = [];
 		foreach ($map as $k => $v) {
 			$query[$k] = $this->getAttribute($v);
 		}
