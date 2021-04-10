@@ -2,30 +2,33 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
+use Exception;
+use Illuminate\Support\Facades\File;
 
 /**
- * 管理员
+ * 大文件
  *
  * Class User
  * @package ZhuiTech\Shop\User\Admin\Displayers
  */
-class Admin extends AbstractDisplayer
+class LargeFile extends AbstractDisplayer
 {
 	/**
 	 * Display method.
 	 *
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function display()
 	{
-		return self::render($this->value);
+		return static::render($this->value);
 	}
 
 	public static function render($value)
 	{
-		$admin = Administrator::find($value);
-		return $admin->name ?? $admin->username ?? '';
+		if ($value) {
+			return FileLink::render(large_path($value));
+		}
 	}
 }

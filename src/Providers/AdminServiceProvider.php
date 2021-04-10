@@ -9,9 +9,20 @@ use Illuminate\Support\Arr;
 use ZhuiTech\BootAdmin\Admin\Extensions\Actions\ClearCache;
 use ZhuiTech\BootAdmin\Admin\Form\Fields\CKEditor;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Admin as AdminUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Call;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Edit;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\FileLink;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Format;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Image;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Json;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\LargeFile;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\RemoteUser;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Route;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Thumbnail;
+use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Timestamp;
 use ZhuiTech\BootAdmin\Admin\Grid\Displayers\Yuan;
+use ZhuiTech\BootAdmin\Admin\Menu\AdminMenuFacade;
 use ZhuiTech\BootAdmin\Console\AdminCommand;
 use ZhuiTech\BootAdmin\Console\ServiceCommand;
 use ZhuiTech\BootAdmin\Models\Staff;
@@ -23,6 +34,10 @@ class AdminServiceProvider extends AbstractServiceProvider
         AdminCommand::class,
         ServiceCommand::class,
     ];
+
+	protected $facades = [
+		'AdminMenu' => AdminMenuFacade::class
+	];
 
     /**
      * Bootstrap the application services.
@@ -57,11 +72,22 @@ class AdminServiceProvider extends AbstractServiceProvider
         $this->mergeConfig();
 
         // Admin 扩展
-        Column::extend('yuan', Yuan::class);
-        Column::extend('json', Json::class);
-        Column::extend('image', Image::class);
-        Column::extend('admin', Admin::class);
+	    Column::extend('yuan', Yuan::class);
+	    Column::extend('json', Json::class);
+	    Column::extend('image', Image::class);
+	    Column::extend('admin', AdminUser::class);
+	    Column::extend('remoteUser', RemoteUser::class);
+	    Column::extend('timestamp', Timestamp::class);
+	    Column::extend('thumbnail', Thumbnail::class);
+	    Column::extend('edit', Edit::class);
+	    Column::extend('call', Call::class);
+	    Column::extend('largefile', LargeFile::class);
+	    Column::extend('route', Route::class);
+	    Column::extend('format', Format::class);
+	    Column::extend('filelink', FileLink::class);
+
         Form::extend('editor', CKEditor::class);
+
         Show::extend('yuan', \ZhuiTech\BootAdmin\Admin\Show\Yuan::class);
         Show::extend('array', \ZhuiTech\BootAdmin\Admin\Show\JsonArray::class);
 

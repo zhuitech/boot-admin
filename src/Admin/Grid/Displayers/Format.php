@@ -5,25 +5,21 @@ namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 /**
- * 显示元
+ * 格式化
  *
  * Class User
  * @package ZhuiTech\Shop\User\Admin\Displayers
  */
-class Yuan extends AbstractDisplayer
+class Format extends AbstractDisplayer
 {
 	/**
 	 * Display method.
 	 *
+	 * @param array $pipes
 	 * @return mixed
 	 */
-	public function display()
+	public function display($pipes = [])
 	{
-		return self::render($this->value);
-	}
-
-	public static function render($value)
-	{
-		return '￥' . yuan($value);
+		return pipe_format($this->value, $pipes);
 	}
 }

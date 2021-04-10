@@ -2,16 +2,15 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 /**
- * 管理员
+ * 链接
  *
  * Class User
  * @package ZhuiTech\Shop\User\Admin\Displayers
  */
-class Admin extends AbstractDisplayer
+class Edit extends AbstractDisplayer
 {
 	/**
 	 * Display method.
@@ -20,12 +19,10 @@ class Admin extends AbstractDisplayer
 	 */
 	public function display()
 	{
-		return self::render($this->value);
-	}
+		$url = url("{$this->getResource()}/{$this->getKey()}/edit");
+		return <<<EOT
+        <a href="$url" target="_blank">{$this->value}</a>
+EOT;
 
-	public static function render($value)
-	{
-		$admin = Administrator::find($value);
-		return $admin->name ?? $admin->username ?? '';
 	}
 }
