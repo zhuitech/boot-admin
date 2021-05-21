@@ -135,16 +135,18 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Show::extend('array', JsonArray::class);
 		Show::extend('timestamp', \ZhuiTech\BootAdmin\Admin\Show\Timestamp::class);
 
-		// 后台导航条
-		Admin::navbar(function (Navbar $navbar) {
-			$navbar->left(view('admin::partials.topbar-left'));
-			$navbar->right(view('admin::partials.topbar-right'));
+		if (config('boot-laravel.role') == 'admin') {
+			// 后台导航条
+			Admin::navbar(function (Navbar $navbar) {
+				$navbar->left(view('admin::partials.topbar-left'));
+				$navbar->right(view('admin::partials.topbar-right'));
 
-			$navbar->right(Link::make('设置', 'settings/system', 'fa-cog'));
-			$navbar->right(new ClearCache());
-			$navbar->right(new Fullscreen());
-			$navbar->right(new AutoRefresh());
-		});
+				$navbar->right(Link::make('设置', 'settings/system', 'fa-cog'));
+				$navbar->right(new ClearCache());
+				$navbar->right(new Fullscreen());
+				$navbar->right(new AutoRefresh());
+			});
+		}
 	}
 
 	private function configHorizon()
