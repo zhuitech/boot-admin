@@ -41,21 +41,25 @@ class Thumbnail extends AbstractDisplayer
 
 	public static function render($value, $width = 200, $height = 200)
 	{
+		$style = '';
+		if ($width)
+			$style .= "max-width:{$width}px;";
+		if ($height)
+			$style .= "max-height:{$height}px;";
+
 		if ($value) {
-			$url = storage_url($value);
-			$src = Croppa::url($url, $width, $height);
+			if (\URL::isValidUrl($value)) {
+				$url = $value;
+				$src = $value;
+			} else {
+				$url = storage_url($value);
+				$src = Croppa::url($url, $width, $height);
+			}
 			return <<<EOT
-        <a href="{$url}" target="_blank"><img src="{$src}" class="img img-thumbnail" /></a>
+        <a href="{$url}" target="_blank"><img src="{$src}" class="img img-thumbnail" style="{$style}" /></a>
 EOT;
 		} else {
 			$src = url('vendor/boot-admin/img/no-image.png');
-
-			$style = '';
-			if ($width)
-				$style .= "max-width:{$width}px;";
-			if ($height)
-				$style .= "max-height:{$height}px;";
-
 			return <<<EOT
         <img src="{$src}" class="img img-thumbnail" style="{$style}" />
 EOT;
