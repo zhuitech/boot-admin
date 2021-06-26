@@ -25,7 +25,7 @@ return [
 			// Editor configuration
 			'config' => [
 				"simpleUpload" => [
-					"uploadUrl" => '/api/svc/file/upload/editor'
+					"uploadUrl" => '/api/svc/media/upload/editor'
 				],
 				"fontFamily" => [
 					"options" => [
