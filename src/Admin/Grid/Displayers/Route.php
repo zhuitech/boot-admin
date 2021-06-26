@@ -2,7 +2,6 @@
 
 namespace ZhuiTech\BootAdmin\Admin\Grid\Displayers;
 
-use Encore\Admin\Auth\Database\Administrator;
 use Encore\Admin\Grid\Displayers\AbstractDisplayer;
 
 /**
@@ -28,6 +27,6 @@ class Route extends AbstractDisplayer
 		}
 
 		$link = route($route, $query);
-		return "<a href='{$link}'>{$this->value}</a>";
+		return "<a href='{$link}' target='_blank'>{$this->value}</a>";
 	}
 }
