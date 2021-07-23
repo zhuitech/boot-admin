@@ -126,8 +126,8 @@ class AdminServiceProvider extends AbstractServiceProvider
 		Column::extend('format', Format::class);
 		Column::extend('filelink', FileLink::class);
 
-		Form::extend('editor', \ghost\CKEditor\CKEditor::class);
-		Form::extend('largefile', LargeFileField::class);
+//		Form::extend('editor', \ghost\CKEditor\CKEditor::class);
+//		Form::extend('largefile', LargeFileField::class);
 		Form::extend('keyValue', KeyValue::class);
 		Form::extend('selector', Selector::class);
 
@@ -137,15 +137,15 @@ class AdminServiceProvider extends AbstractServiceProvider
 
 		if (config('boot-laravel.role') == 'admin') {
 			// 后台导航条
-			Admin::navbar(function (Navbar $navbar) {
-				$navbar->left(view('admin::partials.topbar-left'));
-				$navbar->right(view('admin::partials.topbar-right'));
-
-				$navbar->right(Link::make('设置', 'settings/system', 'fa-cog'));
-				$navbar->right(new ClearCache());
-				$navbar->right(new Fullscreen());
-				$navbar->right(new AutoRefresh());
-			});
+//			Admin::navbar(function (Navbar $navbar) {
+//				$navbar->left(view('admin::partials.topbar-left'));
+//				$navbar->right(view('admin::partials.topbar-right'));
+//
+//				$navbar->right(Link::make('设置', 'settings/system', 'fa-cog'));
+//				$navbar->right(new ClearCache());
+//				$navbar->right(new Fullscreen());
+//				$navbar->right(new AutoRefresh());
+//			});
 		}
 	}
 
