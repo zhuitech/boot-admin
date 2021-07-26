@@ -1,3 +1,8 @@
+
+.breadcrumb, .h1, .h2, .h3, .h4, .h5, .h6, .header-navbar, .navigation, body, h1, h2, h3, h4, h5, h6 {
+    font-family: Nunito,Montserrat,system-ui,BlinkMacSystemFont,-apple-system,sans-serif;
+}
+
 .wrap {
     margin: 10px 0;
 }
@@ -9,4 +14,14 @@
     height: auto;
     vertical-align: middle;
     margin-right: 5px;
+}
+
+@media (max-width: 767px) {
+    .navbar-top-menu {
+        position: absolute;
+        top: -53px;
+        left: 15px;
+        width: 100%;
+        overflow: scroll;
+    }
 }

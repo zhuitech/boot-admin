@@ -131,7 +131,7 @@ class AdminCommand extends Command
 		if (!Administrator::where(['username' => 'admin'])->first()) {
 			$user = Administrator::create([
 				'username' => 'admin',
-				'password' => bcrypt('ZhuiTech123'),
+				'password' => bcrypt('zhuitech123'),
 				'name' => '系统管理员'
 			]);
 			$user->mobile = '18017250227';
@@ -264,6 +264,7 @@ class AdminCommand extends Command
 		$extensions = BootAdmin::extensions();
 		foreach ($extensions as $key => $extension) {
 			Artisan::call("admin:import $key");
+			$this->line("<info>Extension $key imported successfully.</info>");
 		}
 	}
 }

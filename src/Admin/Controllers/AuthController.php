@@ -3,14 +3,23 @@
 namespace ZhuiTech\BootAdmin\Admin\Controllers;
 
 use Encore\Admin\Auth\Database\Administrator;
-use Encore\Admin\Form;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use ZhuiTech\BootLaravel\Helpers\FileHelper;
-use ZhuiTech\BootLaravel\Remote\Service\SMS;
+use ZhuiTech\Services\SMS\Services\SMS;
 
 class AuthController extends \Encore\Admin\Controllers\AuthController
 {
+	public function getLogin()
+	{
+		if ($this->guard()->check()) {
+			return redirect($this->redirectPath());
+		}
+
+		$img = config('admin.login_background_image');
+		$wallpaper = $img ? storage_url($img) : ('/vendor/boot-admin/img/wallpapers/shanghai.jpg');
+
+		return view($this->loginView, compact('wallpaper'));
+	}
+
 	public function postLogin(Request $request)
 	{
 		$this->loginValidator($request->all())->validate();
@@ -24,13 +33,12 @@ class AuthController extends \Encore\Admin\Controllers\AuthController
 				return redirect()->back()->withInput()->withErrors(['username' => '账号不存在或未绑定手机']);
 			}
 
-			$mobile = $admin->mobile;
 			if (!request('code')) {
 				return redirect()->back()->withInput()->withErrors(['code' => '验证码不能为空']);
 			}
 
-			if (!SMS::check($mobile, request('code'))) {
-				return redirect()->back()->withInput()->withErrors(['code' => '验证码不正确']);
+			if (!SMS::check(['mobile' => $admin->mobile, 'verify_code' => request('code')])) {
+				return redirect()->back()->withInput()->withErrors(['code' => '验证码错误']);
 			}
 		}
 

@@ -49,7 +49,7 @@ SCRIPT;
 		Admin::script($script);
 
 		return <<<HTML
-<li class="dropdown">
+<li class="dropdown hidden-sm visible-lg-block">
     <a href="#" class="dropdown-toggle auto-refresh" data-toggle="dropdown" title="Auto refresh">
         <i class="fa fa-play"></i>&nbsp;&nbsp;
         <span class="interval-text"></span>

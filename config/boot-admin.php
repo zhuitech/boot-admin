@@ -10,7 +10,7 @@ return [
 	 */
 
 	// 版权声明
-	'copyright' => 'Powered by <a href="https://www.zhuitech.com" target="_blank">追数科技</a>',
+	'copyright' => 'Powered by <a href="https://www.zhuitech.com" target="_blank">ZHUITECH</a>',
 
 	/*
 	 * --------------------------------------------------------------------------
